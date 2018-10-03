@@ -2,7 +2,7 @@ import plotly.graph_objs as go
 import plotly.offline as py
 import plotly.io as pio
 import pandas as pd
-
+import matplotlib.pyplot as plt
 data_dir = './data/advection-threshold/'
 figures_dir = './figures/advection-threshold/'
 
@@ -24,13 +24,14 @@ def radar_plot(dfs, filename):
     )
 
     data = []
-    for df in dfs:
+    for i in range(len(df.columns)):
+        print(i)
         data.append(
             go.Scatterpolar(
-                r = df*-1,
+                r = df.values[:,i]*-1,
                 theta = soils,
                 fill = 'toself',
-                name = df.name
+                name = "%s = %1.1f" % (df.columns.name, df.columns.values[i])
             )
         )
 
@@ -47,16 +48,23 @@ def radar_plot(dfs, filename):
     pio.write_image(
         fig,
         file = figures_dir + filename + '.pdf',
-        #format='pdf',
         )
     return
 
-df = pd.read_csv(data_dir+'cpm-pressure-soil-type.csv')
-radar_plot(
-    filename = 'indoor-outdoor-and-sub-slab-pressure-difference',
+df = pd.read_csv(data_dir+'perimeter-ck-gravel-sub-base.csv', header=4)
 
+print(df.pivot(index='Soil type', columns='L', values='Indoor/outdoor pressure difference').index.values)
+
+radar_plot(
+    filename='test',
+    dfs = [df.pivot(index='Soil type', columns='L', values='Indoor/outdoor pressure difference')]
+)
+"""
+radar_plot(
+    filename = 'perimeter-ck-uniform-soil',
     dfs = (
         df['Indoor/outdoor pressure difference'],
-        df['Sub-slab pressure difference'],
+        df['Indoor/outdoor pressure difference'] - df['Sub-slab pressure difference'],
     ),
 )
+"""
