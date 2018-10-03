@@ -59,12 +59,3 @@ radar_plot(
     filename='test',
     dfs = [df.pivot(index='Soil type', columns='L', values='Indoor/outdoor pressure difference')]
 )
-"""
-radar_plot(
-    filename = 'perimeter-ck-uniform-soil',
-    dfs = (
-        df['Indoor/outdoor pressure difference'],
-        df['Indoor/outdoor pressure difference'] - df['Sub-slab pressure difference'],
-    ),
-)
-"""
