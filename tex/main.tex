@@ -7,7 +7,7 @@
 \usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{array,multirow,graphicx}
-\graphicspath{{./../figures/}}
+\graphicspath{{./../figures/},{./../figures/air-exchange-rate/},{./../figures/kde-iacc-pressure/}}
 \usepackage{lineno}
 \linenumbers
 % macros
@@ -215,11 +215,11 @@ The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-pa
 % 2D KDE plot of deviation from mean TCE in indoor air and pressure difference from the ASU house and North Island NAS
 \begin{figure}[htb!]
   \caption{Probability density plots of the deviation from the mean concentration along with the indoor-outdoor pressure difference at the ASU house both before and after the preferential pathway was closed and at North Island NAS.}
-  \label{fig:2d_kde}
-  \includegraphics[width=\textwidth]{pressure_vs_indoor_concentration.pdf}
+  \label{fig:kde-asu-nas}
+  \includegraphics[width=\textwidth]{asu-nas.pdf}
 \end{figure}
 
-Figure \ref{fig:2d_kde} show the result of the statistical analysis of the field data from the ASU and NAS North Island sites.  On the axes, the univariate KDE’s are shown.
+Figure \ref{fig:kde-asu-nas} show the result of the statistical analysis of the field data from the ASU and NAS North Island sites.  On the axes, the univariate KDE’s are shown.
 The y-margin shows the distribution of the log-10 deviation from the mean TCE concentration in indoor air and the x-margin shows the distribution of indoor-outdoor pressure differences.
 A negative pressure difference indicates that the structure is underpressurized, and thus air flows into the building, and a positive pressure difference indicates the opposite.
 Thus the curves on the axis margins are the distribution functions of the respective measured variable values, considered independently.
@@ -255,12 +255,12 @@ The univariate KDE distributions form the NAS North Island site show a distinctl
 There is a population of sampling results above the mean and another below the mean.
 Given that there was no influence of preferential pathways at this site, these results immediately flag the possibility that one is dealing with sample concentration populations that are strongly influenced by the other variable displayed on this plot - the indoor-outdoor pressure difference.
 When the interior of the building is depressurized relative to ambient, there is a tendency towards indoor air contaminant concentrations higher than the mean, and when the building is pressurized, the values tend to fall below the mean.
-This immediately suggests the examination of bivariate distributions, which are also shown on Figure \ref{fig:2d_kde}, in the center of the plot.
+This immediately suggests the examination of bivariate distributions, which are also shown on Figure \ref{fig:kde-asu-nas}, in the center of the plot.
 
-The center of Figure \ref{fig:2d_kde} shows the bivariate KDEs constructed based on the relationship between the two aforementioned variables.
+The center of Figure \ref{fig:kde-asu-nas} shows the bivariate KDEs constructed based on the relationship between the two aforementioned variables.
 The color-coding indicates the source of the dataset, with green again representing the ASU house dataset after the preferential pathway was closed, red is for before the pathway was closed, and blue the NAS North Island dataset.
 The Pearson’s r-values and p-value for the relation between TCE in indoor air and indoor-outdoor pressure difference for each dataset are also shown.
-The bivariate distributions in Figure \ref{fig:2d_kde} show even more starkly the differences between the ASU house datasets and the NAS North Island dataset.
+The bivariate distributions in Figure \ref{fig:kde-asu-nas} show even more starkly the differences between the ASU house datasets and the NAS North Island dataset.
 We believe that this is primarily due to the significant different indoor-outdoor pressure differences existing at these two sites.
 Again, NAS North Island showed a much larger spread of indoor-outdoor pressure differential values, seen in the distributions on the top x-margin; the ASU house pressure difference distributions were quite Gaussian with a variation of just a few Pascals, whereas the NAS North Island distribution is rather more flat and includes a much larger span of values.
 
@@ -286,11 +286,11 @@ Clearly it would be useful to have a few more datasets from different sites to s
 
 \begin{figure}[htb!]
   \caption{Probability density plots of the deviation from the mean Chloroform and Tetrachloroethene concentrations along with the indoor-outdoor pressure difference at the Indianapolis site}
-  \label{fig:2d_kde_indianapolis}
-  \includegraphics[width=\textwidth]{pressure_vs_indoor_concentration_422.pdf}
+  \label{fig:kde-indianapolis}
+  \includegraphics[width=\textwidth]{indianapolis-422.pdf}
 \end{figure}
 
-Figure \ref{fig:2d_kde_indianapolis} shows the same as Figure \ref{fig:2d_kde} but at the Indianapolis site, and the variations of Chloroform and PCE are considered instead of TCE.
+Figure \ref{fig:kde-indianapolis} shows the same as Figure \ref{fig:kde-asu-nas} but at the Indianapolis site, and the variations of Chloroform and PCE are considered instead of TCE.
 The concentration of both Chloroform and PCE are still roughly equally log-normally distributed within half an order of magnitude above and below the mean, similar to the variation observed at the ASU house after the land drain was closed, as well as to the North Island site, if one would consider comparable indoor-outdoor pressure differences.
 The distribution of pressure difference at the Indianapolis site is between that of ASU and North Island, with the structure there typically being more depressurized than ASU but less than North Island.
 The relationship between pressure difference and IACC is much stronger at the Indianapolis site than it was at the ASU house, but less so than at North Island.
@@ -308,13 +308,13 @@ This may be evidence of the interaction with the PP that exists at the site, alt
   \begin{subfigure}{\textwidth}
     \caption{ }
     \label{fig:asu_exchange_rate_analysis_overview}
-    \includegraphics[width=\textwidth]{tce_indoor_air_exchange_rate_impact.png}
+    \includegraphics[width=\textwidth]{asu-iacc-ae-overview.png}
   \end{subfigure}
   % Violinplot figure
   \begin{subfigure}{0.75\textwidth}
     \caption{ }
     \label{fig:asu_exchange_rate_analysis_violin_plot}
-    \includegraphics[width=\textwidth]{violin_plot_exchange_rate_impact.png}
+    \includegraphics[width=\textwidth]{violin-asu-iacc.png}
   \end{subfigure}
 \end{figure}
 
@@ -483,7 +483,7 @@ The significance of this is that sand soil is much more permeable than sandy cla
 Thus, another "normal" VI scenario was run but this time with sand soil instead of sandy clay, the results of which may be seen in Figure \ref{fig:ss_north_island}.
 Under these conditions, $\alpha_\mathrm{gw}$ changes significantly with pressurization, spanning roughly two orders of magnitude.
 This is consistent with what was observed at North Island, as there the span of IACC values was roughly the same across this range of indoor-outdoor pressure difference values.
-This simulation, together with the Pearson $r = -0.64$ for North Island in Figure \ref{fig:2d_kde} suggest that under conditions where the soil around a structure is relatively permeable, indoor-outdoor pressure difference can be a significant driving forces for transient changes in IACC.
+This simulation, together with the Pearson $r = -0.64$ for North Island in Figure \ref{fig:kde-asu-nas} suggest that under conditions where the soil around a structure is relatively permeable, indoor-outdoor pressure difference can be a significant driving forces for transient changes in IACC.
 Therefore, recording the indoor-outdoor pressure difference at a site (in particular if the soil is permeable) may offer insight into the potential for transient changes in IACC (some good methods for doing this are suggested by \citeauthor{nielsen_remediation_2017-1}\cite{nielsen_remediation_2017-1}).
 
 % Transient part
@@ -590,6 +590,6 @@ This project was supported by grant ES-201502 from the Strategic Environmental R
   \end{tabular}
 \end{table}
 
-\bibliography{Zotero}
+\bibliography{library}
 
 \end{document}
