@@ -7,6 +7,7 @@
 \usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{array,multirow,graphicx}
+\usepackage{comment}
 \graphicspath{{./../figures/},{./../figures/air-exchange-rate/},{./../figures/kde-iacc-pressure/}}
 \usepackage{lineno}
 \linenumbers
@@ -94,7 +95,8 @@ It is likely a sewer line beneath the structure acted as a preferential pathway\
 The typical variation in indoor air contaminant concentrations with time will first be considered below in the case of the ASU house during ”natural”, (i.e. non-CPM conditions), in the case of the NAS North Island site over the entire available dataset, and for the Indianapolis case we consider the variations before the installation of the SSD system.
 The deviations from the mean TCE (Chloroform and PCE at the Indianapolis site) in indoor air concentration, as well as the indoor-outdoor pressure differential associated with these concentration fluctuations, were examined, and both univariate and bivariate kernel density estimations (KDE) were constructed.
 KDE is a technique that estimates the probability distribution of a random variable(s) by using multiple kernels, or weighting functions, and in this case, Gaussian kernels are used to create the KDEs.
-This means that it is presumed that the variables of interest (i.e., indoor air contaminant concentrations and indoor-outdoor pressure differentials, as sampled) are normally distributed around mean values (that there is statistical fluctuation associated with each sampling event). In this instance, the scipy statistical package was used to construct the KDEs, assuming a bandwidth parameter determined by Scott's rule.
+This means that it is presumed that the variables of interest (i.e., indoor air contaminant concentrations and indoor-outdoor pressure differentials, as sampled) are normally distributed around mean values (that there is statistical fluctuation associated with each sampling event).
+In this instance, the scipy statistical package was used to construct the KDEs, assuming a bandwidth parameter determined by Scott's rule.
 The distributions of the individual parameters and the relationship between them will be examined using the KDE method.
 
 \subsection{Modeling Work}
@@ -209,7 +211,78 @@ The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-pa
 \end{table}
 
 \subsection{Drivers For Indoor Air Contaminant Variability}
+% KDE figures
+\begin{figure}[htb!]
+  \caption{KDE analysis of IACC dependence on indoor/outdoor pressure difference at the ASU house and North Island site (\ref{fig:kde-asu-nas}) and the Indianapolis site (\ref{fig:kde-indianapolis}). p-values and Pearson's r-values shown for each dataset.}
+  \label{fig:kde-analysis}
+  % ASU/North Island plot
+  \begin{subfigure}{\textwidth}
+    \centering
+    \caption{Period before and after the PP was shut at the ASU house considered separately; North Island dataset considered in its entirety.}
+    \label{fig:kde-asu-nas}
+    \includegraphics[height=0.4\textheight,keepaspectratio]{asu-nas.pdf}
+  \end{subfigure}
+  % Indianapolis plot
+  \begin{subfigure}{\textwidth}
+    \centering
+    \caption{Chloroform and PCE considered separeately at Indianapolis duplex 422.}
+    \label{fig:kde-indianapolis}
+    \includegraphics[height=0.4\textheight,keepaspectratio]{indianapolis-422.pdf}
+  \end{subfigure}
+\end{figure}
+% Introduction
+Out of the factors that influence the IACC in VI, pressure is one of the most dynamic ones, and the relationship between changes in indoor/outdoor pressure difference and IACC are examined in Figure \ref{fig:kde-analysis}.
+Three well studied VI sites are considered, the "ASU house" near Hill AFB in Utah, a building at North Island NAS in California and a duplex in Indianapolis.\par
+% Univariate IACC description
+The IACC at these sites vary significantly, therefore some means of comparing them all to each other is necessary.
+Additionally, the focus in this paper is the driver for variations in IACC, and reprentation of the variations between the different sites must also be achieved, specifically variations on the scale of order of magnitudes is of the greatest interest, as these are the largest hinderance to proper site IACC characterization.
+To achieve these goals, the log-10 deviation from the mean IACC ($\mu$) within each dataset is calculated, e.g. $10\mu$ indicates the IACC is an order of magnitude above the mean IACC for the dataset.
+On the y-margin in figures \ref{fig:kde-asu-nas} and \ref{fig:kde-indianapolis}, the univariate KDE distribution of deviation from the mean may be seen. \par
+% Univariate pressure description
+The indoor/outdoor pressure differences are simply taken as it, and their univariate KDE distributions are shown on the x-margin.
+A negative pressure difference indicate that the building is underpressurized relative to outdoor.\par
+% Bivariate description
+The relationship between the deviation from mean IACC, and indoor/outdoor pressure difference may be seen in the central portion of each figure, in the form of a bivariate KDE distribution.
+The p-value and Pearson's r-value for each bivariate distribution is shown in the legend.\par
+% Sub-figure description (details about sites)
+In Figure \ref{fig:kde-asu-nas} the North Island and ASU house datasets are plotted, with blue representing the North Island site, with red and green representing the ASU house.
+The ASU house dataset is considered in two different parts, the first (red) is data belonging to the time period before the PP was discovered, the second (green) is after the PP was sealed off.
+At both of these sites, TCE was the only contaminant considered.
+The IACC of Chloroform and PCE the 422 part of the Indianapolis duplex are considered in Figure \ref{fig:kde-indianapolis}.\par
+% North Island discussion
+From Figure \ref{fig:kde-asu-nas}, it is apparent that the three datasets differ significantly from each other.
+The North Island site exhibit the greatest variation in both pressure difference and IACC, in fact, looking at the univariate pressure distribution - it is almost entirely flat and spanning from extremly high and low values.
+A likely explation for this is the poor condition of the structure, rendering it highly susceptible to envivornmental influnces.\par
 
+To accompany this, there is significant variation in IACC, that has a relativly strong link with pressure difference ($r = -0.71$), although there is clearly a distinct peak (around $0.5\mu$) that is primally associated with the smaller negative and positive pressure differences ($~-4 \leq \Delta p \leq 8$).
+This demonstrates that at this particular site, the very large variations (an order of magnitude or more) are primarily influenced by the unusually large pressure difference fluctations.
+Likely, this relationship is amplified by the fact that the soil surrounding the structure is sandy and therefore relatively permeable - increasing the influence of pressure differences.
+However, despite all this, pressure differences can only partly explain the variations observed at this site.\par
+% ASU discussion
+The two ASU datasets are not only significantly different from the North Island dataset, but also different from each other.
+Consider the dataset before the PP was discovered (red) and one can see that the IACC varies significantly (from $0.05 \mu$ to more than $50 \mu$, albeit rarely.)
+This is more variation than was observed at North Island, and yet the distribution of pressure differences is narrow, mostly varying by a few Pa around zero (~$\pm 2$ Pa), and with $r = -0.50$, suggests that pressure difference is not insignificant but still a weak predictor for the variations in IACC.\par
+
+The picture changes completely after the PP was closed off, where a similar distribution of pressure differences is observed, but with a signficant reduction in IACC variance to around $\pm 0.5 \mu$, resembling something of a log-normal distribution.
+This clearly shows just how much variance the PP at this site contributed with, and how critical it is to assess whether a PP is present at a particular site in general, lest potentially face unacceptable uncertainty in determining the relevant contaminant exposure.
+It is also clear that in the absence of a PP, the pressure difference becomes even less important, with the p- and r-value indicating that pressure differences are here insignficant in determining variation in IACC.
+This also suggests that the PP at the ASU house acted not only as a PP for contaminant vapors, but for air in general - allowing the impermeable soil surrounding the house to be circumvented.
+PPs, and the factors that influnce them will be explored later in this article.\par
+% Indianapolis discussion
+The Indianapolis duplex also featured a PP, but despite this, there is significantly less variance in IACC of both Chloroform and PCE.
+The exact reason for this is not known, but considering that the PP at the Indianapolis site was a sanitary sewer, and at ASU the PP was a foundation drain system, it is not inconceivable that their dynamics are quite different.
+Nevertheless, both PCE and Chloroform are more or less log-normally distributed, with (mostly) less than an order of magnitude variance around the mean, indicating that the varation in IACC are species independent.\par
+
+The pressure difference distribution exhibit some bimodal characteristics, with a larger variation than was observed at the ASU site.
+This may explain why the r-values for both PCE and Chloroform, $r=-0.51$ and $r=-0.53$ respectively, are so similar to the ASU site before the PP there was closed; the larger pressure differences, which occured more often than ASU, increase contaminant entry rates to the extent that a PP was needed to "achieve" at the ASU site.\par
+% Summary discussion
+All of these data clearly suggest that there is significant variation in IACC that cannot be easily explained by variations in indoor/outdoor pressure difference - even with a PP.
+It is also clear that PP may contribute with unacceptable levels of variations, and screening for PPs should be part of any site investiation.
+It may also be prudent, even in the absence of PP, to add around a half to one order of magnitude margin of error to early screening measurements of indoor air.
+E.g. if a single sample is less than an order of magnitude from some target limit, it may be justified to perform subsequent samples to better assess the relevant exposure.
+These data also call the role of advection in VI into question, as "normal" pressure difference ranges are such a poor predictor of IACC variation, which is the opposite of what one would expect if advection was a dominant transport mechanism.\par
+
+\begin{comment}
 \subsubsection{The Role Of Building Depressurization/Pressurization}
 
 % 2D KDE plot of deviation from mean TCE in indoor air and pressure difference from the ASU house and North Island NAS
@@ -296,41 +369,39 @@ The distribution of pressure difference at the Indianapolis site is between that
 The relationship between pressure difference and IACC is much stronger at the Indianapolis site than it was at the ASU house, but less so than at North Island.
 Given what is known about the soil around Indianapolis site, this is somewhat surprising, as it is not significantly different from the ASU site (which North Island is).
 This may be evidence of the interaction with the PP that exists at the site, although the extreme variations in IACC cannot be observed here.
-
+\end{comment}
 
 \subsubsection{The Role Of Air Exchange Rate}
-
-% Plots showing the relative minor contribution to TCE in indoor air variance fluctuating air exchange rate has
+% Air exchange rate plots
 \begin{figure}[htb!]
-  \caption{Comparison between the recorded  and the calculated TCE in indoor air at the ASU house, assuming constant air exchange rate. \ref{fig:asu_exchange_rate_analysis_overview} shows the TCE in indoor air across time as well as the exchange rate. \ref{fig:asu_exchange_rate_analysis_violin_plot} shows the distribution of these values for three periods.}
-  \label{fig:asu_exchange_rate_analysis}
+  \caption{Comparison between the recorded  and the calculated TCE in indoor air at the ASU house, assuming constant air exchange rate. \ref{fig:asu-iacc-ae-overview} shows the TCE in indoor air across time as well as the exchange rate. \ref{fig:violin-iacc-aet} shows the distribution of these values for three periods.}
+  \label{fig:ae-analysis}
   % "Overview" plot
   \begin{subfigure}{\textwidth}
     \caption{ }
-    \label{fig:asu_exchange_rate_analysis_overview}
+    \label{fig:asu-iacc-ae-overview}
     \includegraphics[width=\textwidth]{asu-iacc-ae-overview.png}
   \end{subfigure}
   % Violinplot figure
   \begin{subfigure}{0.75\textwidth}
     \caption{ }
-    \label{fig:asu_exchange_rate_analysis_violin_plot}
+    \label{fig:violin-iacc-aet}
     \includegraphics[width=\textwidth]{violin-asu-iacc.png}
   \end{subfigure}
-\end{figure}
-
-Air exchange rate, which measures how often the interior air in a given building is exchanged with exterior air, is the main parameter characterizing contaminant expulsion.
+\end{figure}\
+Air exchange rate, which measures how often the interior air in a given building is exchanged with exterior air, is the main parameter characterizing contaminant expulsion, and another highly dynamic process.
 Exploring the impact of fluctuations in air exchange rate is thus also important for the development of sampling strategies.
 At the ASU house, the contaminant entry rate into the structure (called emission rate in that study) as well as the building air exchange rate were recorded across time.
 This allows for exploration of the impact that fluctuating air exchange rate has on the final IACC by solving the CST equation, using the recorded contaminant entry rate as one input, and assuming a constant air exchange rate.
 The rationale is to show the extent of variability in IACC due to factors other than fluctuations in air exchange rates.
 We have taken this factor out of consideration by assuming a single constant exchange rate, characteristic of the whole period.
 
-In Figure \ref{fig:asu_exchange_rate_analysis_overview}, the measured IACC and air exchange rate across time are shown, with the predicted IACC assuming a constant air exchange rate.
+In Figure \ref{fig:asu-iacc-ae-overview}, the measured IACC and air exchange rate across time are shown, with the predicted IACC assuming a constant air exchange rate.
 The median air exchange rate value for the pre-CPM period was chosen as this seemed to be the most representative value for this time period.
-From Figure \ref{fig:asu_exchange_rate_analysis_overview} it may be seen quite clearly that for the non-CPM periods, the calculated IACC assuming constant and actual fluctuating exchange rates are quite similar.
+From Figure \ref{fig:asu-iacc-ae-overview} it may be seen quite clearly that for the non-CPM periods, the calculated IACC assuming constant and actual fluctuating exchange rates are quite similar.
 In other words, in this instance it is unlikely that the variations in IACC were driven by fluctuations in air exchange rate.
 
-This is more clearly shown in Figure \ref{fig:asu_exchange_rate_analysis_violin_plot}, where KDEs of the IACC are constructed assuming the constant and fluctuating air exchange rate cases.
+This is more clearly shown in Figure \ref{fig:violin-iacc-aet}, where KDEs of the IACC are constructed assuming the constant and fluctuating air exchange rate cases.
 This figure shows the relative probability of being at a particular TCE in indoor air concentration at the ASU house.
 These are compared to each other for 1. the full measurement period, 2. the non-CPM periods and 3. the CPM period.
 Looking at the full period, it does not appear as though the two cases of steady and fluctuating air exchange rate are comparable, the distribution functions for IACC are different and offset.
