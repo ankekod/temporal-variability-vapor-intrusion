@@ -130,3 +130,4 @@ venv.bak/
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*.yaml
