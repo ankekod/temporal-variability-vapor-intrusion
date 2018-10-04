@@ -1,12 +1,13 @@
 import plotly.graph_objs as go
 import plotly.offline as py
 import plotly.io as pio
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 data_dir = './data/advection-threshold/'
 figures_dir = './figures/advection-threshold/'
 
-def radar_plot(dfs, filename):
+def radar_plot(df, filename):
     # soil list
     soils = (
         'Sand',
@@ -25,7 +26,7 @@ def radar_plot(dfs, filename):
 
     data = []
     for i in range(len(df.columns)):
-        print(i)
+
         data.append(
             go.Scatterpolar(
                 r = df.values[:,i]*-1,
@@ -51,11 +52,13 @@ def radar_plot(dfs, filename):
         )
     return
 
-df = pd.read_csv(data_dir+'perimeter-ck-gravel-sub-base.csv', header=4)
 
-print(df.pivot(index='Soil type', columns='L', values='Indoor/outdoor pressure difference').index.values)
-
-radar_plot(
-    filename='test',
-    dfs = [df.pivot(index='Soil type', columns='L', values='Indoor/outdoor pressure difference')]
-)
+for file in ('perimeter-ck-gravel-sub-base', 'perimeter-ck-uniform-soil'):
+    df = pd.read_csv(data_dir+file+'.csv', header=4)
+    for col in ('GW depth','Base depth','Crack width'):
+        filename = '%s-%s' % (file, col.lower().replace(' ','-'))
+        print('Generating %s plot' % filename)
+        radar_plot(
+            filename=filename,
+            df = df.pivot_table(index='Soil type', columns=col, values='Indoor/outdoor pressure difference', aggfunc=np.median),
+        )
