@@ -1,8 +1,8 @@
 % Model,main_refined.mph
 % Version,COMSOL 5.3.1.275
 % Date,"Oct 6 2018, 12:38"
-% Table,Accumulated Probe Table 2 - 
-% period,Time,"Attenuation factor, Attenuation factor",Relative air entry rate,"Average crack Peclet number, Crack Peclet number","TCE in indoor air, TCE in indoor air",TCE emission rate
+% Table,Accumulated Probe Table 2 -
+period,Time,"Attenuation factor",Relative air entry rate,"Crack Peclet number","TCE in indoor air",TCE emission rate
 1800,0,7.917394876294985E-5,5.459067958167876E-4,0.20740887489848425,3.190710135146879E-5,1.3294625563111968E-6
 1800,200,1.4230807912262845E-5,-0.006471689642827547,-2.4588187540378676,5.735015588641927E-6,2.3894940074467224E-7
 1800,400,1.1153585653005829E-5,-0.010203222557252175,-3.876557183671222,4.494895018161349E-6,1.8735702467716256E-7
