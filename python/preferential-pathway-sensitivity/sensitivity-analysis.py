@@ -35,7 +35,7 @@ permamble = pd.read_csv(
     header=4,
 )
 """
-Prepares ASU data for comparison 
+Prepares ASU data for comparison
 """
 db_asu = sqlite3.connect(db_dir + 'asu_house.db')
 asu = pd.read_sql_query(
@@ -60,6 +60,21 @@ asu['PP'] = pd.Series(asu['day'].apply(lambda x: 'Open' if x < cpm_start else 'C
 asu['Concentration'] = asu['tce_emission_rate']/asu['building_flow_rate']
 asu['Attenuation factor'] = asu['Concentration']/asu['tce_groundwater']
 
+labels = {
+    'Open': (
+        'Soil sub-base, uncontaminated PP',
+        'Soil sub-base, contaminated PP',
+        'Gravel sub-base, uncontaminated PP',
+        'Gravel sub-base, contaminated PP',
+        'ASU data, PP open',
+        ),
+    'Closed': (
+        'Soil sub-base',
+        'Gravel sub-base',
+        'ASU data, PP closed',
+    )
+}
+
 for df_tag, asu_tag in zip(['Yes','No'],['Open','Closed']):
     fix, ax = plt.subplots()
 
@@ -72,15 +87,22 @@ for df_tag, asu_tag in zip(['Yes','No'],['Open','Closed']):
         legend_title = '(Gravel sub-base?, Contaminant in PP?)'
 
 
-    df[df.PP == df_tag].pivot_table(index='p', columns=pivot_cols, values='alpha').plot(
+
+
+    df[df.PP == df_tag].pivot_table(
+        index='p',
+        columns=pivot_cols,
+        values='alpha',
+        ).plot(
         ax=ax,
-        legend=True,
+        #legend=True,
         linewidth=2.5,
     )
 
     sns.regplot(
         ax=ax,
         data=asu[asu.PP == asu_tag],
+        fit_reg = False,
         x='Pressure',
         y='Attenuation factor',
         x_bins=np.linspace(-10,10,40),
@@ -93,8 +115,13 @@ for df_tag, asu_tag in zip(['Yes','No'],['Open','Closed']):
     ax.set_ylabel('Attentuation factor (vapor source)')
     ax.set_ylim([2e-7,5e-3])
 
+
+    handles, _ = ax.get_legend_handles_labels()
+    print(handles)
     ax.legend(
-        title = legend_title,
+        #title = legend_title,
+        handles = handles,
+        labels = labels[asu_tag],
         loc='best',
     )
     fig_dir = './figures/preferential-pathway-sensitivity/'
