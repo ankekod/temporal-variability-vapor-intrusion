@@ -59,7 +59,7 @@ asu['PP'] = pd.Series(asu['day'].apply(lambda x: 'Open' if x < cpm_start else 'C
 # calculates attentuation factor
 asu['Concentration'] = asu['tce_emission_rate']/asu['building_flow_rate']
 asu['Attenuation factor'] = asu['Concentration']/asu['tce_groundwater']
-
+# custom labels for the legend
 labels = {
     'Open': (
         'Soil sub-base, uncontaminated PP',
@@ -87,15 +87,12 @@ for df_tag, asu_tag in zip(['Yes','No'],['Open','Closed']):
         legend_title = '(Gravel sub-base?, Contaminant in PP?)'
 
 
-
-
     df[df.PP == df_tag].pivot_table(
         index='p',
         columns=pivot_cols,
         values='alpha',
         ).plot(
         ax=ax,
-        #legend=True,
         linewidth=2.5,
     )
 
@@ -117,9 +114,7 @@ for df_tag, asu_tag in zip(['Yes','No'],['Open','Closed']):
 
 
     handles, _ = ax.get_legend_handles_labels()
-    print(handles)
     ax.legend(
-        #title = legend_title,
         handles = handles,
         labels = labels[asu_tag],
         loc='best',
