@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sqlite3
-from natu import units
 import seaborn as sns
 
 # returns the error between the predicted and measured TCE in indoor air
@@ -94,7 +93,7 @@ def plot_comparison(data,title=None,save_figure=False):
     plt.tight_layout()
     # if a figure name is given, the figure is saved
     if isinstance(save_figure, str):
-        fig.savefig('../Figures/%s.png' % save_figure, dpi=300)
+        fig.savefig('./figures/air-exchange-rate/%s.pdf' % save_figure, dpi=300)
         return
     # otherwise it will just show the plot
     else:
@@ -102,7 +101,7 @@ def plot_comparison(data,title=None,save_figure=False):
         return
 
 # connects to the database
-db = sqlite3.connect('/Users/duckerfeller/Dropbox/Research/asu_house.db')
+db = sqlite3.connect('/home/jonathan/lib/vapor-intrusion-dbs/asu_house.db')
 data = pd.read_sql_query("SELECT * FROM parameters;", db)
 data = data.interpolate(limit_area='inside',limit=250) # 250 limit for pretty "real" dataset, 1500 for fuller plot
 
@@ -116,9 +115,11 @@ data = get_error(data)
 error_table = get_error_table(data)
 
 M = 131.4
-data['tce_indoor_air_estimation'] *= M*units.g/units.ug # ug/m3
-data['tce_indoor_air_prediction'] *= M*units.g/units.ug # ug/m3
-data['exchange_rate'] *= units.d/units.s # 1/day
+g_to_ug = 1e6
+s_to_day = 3600.0*24.0
+data['tce_indoor_air_estimation'] *= M*g_to_ug # ug/m3
+data['tce_indoor_air_prediction'] *= M*g_to_ug # ug/m3
+data['exchange_rate'] *= s_to_day # 1/day
 
 
 
@@ -186,5 +187,5 @@ ax.set_yticklabels(['0.001', '0.01', '0.1', '1.0', '10.0', '100.0'])
 
 ax.set_title('Fluctating vs. constant air exchange rate\'s impact\non distribution of TCE in indoor air')
 
-plt.savefig('../Figures/violin_plot_exchange_rate_impact.png', dpi=300)
+plt.savefig('./figures/air-exchange-rate/violin-asu-iacc.pdf', dpi=300)
 fig.clf()
