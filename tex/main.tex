@@ -8,7 +8,13 @@
 \usepackage{tabularx}
 \usepackage{array,multirow,graphicx}
 \usepackage{comment}
-\graphicspath{{./../figures/},{./../figures/air-exchange-rate/},{./../figures/kde-iacc-pressure/}}
+\graphicspath{
+  {./../figures/},
+  {./../figures/air-exchange-rate/},
+  {./../figures/kde-iacc-pressure/},
+  {./../figures/preferential-pathway-sensitivity/},
+  {./../figures/transient-response/}
+}
 \usepackage{lineno}
 \linenumbers
 % macros
@@ -221,7 +227,7 @@ The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-pa
     \centering
     \caption{Period before and after the PP was shut at the ASU house considered separately; North Island dataset considered in its entirety.}
     \label{fig:kde-asu-nas}
-    \includegraphics[height=0.4\textheight,keepaspectratio]{asu-nas.pdf}
+    \includegraphics[height=0.4\textheight,keepaspectratio]{nas-asu-house-iacc-deviating.pdf}
   \end{subfigure}
   % Indianapolis plot
   \begin{subfigure}{\textwidth}
@@ -388,7 +394,7 @@ This may be evidence of the interaction with the PP that exists at the site, alt
     \label{fig:violin-iacc-aet}
     \includegraphics[width=\textwidth]{violin-asu-iacc.png}
   \end{subfigure}
-\end{figure}\
+\end{figure}
 Air exchange rate, which measures how often the interior air in a given building is exchanged with exterior air, is the main parameter characterizing contaminant expulsion, and another highly dynamic process.
 Exploring the impact of fluctuations in air exchange rate is thus also important for the development of sampling strategies.
 At the ASU house, the contaminant entry rate into the structure (called emission rate in that study) as well as the building air exchange rate were recorded across time.
@@ -439,6 +445,25 @@ It is clear here that there is only a very minor difference made in assuming a c
 % Relevant for both: Check local manhole/sewer for presence of contaminant - likely source for the preferential pathway.
 
 \subsubsection{Conclusions From Steady-State Modeling}
+
+\begin{figure}[htb!]
+  \caption{Sensitivity analysis of IACC dependence on indoor/outdoor pressure difference for a model featuring a PP (\ref{fig:ss-sensitivity-analysis-pp}) and without a PP (\ref{fig:ss-sensitivity-analysis-no-pp}). Results compared with field data from ASU house.}
+  \label{fig:ss-sensitivity-analysis}
+  % "Overview" plot
+  \begin{subfigure}{0.55\textwidth}
+    \caption{PP present. Sensitivity to the presence of a gravel sub-base and contamination in the PP considered.}
+    \label{fig:ss-sensitivity-analysis-pp}
+    \includegraphics[width=\textwidth]{yes-pp.pdf}
+  \end{subfigure}
+  % Violinplot figure
+  \begin{subfigure}{0.55\textwidth}
+    \caption{No PP preseent. Sensitivitiy to the presence of a gravel sub-base considered.}
+    \label{fig:ss-sensitivity-analysis-no-pp}
+    \includegraphics[width=\textwidth]{no-pp.pdf}
+  \end{subfigure}
+\end{figure}
+
+\begin{comment}
 
 Clearly, PPs pose a major problem for site investigations, in particular because they may be difficult or even impossible to anticipate or uncover; even at a well studied site like the ASU house it took years to discover the PP.
 Therefore, there is a need to consider other indications that a PP is present.
@@ -626,6 +651,8 @@ Therefore, it may be much more difficult than it may appear in Figures \ref{fig:
 The insert circles in figures \ref{fig:soil_30_hr} and \ref{fig:soil_42_hr} also show that for the simulated time period, only a small amount of the contaminant enters the structure (as evident by the blue low concentration zone around the perimeter), yet a very large increase in $\alpha_\mathrm{gw}$ occurs.
 The concentration in the rest of the sub-base is unchanged.
 This suggests that once a PP has deposited contaminant underneath a structure, it may persist for a long time period, as pointed out by \citeauthor{guo_vapor_2015}\cite{guo_vapor_2015}.
+
+\end{comment}
 
 \begin{acknowledgement}
 This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
