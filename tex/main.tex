@@ -386,13 +386,13 @@ This may be evidence of the interaction with the PP that exists at the site, alt
   \begin{subfigure}{\textwidth}
     \caption{ }
     \label{fig:asu-iacc-ae-overview}
-    \includegraphics[width=\textwidth]{asu-iacc-ae-overview.png}
+    \includegraphics[width=\textwidth]{tce_indoor_air_exchange_rate_impact.pdf}
   \end{subfigure}
   % Violinplot figure
   \begin{subfigure}{0.75\textwidth}
     \caption{ }
     \label{fig:violin-iacc-aet}
-    \includegraphics[width=\textwidth]{violin-asu-iacc.png}
+    \includegraphics[width=\textwidth]{violin-asu-iacc.pdf}
   \end{subfigure}
 \end{figure}
 Air exchange rate, which measures how often the interior air in a given building is exchanged with exterior air, is the main parameter characterizing contaminant expulsion, and another highly dynamic process.
@@ -447,7 +447,7 @@ It is clear here that there is only a very minor difference made in assuming a c
 \subsubsection{Conclusions From Steady-State Modeling}
 
 \begin{figure}[htb!]
-  \caption{Sensitivity analysis of IACC dependence on indoor/outdoor pressure difference for a model featuring a PP (\ref{fig:ss-sensitivity-analysis-pp}) and without a PP (\ref{fig:ss-sensitivity-analysis-no-pp}). Results compared with field data from ASU house.}
+  \caption{Sensitivity analysis of IACC dependence on indoor/outdoor pressure difference for cases featuring a PP (\ref{fig:ss-sensitivity-analysis-pp}) and without a PP (\ref{fig:ss-sensitivity-analysis-no-pp}). Results compared with field data from ASU house.}
   \label{fig:ss-sensitivity-analysis}
   % "Overview" plot
   \begin{subfigure}{0.55\textwidth}
@@ -457,11 +457,71 @@ It is clear here that there is only a very minor difference made in assuming a c
   \end{subfigure}
   % Violinplot figure
   \begin{subfigure}{0.55\textwidth}
-    \caption{No PP preseent. Sensitivitiy to the presence of a gravel sub-base considered.}
+    \caption{No PP present. Sensitivitiy to the presence of a gravel sub-base considered.}
     \label{fig:ss-sensitivity-analysis-no-pp}
     \includegraphics[width=\textwidth]{no-pp.pdf}
   \end{subfigure}
 \end{figure}
+
+Clearly, PPs pose a major problem for site investigations, in particular because they may be difficult or even impossible to anticipate or uncover; even at a well studied site like the ASU house it took years to discover the PP.
+Therefore, there is a need to consider other indications that a PP is present or a potential issue.\par
+
+To investigate this, inspiration is taken from the ASU house, where there clearly was a PP containing contaminant vapor, which exited into a gravel (permeable) sub-base.
+The impact of these features is simulated by examining the IACC at different indoor/outdoor pressure differences for each combination of cases.
+Instead of representing IACC as absolute concentration, we now non-dimensionalize with respect to the vapor in equilibrium with the groundwater contaminant concentration.
+This non-dimensionalized property is commonly called the attenuation factor and is denoted by $\alpha_\mathrm{gw}$.
+The result of a steady-state sensitivity analysis relative to several factors is seen in Figure \ref{fig:ss-sensitivity-analysis}.\par
+
+Figure \ref{fig:ss-sensitivity-analysis-pp} deal with cases where a PP is present and, the impact of having a gravel vs. soil sub-base and vapor contaminant vs. clean air in the PP ($\chi=1$ and $\chi=0$ respectively) are considered.
+Figure \ref{fig:ss-sensitivity-analysis-no-pp} considers the cases absent a PP, for reference, but still considers the impact of a gravel vs. soil sub-base.
+To validate these results, the IACC at the ASU house (as $\alpha_\mathrm{gw}$) vs. indoor/outdoor pressure difference are also plotted.
+Only data from period before the PP was discovered, and after the PP was closed are considered in each respective figure (\ref{fig:ss-sensitivity-analysis-pp} and \ref{fig:ss-sensitivity-analysis-no-pp}).
+To improve visibility of the ASU data, it's average $\alpha_\mathrm{gw}$ are aggregated into up to 40 evenly spaced bins on the x-axis.\par
+
+Begining with Figure \ref{fig:ss-sensitivity-analysis-pp} it immediately clear that absent a gravel sub-base, the impact of a PP is minimal, as the orange and blue lines show.
+Since in the model, it is assumed that the soil type is sandy clay, which is relatively impermeable, there is simply too much resistance to advection for changes in pressurization to matter.
+Additionally, whether the PP is filled with contaminant vapors or not does matter; without a permeable sub-base, the transport of contaminant vapor in the sub-base is too inhibited to be effectively transported into the building.\par
+
+Moving on to the case of when a gravel sub-base is present, and the PP is filled with contaminant vapors ($\chi=1$).
+In this scenario the PP has a massive impact on $\alpha_\mathrm{gw}$, spanning more than four orders of magnitude.
+This is explained by the increased role of advective transport under these conditions.
+The gravel sub-base allows vapor to flow more easily, and the PP is able to circumvent the large resistance to transport due to the surrounding soil, realizing the advective potential offered by the gravel sub-base.
+When the building is underpressurized under these conditions, a significant amount of contaminant vapor is able to be pulled from the PP, leading to the large increase of $\alpha_\mathrm{gw}$.\par
+
+On the other hand, due to the increased advective potential, overpressurization more effectively prevents contaminant vapors from entering the structure, and most of the contaminant entering the building does so through diffusion.
+This also explains why there is no difference between the uncontaminted and contaminted PP cases (red and green) when the building is overpressurized.
+But these two cases (red and green) differ signficant when the building is underpressurized, obviously because there simply is no additional contaminant being supplied by the PP, $\alpha_\mathrm{gw}$ thus limits to whatever diffuses from the contaminted groundwater source.\par
+
+It is interesting to note that $\alpha_\mathrm{gw}$ is higher with an uncontaminted PP (green) than the cases without a gravel sub-base.
+One could expect that pulling so much clean air into the sub-base region would significantly dilute the contaminant vapors and if anything cause a decrease in $\alpha_\mathrm{gw}$ relative to blue and orange.
+However, the PP is small relative to the sub-base (10 cm diameter pipe), thus impacting the contaminant concentration in a limited region of the sub-base, but still allows for higher advection in the entire sub-base region, leading to a $\alpha_\mathrm{gw}$ plateau that is limited by contaminant transport from the groundwater source.\par
+
+These case most resembling the ASU site (with an open PP) is the red case, and fits the data fairly well, especially for small under-/overpressurization values.
+The most significant deviations occur as the under-/overpressurization becomes larger.
+However, the model is not intended to replicate the ASU data perfectly, but rather investigate the factors make a PP the most impactful in a general sense, and perfect simulation is not to be expected.
+This is especially reflected in the choice of vapor contaminant concentration in the PP, with it either being equal to the groundwater contaminant vapor concentration ($\chi=1$) or clean ($\chi=0$), neither of which is likely to be true at the ASU site.
+The idea with picking $\chi=1$ and $\chi=0$ is to give a span of $\alpha_\mathrm{gw}$ values that one can may expect a PP to fall between.
+Thus, this helps explain why $\alpha_\mathrm{gw}$ is overpredicted when the structure is increasingly underpressurized - the contaminant vapor in the PP at the ASU house was lower than the groundwater contaminant vapor concentration.
+This does not explain why underprediction occurs at increasing overpressurization, but it is likely due to the steady-state nature of the simulations.
+Regardless, the simulation are able to capture the general trends well, with not too significant deviation, giving validity to the cases simulated.\par
+
+In Figure \ref{fig:ss-sensitivity-analysis-no-pp} cases where a PP is absent are considered, i.e. a "normal" VI scenario, which may be considered reference scenarios.
+Here the only cases considered is whether there is a gravel or soil sub-base.
+It is apparent that without a PP, the indoor/outdoor pressure difference changes do not cause any signficant change in $\alpha_\mathrm{gw}$, due to the resistance to advective transport in the surrounding soil - showing the importance of the PP for increasing advection.
+Furthermore, the gravel sub-base does increase the overall $\alpha_\mathrm{gw}$, partly due to slightly higher advective potential but also due to the contaminant vapors more easily diffuse in the more permeable sub-base.
+The data from the ASU house after the PP there had been close agrees well with these model predictions, clearly again demonstrating the role of PP in increasing advective potential at a site.
+It should also be stated that if the surrounding soil was more permeable, e.g. sand, there would be more of a relationship between $\alpha_\mathrm{gw}$ and pressurization.\par
+
+Based on the simulated cases in Figure \ref{fig:ss-sensitivity-analysis} it can be concluded that a PP can be a signficant contributor to VI, but only when some conditions are met.
+\begin{enumerate}
+  \item The PP has to supply additional vapor contaminant.
+  \item There must be a source of increased advective potential, which may be due to the PP itself, or other site features or simply due to more permeable surrounding soil.
+  \item A permeable sub-base must exist to realize this advective potential.
+\end{enumerate}
+In the absense of one or all of these conditions, a PP is unlikely to be a signficant contributor to VI.
+In lieu of actually uncovering an actual PP at a site, it may be easier for a site investigator to look for the above criteria.
+Strategies for screening for PP is also discussed by \citeauthor{nielsen_remediation_2017}\cite{nielsen_remediation_2017}. \par
+
 
 \begin{comment}
 
