@@ -110,13 +110,13 @@ asu['Attenuation factor'] = asu['Concentration']/asu['tce_groundwater']
 
 
 #asu['Attenuation factor'] = asu['Attenuation factor'].apply(np.log10)
-asu['Day'] *= 24.0*3600.0
+asu['Day'] *= 24.0
 
 
 asu['dcdt'] = pd.Series(asu['Attenuation factor'].diff()/asu['Day'].diff())
 asu['dcdt'] = asu['dcdt'].apply(np.log10)
 
-asu['dcdt'] = asu['dcdt'].apply(np.abs)
+#asu['dcdt'] = asu['dcdt'].apply(np.abs)
 
 """
 asu[asu['PP'] == 'Open'][['Day','Attenuation factor']].apply(np.diff).apply(np.abs).plot(
@@ -150,11 +150,11 @@ def dp(t, period):
 df = pd.read_csv('./data/transient-response/param-period2.csv', header=4)
 df['Pressure'] = dp(df['Time'], df['period'])
 
-
+df['Time'] /= 3600.0
 df['dcdt'] = pd.Series(df['Attenuation factor'].diff()/df['Time'].diff())
 df['dcdt'] = df['dcdt'].apply(np.log10)
 
-df['dcdt'] = df['dcdt'].apply(np.abs)
+#df['dcdt'] = df['dcdt'].apply(np.abs)
 
 pivoted_df = df.pivot(
     index='Time',
@@ -164,7 +164,7 @@ pivoted_df = df.pivot(
     method='piecewise_polynomial',
 )
 
-
+"""
 pivoted_df.plot(
     y='dcdt',
     kind='kde',
@@ -172,11 +172,16 @@ pivoted_df.plot(
 )
 
 """
-sns.kdeplot(
-    pivoted_df['dcdt'],
-    ax=ax,
-)
-"""
-ax.set_ylim([0,2])
+
+print(df.period.unique())
+
+for period in df.period.unique():
+
+    sns.kdeplot(
+        df[df.period == period]['dcdt'],
+        ax=ax,
+        label='Period = %i' % period,
+    )
+
 
 plt.show()
