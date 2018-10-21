@@ -232,14 +232,14 @@ The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-pa
   % ASU/North Island plot
   \begin{subfigure}{\textwidth}
     \centering
-    \caption{Period before and after the preferential pathway was shut at the ASU house considered separately; North Island dataset considered in its entirety.}
+    \caption{Period before and after the preferential pathway (PP) was shut at the ASU house considered separately; North Island dataset considered in its entirety.}
     \label{fig:kde-asu-nas}
     \includegraphics[height=0.4\textheight,keepaspectratio]{nas-asu-house-iacc-deviating.pdf}
   \end{subfigure}
   % Indianapolis plot
   \begin{subfigure}{\textwidth}
     \centering
-    \caption{Chloroform and PCE considered separeately at Indianapolis duplex 422.}
+    \caption{Chloroform and PCE considered at the Indianapolis duplex 422.}
     \label{fig:kde-indianapolis}
     \includegraphics[height=0.4\textheight,keepaspectratio]{indianapolis-422.pdf}
   \end{subfigure}
@@ -269,127 +269,38 @@ The p-value and Pearson's r-value for each bivariate distribution are shown in t
 In Figure \ref{fig:kde-asu-nas} the North Island and ASU house datasets are plotted, with blue representing the North Island site, and with red and green representing the ASU house.
 The ASU house dataset is split into two different parts, the first (red) are data from the time period before the preferential pathway was discovered, the second (green) is from after the preferential pathway was sealed off.
 At both the ASU house and North Island sites, TCE was the only contaminant considered.
-The IACC of Chloroform and PCE in the 422 part of the Indianapolis duplex were considered in Figure \ref{fig:kde-indianapolis}.\par
+The IACC of Chloroform and PCE in the 422 part of the Indianapolis duplex were considered in Figure \ref{fig:kde-indianapolis}, since they were particulary tracked.\par
 % North Island discussion
 From Figure \ref{fig:kde-asu-nas}, it is apparent that the three datasets differ significantly from each other.
-The North Island site exhibit the greatest variation in both pressure difference and IACC, in fact, looking at the univariate pressure distribution - it is almost entirely flat and spanning from extremly high and low values.
-A likely explation for this is the poor condition of the structure, rendering it highly susceptible to envivornmental influnces.\par
+The North Island site exhibits the greatest variation in both pressure difference and IACC, in fact, looking at the univariate pressure distribution - it is almost entirely flat and spanning from extremly high and low values.
+A likely explation for this is the reportedly poor condition of the structure, rendering it highly susceptible to envivornmental influnces.\par
 
-To accompany this, there is significant variation in IACC, that has a relativly strong link with pressure difference ($r = -0.71$), although there is clearly a distinct peak (around $0.5\mu$) that is primally associated with the smaller negative and positive pressure differences ($~-4 \leq \Delta p \leq 8$).
-This demonstrates that at this particular site, the very large variations (an order of magnitude or more) are primarily influenced by the unusually large pressure difference fluctations.
-Likely, this relationship is amplified by the fact that the soil surrounding the structure is sandy and therefore relatively permeable - increasing the influence of pressure differences.
-However, despite all this, pressure differences can only partly explain the variations observed at this site.\par
+There is also a significant variation in IACC at the North Island site and this has a relativly strong link to pressure difference ($r = -0.71$), although there is clearly a distinct peak (around $0.5\mu$) that is associated with the smaller negative and positive pressure differences ($~-4 \leq \Delta p \leq 8$).
+This demonstrates that at this particular site, the very large IACC variations (an order of magnitude or more) are primarily influenced by the unusually large pressure difference fluctations.
+Likely, this relationship is created by the fact that the soil surrounding the structure is sandy and therefore relatively permeable - increasing the influence of pressure differences on inflow of contaminant from the soil.
+However, despite this, pressure differences can only partly explain the variations observed at this site.\par
 % ASU discussion
 The two ASU datasets are not only significantly different from the North Island dataset, but also different from each other.
-Consider the dataset before the preferential pathway was discovered (red) and one can see that the IACC varies significantly (from $0.05 \mu$ to more than $50 \mu$, albeit rarely.)
-This is more variation than was observed at North Island, and yet the distribution of pressure differences is narrow, mostly varying by a few Pa around zero (~$\pm 2$ Pa), and with $r = -0.50$, suggests that pressure difference is not insignificant but still a weak predictor for the variations in IACC.\par
+Considering the dataset before the preferential pathway was discovered (red), one can see that the IACC varies significantly (from $0.05 \mu$ to more than $50 \mu$, albeit the latter only rarely.)
+This is more variation than was observed at North Island, and yet the observed distribution of pressure differences is narrow, mostly varying by a few Pa around zero (~$\pm 2$ Pa).
+With $r = -0.50$, for this dataset, this suggests that pressure difference is not insignificant but still only a weak predictor for the variations in IACC.\par
 
-The picture changes completely after the preferential pathway was closed off, where a similar distribution of pressure differences is observed, but with a signficant reduction in IACC variance to around $\pm 0.5 \mu$, resembling something of a log-normal distribution.
-This clearly shows just how much variance the preferential pathway at this site contributed with, and how critical it is to assess whether a preferential pathway is present at a particular site in general, lest potentially face unacceptable uncertainty in determining the relevant contaminant exposure.
-It is also clear that in the absence of a preferential pathway, the pressure difference becomes even less important, with the p- and r-value indicating that pressure differences are here insignficant in determining variation in IACC.
-This also suggests that the preferential pathway at the ASU house acted not only as a preferential pathway for contaminant vapors, but for air in general - allowing the impermeable soil surrounding the house to be circumvented.
-preferential pathways, and the factors that influnce them will be explored later in this article.\par
+The picture changes completely after the preferential pathway was closed off, where a similar distribution of pressure differences were observed, but with a signficant reduction in IACC variance to around $\pm 0.5 \mu$, resembling something of a log-normal distribution.
+This clearly shows just how much variance the preferential pathway at this site contributed, and how critical it is to assess whether a preferential pathway is present at a particular site since this may lead to large uncertainties in determining relevant contaminant exposures.
+It is also clear that in the absence of a preferential pathway, the pressure difference becomes even less important, with the p- and r-value indicating that pressure differences are insignficant in determining variation in IACC.\par
 % Indianapolis discussion
-The Indianapolis duplex also featured a preferential pathway, but despite this, there is significantly less variance in IACC of both Chloroform and PCE.
+The Indianapolis duplex also featured a preferential pathway, but despite this, there is significantly lower variance in IACC for both Chloroform and PCE\cite{mchugh_evidence_2017}.
 The exact reason for this is not known, but considering that the preferential pathway at the Indianapolis site was a sanitary sewer, and at ASU the preferential pathway was a foundation drain system, it is not inconceivable that their dynamics are quite different.
-Nevertheless, both PCE and Chloroform are more or less log-normally distributed, with (mostly) less than an order of magnitude variance around the mean, indicating that the varation in IACC are species independent.\par
+Nevertheless, both PCE and Chloroform are more or less log-normally distributed, with (mostly) less than an order of magnitude variance around the mean, indicating that the varations in IACC are species independent.\par
 
-The pressure difference distribution exhibit some bimodal characteristics, with a larger variation than was observed at the ASU site.
+The pressure difference distributions for the Indianapolis site exhibit some bimodal characteristics, with a larger variation than was observed at the ASU site.
 This may explain why the r-values for both PCE and Chloroform, $r=-0.51$ and $r=-0.53$ respectively, are so similar to the ASU site before the preferential pathway there was closed; the larger pressure differences, which occured more often than ASU, increase contaminant entry rates to the extent that a preferential pathway was needed to "achieve" at the ASU site.\par
 % Summary discussion
-All of these data clearly suggest that there is significant variation in IACC that cannot be easily explained by variations in indoor/outdoor pressure difference - even with a preferential pathway.
-It is also clear that preferential pathway may contribute with unacceptable levels of variations, and screening for preferential pathways should be part of any site investiation.
-It may also be prudent, even in the absence of preferential pathway, to add around a half to one order of magnitude margin of error to early screening measurements of indoor air.
-E.g. if a single sample is less than an order of magnitude from some target limit, it may be justified to perform subsequent samples to better assess the relevant exposure.
-These data also call the role of advection in VI into question, as "normal" pressure difference ranges are such a poor predictor of IACC variation, which is the opposite of what one would expect if advection was a dominant transport mechanism.\par
-
-\begin{comment}
-
-% 2D KDE plot of deviation from mean TCE in indoor air and pressure difference from the ASU house and North Island NAS
-\begin{figure}[htb!]
-  \caption{Probability density plots of the deviation from the mean concentration along with the indoor-outdoor pressure difference at the ASU house both before and after the preferential pathway was closed and at North Island NAS.}
-  \label{fig:kde-asu-nas}
-  \includegraphics[width=\textwidth]{asu-nas.pdf}
-\end{figure}
-
-Figure \ref{fig:kde-asu-nas} show the result of the statistical analysis of the field data from the ASU and NAS North Island sites.  On the axes, the univariate KDE’s are shown.
-The y-margin shows the distribution of the log-10 deviation from the mean TCE concentration in indoor air and the x-margin shows the distribution of indoor-outdoor pressure differences.
-A negative pressure difference indicates that the structure is underpressurized, and thus air flows into the building, and a positive pressure difference indicates the opposite.
-Thus the curves on the axis margins are the distribution functions of the respective measured variable values, considered independently.
-They show the distributions of the results from the many different sampling events.
-The distribution functions of pressure fluctuations are relatively simpler than those for the indoor air concentration measurements, and the pressure distribution functions for the pressure difference measurements at the ASU house are much simpler and narrower than that for comparable measurements at NAS North Island (see the distribution functions on the top margin of the figure).
-Comparing the narrow red and green distribution functions for the ASU house results shows that whether the valve to the preferential pathway (PP) is open or not, roughly the same indoor-outdoor pressure differentials were seen.
-This is not at all surprising, given that the existence of a preferential pathway buried beneath the foundation slab would not be expected to influence the indoor-outdoor pressure differential.
-But when comparing the ASU house pressure differentials with those reported for the NAS North Island site (the blue distribution function), it is immediately apparent how much larger the pressure swings are at the latter site.
-On this basis, if one associates contaminant entry rate with pressure differential alone, the NAS North Island site would be expected to show a much larger fluctuation in indoor air contaminant concentration than would the ASU house (but of course the preferential pathway changes the situation, as described below).
-
-Turning to the univariate distributions for indoor air contaminant concentrations, the results show that even with the preferential pathway closed off, the results from the ASU house clearly show variations of an order of magnitude.
-The construction of the KDE is naturally such that the overall distribution gives a mean of what is characterized as "$1.0 \mu$" in the figure, but around that mean the distribution of all measured concentrations falls within an order of magnitude of the mean.
-The implication is that the most probable result from a single concentration sampling event will be a value around the mean, but the possibility that a single sampling event might give a result that is an order of magnitude higher or lower than a second independent sampling event cannot be ruled out, even under non-preferential pathway circumstances.
-Thus, to the extent that the ASU house serves as a prototype for “normal” VI scenarios (when the preferential pathway was closed), it is only when any particular sampling event provides a result that is an order of magnitude below some action threshold that one can be highly confident that further sampling will not change this outcome.
-The more sampling events that are involved, such that a population mean can confidently be estimated, the less likely that any future sampling event would give a value that is more than about a half an order of magnitude beyond that mean.
-These are of course very rough rules of thumb, based upon this analysis of this data set.
-
-When the preferential pathway beneath the ASU house is open, a very different picture emerges.
-The calculated univariate distribution function takes on a much more complicated, somewhat bimodal character.
-It should be recalled that the mean of all of the results remains, as before, at $"1.0 \mu"$.
-The red distribution curve shows the origin of what has been reported as the “three orders of magnitude” variability in the indoor air contaminant concentrations.
-On the one hand, there is a significant probability that any one measured concentration can be lower, up to even an order of magnitude below, the mean of the whole data set.
-On the other hand, there is a spread to the upside of the mean by two orders of magnitude.
-So in other words, the existence of an open preferential pathway in this case offers little guidance on what might be expected from any single sampling event.
-This could easily have been inferred from the already raw published data from this site, but this analysis offers a statistical picture that suggests that there are distinctly different operational situations that give rise to different peaks in the observed distributions.
-This, in turn, points to different operational parameters that have not yet been fully captured.
-
-There is inherently greater spread in the ASU house data when the preferential pathway is open.
-The variations in a direction greater than the mean show much greater spread, and arguably the choice of a Gaussian kernel is not necessarily the best.
-The bivariate analysis below will shed more light on this point.
-
-The univariate KDE distributions form the NAS North Island site show a distinctly bimodal distribution (the blue curve).
-There is a population of sampling results above the mean and another below the mean.
-Given that there was no influence of preferential pathways at this site, these results immediately flag the possibility that one is dealing with sample concentration populations that are strongly influenced by the other variable displayed on this plot - the indoor-outdoor pressure difference.
-When the interior of the building is depressurized relative to ambient, there is a tendency towards indoor air contaminant concentrations higher than the mean, and when the building is pressurized, the values tend to fall below the mean.
-This immediately suggests the examination of bivariate distributions, which are also shown on Figure \ref{fig:kde-asu-nas}, in the center of the plot.
-
-The center of Figure \ref{fig:kde-asu-nas} shows the bivariate KDEs constructed based on the relationship between the two aforementioned variables.
-The color-coding indicates the source of the dataset, with green again representing the ASU house dataset after the preferential pathway was closed, red is for before the pathway was closed, and blue the NAS North Island dataset.
-The Pearson’s r-values and p-value for the relation between TCE in indoor air and indoor-outdoor pressure difference for each dataset are also shown.
-The bivariate distributions in Figure \ref{fig:kde-asu-nas} show even more starkly the differences between the ASU house datasets and the NAS North Island dataset.
-We believe that this is primarily due to the significant different indoor-outdoor pressure differences existing at these two sites.
-Again, NAS North Island showed a much larger spread of indoor-outdoor pressure differential values, seen in the distributions on the top x-margin; the ASU house pressure difference distributions were quite Gaussian with a variation of just a few Pascals, whereas the NAS North Island distribution is rather more flat and includes a much larger span of values.
-
-The bivariate distributions make clear one aspect of the ASU house results.
-The “outlier” points at almost two orders of magnitude beyond the mean are associated with the existence of a preferential pathway and an unusually high indoor-outdoor pressure differential.
-But for that particular combination of circumstances, the variability in indoor air contaminant concentrations, given existence of the preferential pathway, would have been “only” two orders of magnitude.
-Comparing the green and red bivariate distributions, it is clear that the existence of the preferential pathway increases the potential spread of measured concentration values.
-But beyond this, the correlation statistics show fairly convincingly that the pressure driving force is connected with the observed indoor air contaminant concentrations (even leaving out the few points at high depressurization), but that the correlation between indoor air contaminant concentration and pressure driving force is weak under “normal” VI conditions, where the preferential pathway was closed off.
-This strongly suggests that under the latter conditions, advective entry was not a significant driver, and that ordinary diffusive processes were playing a role in bringing contaminant into the house from the area beneath the slab.
-The above results reaffirm the problem that the potential existence of preferential pathways can cause for VI site investigations, i.e. they can greatly reduce the reliability of any single sampling event, requiring a larger number of samples to properly assess the site.
-The existence of preferential pathways to the vicinity of a structure can enhance the effect of other variables, such as small pressure differences.
-In this case, any single sampling event under “natural” conditions might give a value that is two orders of magnitude different from another sampling event.
-Conservatism in that instance would suggest that any sampling results within two orders of magnitude of an action threshold would require re-sampling.
-While the present results are taken from a single site, there is every reason to believe that this site can be representative of a large number of real sites.
-
-Turning to the bivariate results for the NAS North Island site, the bivariate distributions leave little doubt that indoor-outdoor pressure differential is a key driver for measured indoor air contaminant concentrations.
-The correlation statistics confirm the visual conclusion.
-There is little surprise in the results, in that higher extents of depressurization lead to more contaminant entry.
-Note that but for the portions of the blue contours at high and low pressure differences, the distribution of indoor air concentration values, relative to a mean, would be close to those from the ASU house.
-In other words, at least some of the high temporal variability at NAS North Island comes from the rather extreme range of pressure differentials that exist there.
-This supports a conclusion that under “normal” VI conditions, absent a preferential pathway, with the normally encountered pressure differentials of a few Pa, temporal variations in measured indoor air contaminant concentrations of an order of magnitude must be expected.
-Clearly it would be useful to have a few more datasets from different sites to support such a general conclusion.
-
-\begin{figure}[htb!]
-  \caption{Probability density plots of the deviation from the mean Chloroform and Tetrachloroethene concentrations along with the indoor-outdoor pressure difference at the Indianapolis site}
-  \label{fig:kde-indianapolis}
-  \includegraphics[width=\textwidth]{indianapolis-422.pdf}
-\end{figure}
-
-Figure \ref{fig:kde-indianapolis} shows the same as Figure \ref{fig:kde-asu-nas} but at the Indianapolis site, and the variations of Chloroform and PCE are considered instead of TCE.
-The concentration of both Chloroform and PCE are still roughly equally log-normally distributed within half an order of magnitude above and below the mean, similar to the variation observed at the ASU house after the land drain was closed, as well as to the North Island site, if one would consider comparable indoor-outdoor pressure differences.
-The distribution of pressure difference at the Indianapolis site is between that of ASU and North Island, with the structure there typically being more depressurized than ASU but less than North Island.
-The relationship between pressure difference and IACC is much stronger at the Indianapolis site than it was at the ASU house, but less so than at North Island.
-Given what is known about the soil around Indianapolis site, this is somewhat surprising, as it is not significantly different from the ASU site (which North Island is).
-This may be evidence of the interaction with the PP that exists at the site, although the extreme variations in IACC cannot be observed here.
-\end{comment}
+All of these data clearly suggest that there is significant variation in IACC that cannot easily be explained by variations in indoor/outdoor pressure difference - even with a preferential pathway.
+It is also clear that a preferential pathway may contribute to unacceptable levels of IACC variations, and screening for preferential pathways should be part of any site investiation.
+It may also be prudent, even in the absence of a preferential pathway, to add around a half to one order of magnitude margin of error to early screening measurements of indoor air, e.g. if a single sample is less than an order of magnitude below some target limit, it may be justified to perform subsequent sampling to better assess the relevant exposure.
+These data also call the role of advection in VI into question, since "normal" pressure difference ranges are such a poor predictor of IACC variation.
+This is the opposite of what one would expect if advection were the dominant transport mechanism for entry of contaminant into a structure, under steady-state conditions.\par
 
 \subsubsection{The Role Of Air Exchange Rate}
 % Air exchange rate plots
@@ -409,20 +320,20 @@ This may be evidence of the interaction with the PP that exists at the site, alt
     \includegraphics[width=\textwidth]{violin-asu-iacc.pdf}
   \end{subfigure}
 \end{figure}
-Air exchange rate, which measures how often the interior air in a given building is exchanged with exterior air, is the main parameter characterizing contaminant expulsion, and another highly dynamic process.
+Air exchange rate, which measures how often the interior air in a given building is exchanged with exterior air, is the main parameter characterizing contaminant expulsion, and part of another highly dynamic process.
 Exploring the impact of fluctuations in air exchange rate is thus also important for the development of sampling strategies.
 At the ASU house, the contaminant entry rate into the structure (called emission rate in that study) as well as the building air exchange rate were recorded across time.
 This allows for exploration of the impact that fluctuating air exchange rate has on the final IACC by solving the CST equation, using the recorded contaminant entry rate as one input, and assuming a constant air exchange rate.
-The rationale is to show the extent of variability in IACC due to factors other than fluctuations in air exchange rates.
-We have taken this factor out of consideration by assuming a single constant exchange rate, characteristic of the whole period.
+The rationale is to show the extent of variability in IACCs due to factors other than fluctuations in air exchange rates.
+We have taken this factor out of consideration by below assuming a single constant exchange rate, characteristic of the whole period.
 
-In Figure \ref{fig:asu-iacc-ae-overview}, the measured IACC and air exchange rate across time are shown, with the predicted IACC assuming a constant air exchange rate.
+In Figure \ref{fig:asu-iacc-ae-overview}, the measured IACC and air exchange rate across time are shown, compared to the predicted IACC assuming instead a constant air exchange rate.
 The median air exchange rate value for the pre-CPM period was chosen as this seemed to be the most representative value for this time period.
-From Figure \ref{fig:asu-iacc-ae-overview} it may be seen quite clearly that for the non-CPM periods, the calculated IACC assuming constant and actual fluctuating exchange rates are quite similar.
+From Figure \ref{fig:asu-iacc-ae-overview} it may be seen quite clearly that for the non-CPM periods, the calculated IACC values assuming constant vs. actual fluctuating exchange rates are quite similar.
 In other words, in this instance it is unlikely that the variations in IACC were driven by fluctuations in air exchange rate.
 
 This is more clearly shown in Figure \ref{fig:violin-iacc-aet}, where KDEs of the IACC are constructed assuming the constant and fluctuating air exchange rate cases.
-This figure shows the relative probability of being at a particular TCE in indoor air concentration at the ASU house.
+This figure shows the relative probability of being at a particular TCE level in indoor air concentration at the ASU house.
 These are compared to each other for 1. the full measurement period, 2. the non-CPM periods and 3. the CPM period.
 Looking at the full period, it does not appear as though the two cases of steady and fluctuating air exchange rate are comparable, the distribution functions for IACC are different and offset.
 The curves to the different sides of the vertical line for the "full" measurement period represent the probability distributions for the indicated values of IACC.
@@ -431,10 +342,10 @@ The reason for this are more apparent when considering the CPM and non-CPM perio
 
 Considering only the CPM period, assuming a constant air exchange rate does not influence the shape of the IACC distribution, but assuming constant exchange rate shifts the IACC to a higher values.
 This is because the actual air exchange rate for this CPM period is significantly higher than the assumed median value, and much more contaminant is actually exchanged with the exterior.
-The shape of the IACC distribution is not very different from that which takes the air exchange fluctuations into account however, indicating that fluctuating exchange rate is not a major contributor to observed IACC variation for this period (the distinction being drawn between variation and absolute levels of IACC).
+The shape of the IACC distribution is not very different from that which takes the air exchange fluctuations into account, indicating that fluctuating exchange rate is not a major contributor to observed IACC variation for this period (the distinction being drawn between variation and absolute levels of IACC).
 
 The non-CPM period is the condition under which field practitioners would normally collect samples at a VI site.
-It is clear here that there is only a very minor difference made in assuming a constant vs. real fluctating air exchange rate, again indicating that account for the minor fluctuations of air exchange rate's impact on variations in IACC is not important.
+It is clear here that there is only a very minor difference made in assuming a constant vs. real fluctating air exchange rate, again indicating that accounting for the minor fluctuations of air exchange rate's impact on variations in IACC is not important.
 \citeauthor{rackes_time-averaged_2016}\cite{rackes_time-averaged_2016} drew similar conclusions regarding the relationship between IACC and air exchange rate.
 
 \subsection{The Influence of Preferential Pathways}
@@ -477,7 +388,8 @@ It is clear here that there is only a very minor difference made in assuming a c
   \end{subfigure}
 \end{figure}
 
-Clearly, preferential pathways pose a major problem for site investigations, in particular because they may be difficult or even impossible to anticipate or uncover; even at a well studied site like the ASU house it took years to discover the preferential pathway.
+Clearly, preferential pathways pose a major problem for site investigations, in particular because they may be difficult or even impossible to anticipate or uncover.
+Even at a well studied site like the ASU house it took years to discover the preferential pathway.
 Therefore, there is a need to consider other indications that a preferential pathway is present or a potential issue.\par
 
 To investigate this, inspiration is taken from the ASU house, where there clearly was a preferential pathway containing contaminant vapor, which exited into a gravel (permeable) sub-base.
@@ -488,53 +400,53 @@ The result of a steady-state sensitivity analysis relative to several factors is
 
 Figure \ref{fig:ss-sensitivity-analysis-pp} deal with cases where a preferential pathway is present and, the impact of having a gravel vs. soil sub-base and vapor contaminant vs. clean air in the preferential pathway ($\chi=1$ and $\chi=0$ respectively) are considered.
 Figure \ref{fig:ss-sensitivity-analysis-no-pp} considers the cases absent a preferential pathway, for reference, but still considers the impact of a gravel vs. soil sub-base.
-To validate these results, the IACC at the ASU house (as $\alpha_\mathrm{gw}$) vs. indoor/outdoor pressure difference are also plotted.
+To give perspective to these results, the IACC at the ASU house (as $\alpha_\mathrm{gw}$) vs. indoor/outdoor pressure difference are also plotted.
+But the reader is reminded that the model was examined for a structure of the same scale as the ASU house, but which is not an exact representation of it.
 Only data from period before the preferential pathway was discovered, and after the preferential pathway was closed are considered in each respective figure (\ref{fig:ss-sensitivity-analysis-pp} and \ref{fig:ss-sensitivity-analysis-no-pp}).
-To improve visibility of the ASU data, it's average $\alpha_\mathrm{gw}$ are aggregated into up to 40 evenly spaced bins on the x-axis.\par
+To improve visibility of the ASU data, it's average $\alpha_\mathrm{gw}$ values were aggregated into up to 40 evenly spaced points.\par
 
-Begining with Figure \ref{fig:ss-sensitivity-analysis-pp} it immediately clear that absent a gravel sub-base, the impact of a preferential pathway is minimal, as the orange and blue lines show.
-Since in the model, it is assumed that the soil type is sandy clay, which is relatively impermeable, there is simply too much resistance to advection for changes in pressurization to matter.
-Additionally, whether the preferential pathway is filled with contaminant vapors or not does matter; without a permeable sub-base, the transport of contaminant vapor in the sub-base is too inhibited to be effectively transported into the building.\par
+Begining with Figure \ref{fig:ss-sensitivity-analysis-pp} it is immediately clear that absent a gravel sub-base, the impact of a preferential pathway is minimal, as comparing the orange and blue lines shows.
+Since in the model, it is assumed that the soil type is sandy clay, which is relatively impermeable, there is simply too much resistance to advection in the soil for changes in pressurization to matter.
+Additionally, whether the preferential pathway is filled with contaminant vapors or not does not matter; without a permeable sub-base, the transport of contaminant vapor in the sub-base is too slow to allow an advective entry path to contribute with.\par
 
-Moving on to the case of when a gravel sub-base is present, and the preferential pathway is filled with contaminant vapors ($\chi=1$).
-In this scenario the preferential pathway has a massive impact on $\alpha_\mathrm{gw}$, spanning more than four orders of magnitude.
+When a gravel sub-base is present, and the preferential pathway is filled with contaminant vapors ($\chi=1$).
+Tthe preferential pathway has a major impact on $\alpha_\mathrm{gw}$, spanning more than four orders of magnitude.
 This is explained by the increased role of advective transport under these conditions.
-The gravel sub-base allows vapor to flow more easily, and the preferential pathway is able to circumvent the large resistance to transport due to the surrounding soil, realizing the advective potential offered by the gravel sub-base.
-When the building is underpressurized under these conditions, a significant amount of contaminant vapor is able to be pulled from the preferential pathway, leading to the large increase of $\alpha_\mathrm{gw}$.\par
+The gravel sub-base allows vapor to readily flow.
+When the building is underpressurized under these conditions, a significant amount of contaminant vapor is pulled in from the preferential pathway, leading to the large increase of $\alpha_\mathrm{gw}$.\par
 
-On the other hand, due to the increased advective potential, overpressurization more effectively prevents contaminant vapors from entering the structure, and most of the contaminant entering the building does so through diffusion.
-This also explains why there is no difference between the uncontaminted and contaminted preferential pathway cases (red and green) when the building is overpressurized.
-But these two cases (red and green) differ signficant when the building is underpressurized, obviously because there simply is no additional contaminant being supplied by the preferential pathway, $\alpha_\mathrm{gw}$ thus limits to whatever diffuses from the contaminted groundwater source.\par
+On the other hand, when advection is stopped by overpressurization, most of the contaminant entering the building does so only through diffusion.
+This also explains why there is no difference whether the preferential pathway brings only clean air or contaminated air (red and green) when the building is overpressurized.
+These two cases differ signficantly from one another when the building is underpressurized, obviously because if there is no additional contaminant being supplied by the preferential pathway, the contaminant comes only from what diffuses from the contaminted groundwater source.\par
 
-It is interesting to note that $\alpha_\mathrm{gw}$ is higher with an uncontaminted preferential pathway (green) than the cases without a gravel sub-base.
-One could expect that pulling so much clean air into the sub-base region would significantly dilute the contaminant vapors and if anything cause a decrease in $\alpha_\mathrm{gw}$ relative to blue and orange.
-However, the preferential pathway is small relative to the sub-base (10 cm diameter pipe), thus impacting the contaminant concentration in a limited region of the sub-base, but still allows for higher advection in the entire sub-base region, leading to a $\alpha_\mathrm{gw}$ plateau that is limited by contaminant transport from the groundwater source.\par
+It is interesting to note that $\alpha_\mathrm{gw}$ is higher with an uncontaminted preferential pathway (green) entering a gravel sub-base than the cases without a gravel sub-base.
+One could expect that pulling so much clean air into the sub-base region might significantly dilute the contaminant vapors and if anything cause a decrease in $\alpha_\mathrm{gw}$ (relative to blue and orange).
+However, the preferential pathway is small relative to the dimensions of the sub-base (10 cm diameter pipe), and its impact is only on the contaminant concentration in a limited region of the sub-base.
+This gravel sub-base still allows for higher advection throughout the entire sub-base region, leading to a $\alpha_\mathrm{gw}$ plateau that is limited by contaminant transport from the groundwater source, and any small amount of dilution from the preferential pathway is negligible.\par
 
-These case most resembling the ASU site (with an open preferential pathway) is the red case, and fits the data fairly well, especially for small under-/overpressurization values.
+These case most resembling the ASU site (with an open preferential pathway) is the red case, and the trend agrees with the field data fairly well, especially for small under-/overpressurization values.
 The most significant deviations occur as the under-/overpressurization becomes larger.
-However, the model is not intended to replicate the ASU data perfectly, but rather investigate the factors make a preferential pathway the most impactful in a general sense, and perfect simulation is not to be expected.
-This is especially reflected in the choice of vapor contaminant concentration in the preferential pathway, with it either being equal to the groundwater contaminant vapor concentration ($\chi=1$) or clean ($\chi=0$), neither of which is likely to be true at the ASU site.
-The idea with picking $\chi=1$ and $\chi=0$ is to give a span of $\alpha_\mathrm{gw}$ values that one can may expect a preferential pathway to fall between.
-Thus, this helps explain why $\alpha_\mathrm{gw}$ is overpredicted when the structure is increasingly underpressurized - the contaminant vapor in the preferential pathway at the ASU house was lower than the groundwater contaminant vapor concentration.
-This does not explain why underprediction occurs at increasing overpressurization, but it is likely due to the steady-state nature of the simulations.
-Regardless, the simulation are able to capture the general trends well, with not too significant deviation, giving validity to the cases simulated.\par
+Again, the model is not intended to replicate the ASU data perfectly, but rather investigate the factors make a preferential pathway the most impactful in a general sense, and perfect simulation is not to be expected.
+This is especially reflected in the choice of vapor contaminant concentration in the preferential pathway, with it either being equal to the groundwater contaminant vapor concentration ($\chi=1$) or clean ($\chi=0$), neither of which is likely to be perfectly true at the ASU site.
+The idea with picking $\chi=1$ and $\chi=0$ is to give a span of $\alpha_\mathrm{gw}$ values within which a preferential pathway may fall.
+This helps explain why $\alpha_\mathrm{gw}$ is overpredicted when the structure is increasingly underpressurized - the contaminant vapor in the preferential pathway at the ASU house was lower than the groundwater contaminant vapor concentration.
+The simulation are able to capture the general trends well.\par
 
-In Figure \ref{fig:ss-sensitivity-analysis-no-pp} cases where a preferential pathway is absent are considered, i.e. a "normal" VI scenario, which may be considered reference scenarios.
-Here the only cases considered is whether there is a gravel or soil sub-base.
+In Figure \ref{fig:ss-sensitivity-analysis-no-pp} cases where a preferential pathway is absent are considered, i.e. "normal" VI scenarios, which may be considered reference scenarios.
+Here the only issues considered is whether there is a gravel or soil sub-base.
 It is apparent that without a preferential pathway, the indoor/outdoor pressure difference changes do not cause any signficant change in $\alpha_\mathrm{gw}$, due to the resistance to advective transport in the surrounding soil - showing the importance of the preferential pathway for increasing advection.
-Furthermore, the gravel sub-base does increase the overall $\alpha_\mathrm{gw}$, partly due to slightly higher advective potential but also due to the contaminant vapors more easily diffuse in the more permeable sub-base.
-The data from the ASU house after the preferential pathway there had been close agrees well with these model predictions, clearly again demonstrating the role of preferential pathway in increasing advective potential at a site.
-It should also be stated that if the surrounding soil was more permeable, e.g. sand, there would be more of a relationship between $\alpha_\mathrm{gw}$ and pressurization.\par
+Furthermore, the gravel sub-base does increase the overall $\alpha_\mathrm{gw}$, partly due to slightly higher advective potential but also due to the contaminant vapors being able to more easily diffuse in the more permeable sub-base.
+The trend in and even the value sof the data from the ASU house after the preferential pathway had been closed agree well with these model predictions, clearly again demonstrating the role of preferential pathway in increasing advective potential at a site.
+It should also be stated that if the surrounding soil was more permeable, e.g. sand, there would be more of a dependence of $\alpha_\mathrm{gw}$ on pressurization, as seen in North Island.\par
 
-Based on the simulated cases in Figure \ref{fig:ss-sensitivity-analysis} it can be concluded that a preferential pathway can be a signficant contributor to VI, but only when some conditions are met.
+Based on the simulated cases in Figure \ref{fig:ss-sensitivity-analysis} it can be concluded that a preferential pathway can be a signficant contributor to VI, but only when particular conditions are met.
 \begin{enumerate}
   \item The preferential pathway has to supply additional vapor contaminant.
-  \item There must be a source of increased advective potential, which may be due to the preferential pathway itself, or other site features or simply due to more permeable surrounding soil.
-  \item A permeable sub-base must exist to realize this advective potential.
+  \item There must be a source of increased advective potential, which may be due to the presence of the preferential pathway itself, or other site features, or simply due to more permeable surrounding soil.
+  \item A permeable sub-base must exist to realize increased advective potential.
 \end{enumerate}
-In the absense of one or all of these conditions, a preferential pathway is unlikely to be a signficant contributor to VI.
-In lieu of actually uncovering an actual preferential pathway at a site, it may be easier for a site investigator to look for the above criteria.
-Strategies for screening for preferential pathway is also discussed by \citeauthor{nielsen_remediation_2017}\cite{nielsen_remediation_2017}. \par
+In the absense of any of these conditions, a preferential pathway is unlikely to be a signficant contributor to VI.
+Strategies for screening for preferential pathway are discussed by \citeauthor{nielsen_remediation_2017}\cite{nielsen_remediation_2017}. \par
 
 
 \begin{comment}
