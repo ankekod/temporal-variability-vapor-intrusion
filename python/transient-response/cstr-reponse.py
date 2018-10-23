@@ -39,7 +39,7 @@ def process_data(data):
     ref_state = ((df.p == -2) & (df.Ae == 0.1))
     ref = df[ref_state].copy()
     # potential target states
-    target_state = ((ref.c.values/df.c >= 10.0) | (ref.c.values/df.c <= 0.1)) & (df.p % 5 == 0) & (df.p != 0) & (df.Ae == 1.0)
+    target_state = ((ref.c.values/df.c >= 10.0) | (ref.c.values/df.c <= 0.1)) & (df.p % 5 == 0) & (df.p != 0)# & (df.Ae == 1.0)
     target = df[target_state].copy()
     return df, ref, target
 
@@ -127,7 +127,7 @@ def solve_cstr(data):
         plt.semilogy(
             np.array(t),
             y,
-            label='p = %i, Ae = %1.1f' % (p, Ae_label),
+            label='p = %i, Ae = %1.1f, t_dcrs = %1.1f, t_incr = %1.1f' % (p, Ae_label, t_eq, t_org),
         )
 
     plt.legend()
@@ -199,5 +199,5 @@ data = pd.read_csv(
 # only interested in the case with a gravel sub-base and no contaminant in the
 # pp
 data = data[(data.SB == 1) & (data.chi == 0)]
-#solve_cstr(data)
-plot_ribbon(data)
+solve_cstr(data)
+#plot_ribbon(data)
