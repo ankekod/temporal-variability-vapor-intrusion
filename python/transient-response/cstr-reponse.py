@@ -8,23 +8,8 @@ import plotly.graph_objs as go
 import plotly.offline as py
 import plotly.io as pio
 
-
-
 data_dir = './data/preferential-pathway-sensitivity/'
 figures_dir = './figures/transient-response/'
-
-# parameters
-V = 200.0
-
-# reads data file
-data = pd.read_csv(
-    data_dir + 'param-no-preferential-pathway.csv',
-    header=4,
-)
-# only interested in the case with a gravel sub-base and no contaminant in the
-# pp
-data = data[(data.SB == 1) & (data.chi == 0)]
-
 
 def process_data(data):
     data.n *= 3600.0 # converts mol/s to mol/hr
@@ -54,7 +39,7 @@ def process_data(data):
     ref_state = ((df.p == -2) & (df.Ae == 0.1))
     ref = df[ref_state].copy()
     # potential target states
-    target_state = ((ref.c.values/df.c >= 10.0) | (ref.c.values/df.c <= 0.1)) & (df.p % 5 == 0) & (df.p != 0)
+    target_state = ((ref.c.values/df.c >= 10.0) | (ref.c.values/df.c <= 0.1)) & (df.p % 5 == 0) & (df.p != 0) & (df.Ae == 1.0)
     target = df[target_state].copy()
     return df, ref, target
 
@@ -89,18 +74,19 @@ def plot_contour(df, ref, target):
         )
     return
 
-# unsteady cstr
-def dudt(t, u):
-    dudt =  n/V - u*Ae
-    return dudt
+
 
 def solve_cstr(data):
+    # unsteady cstr method
+    def dudt(t, u):
+        dudt =  n/V - u*Ae
+        return dudt
+    #retrives processed data
     df, ref, target = process_data(data)
-
     # time variables
     t0 = 0.0 # initial time
     tau = 128 # max allowed time
-
+    # initial/reference concentration
     y0 = ref.n/V/ref.Ae
     for n, Ae, p in zip(target.n, target.Ae, target.p):
         # solving for target state change in variable values
@@ -113,14 +99,14 @@ def solve_cstr(data):
             tau,
             max_step=1.0,
         )
-        t, y = [], []
+        t, y = [], [] # storage lists
         while solver.y > 1.01*c:
             t.append(solver.t)
             y.append(solver.y)
             try:
                 solver.step()
             except:
-                print('Solver failed in first loop.')
+                print('Solver failed in first loop at t = %1.1f' % solver.t)
                 break
         t_eq = solver.t
         print('Min. reached after %2.1f hours' % t_eq)
@@ -133,7 +119,7 @@ def solve_cstr(data):
             try:
                 solver.step()
             except:
-                print('Solver failed in second loop.')
+                print('Solver failed in second loop at t = %1.1f' % solver.t)
                 break
         t_org = solver.t
         print('Max. reached after %2.1f hours' % t_org)
@@ -149,5 +135,69 @@ def solve_cstr(data):
     return
 
 
+def plot_ribbon(data):
 
-solve_cstr(data)
+    df, ref, target = process_data(data)
+
+
+    traces = []
+
+
+    traces.append(
+        dict(
+            x=df.p.values,
+            y=df.Ae.values,
+            z=df.n.values/df.Ae.values/V,
+            type='surface',
+            showscale=False,
+        )
+    )
+    """
+    y_raw = spectra[:, 0] # wavelength
+    sample_size = df.shape[1]-1
+    for i in range(1, sample_size):
+        z_raw = spectra[:, i]
+        x = []
+        y = []
+        z = []
+        ci = int(255/sample_size*i) # ci = "color index"
+        for j in range(0, len(z_raw)):
+            z.append([z_raw[j], z_raw[j]])
+            y.append([y_raw[j], y_raw[j]])
+            x.append([i*2, i*2+1])
+        traces.append(dict(
+            z=z,
+            x=x,
+            y=y,
+            colorscale=[ [i, 'rgb(%d,%d,255)'%(ci, ci)] for i in np.arange(0,1.1,0.1) ],
+            showscale=False,
+            type='surface',
+        ))
+    """
+    # figure
+    fig = go.Figure(
+        data=traces,
+        #layout=layout,
+    )
+    # saving data
+    filename = 'p-ae-ribbon'
+    pio.write_image(
+        fig,
+        file = figures_dir + filename + '.svg',
+        )
+    return
+
+
+# parameters
+V = 200.0
+
+# reads data file
+data = pd.read_csv(
+    data_dir + 'param-no-preferential-pathway.csv',
+    header=4,
+)
+# only interested in the case with a gravel sub-base and no contaminant in the
+# pp
+data = data[(data.SB == 1) & (data.chi == 0)]
+#solve_cstr(data)
+plot_ribbon(data)
