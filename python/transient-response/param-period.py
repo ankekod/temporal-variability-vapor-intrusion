@@ -33,7 +33,7 @@ asu['PP'] = pd.Series(asu['Day'].apply(lambda x: 'Open' if x < cpm_start else 'C
 asu['Concentration'] = asu['tce_emission_rate']/asu['building_flow_rate']
 asu['Attenuation factor'] = asu['Concentration']/asu['tce_groundwater']
 asu['Ae'] *= 3600.0
-"""
+
 fig, ax1 = plt.subplots()
 
 ax2 = ax1.twinx()
@@ -51,6 +51,7 @@ asu[asu.PP == 'Closed'].plot(
     color='orange',
     ax=ax2,
 )
+plt.show()
 """
 fig, axarr = plt.subplots(2,2, sharey=True)
 
@@ -63,7 +64,8 @@ for state in asu.PP.unique():
             data2=asu[asu.PP==state]['Attenuation factor'].apply(np.log10),
             ax=ax,
         )
-        ax.set_title('%s, r= %1.1f' % (state, corr))
+        #ax.set_title('%s, r= %1.1f' % (state, corr))
         i += 1
 
 plt.show()
+"""
