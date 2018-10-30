@@ -61,42 +61,41 @@ for df in dfs:
 asu = phase3(asu)
 entry_rate = phase3(entry_rate)
 tracer = phase3(tracer)
-
-#asu['concentration'] = asu['concentration'].apply(np.log10)
-
-asu['dcdt'] = asu['concentration'].diff()/(asu['time'].diff()/np.timedelta64(1,'h'))
-
+"""
+freqs = ['4H','12H','1D','3D','1W','1M']
 fig, ax = plt.subplots()
 
-asu.plot(
-    x='time',
-    y='concentration',
-    #ax=ax1,
-    logy=True,
-    style='o',
-    ax=ax,
-)
-entry_rate.plot(
-    x='time',
-    y='emission_rate',
-    logy=True,
-    style='o',
-    #color='orange',
-    ax=ax,
-)
+for freq in freqs:
+    resample = asu.resample(freq, on='time').mean().reset_index()
+    resample['concentration'] = resample['concentration'].apply(np.log10)
+    resample['dcdt'] = resample['concentration'].diff()#/(resample['time'].diff()/np.timedelta64(1,'D'))
+
+    sns.kdeplot(
+        data=resample['dcdt'].replace([np.inf, -np.inf], np.nan).dropna(),
+        ax=ax,
+    )
+plt.show()
 
 #print(asu.time.min())
 
 """
+
+
+Ae = interp1d(tracer.time, tracer.Ae)
+V = 350.0
+t0 = entry_rate.time.min()#/np.timedelta64(1,'D')
+print(t0)
+tau = entry_rate.time.max()
+
+y0 = entry_rate[entry_rate['time'] == t0]/V/Ae(t0)
+print(y0)
 def dudt(t, u):
     dudt =  n/V - u*Ae
     return dudt
 solver = LSODA(
     dudt,
     t0,
-    y0.values,
+    y0,
     tau,
-    max_step=1.0,
+    max_step=np.timedelta64(1,'D'),
 )
-"""
-plt.show()
