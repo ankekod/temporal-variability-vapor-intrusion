@@ -79,8 +79,17 @@ plt.show()
 #print(asu.time.min())
 
 """
+tracer.plot(
+    x='time',
+    y='Ae',
+)
 
-
+asu.plot(
+    x='time',
+    y='concentration',
+    logy=True,
+)
+plt.show()
 Ae = interp1d(tracer.time, tracer.Ae)
 V = 350.0
 t0 = entry_rate.time.min()#/np.timedelta64(1,'D')
