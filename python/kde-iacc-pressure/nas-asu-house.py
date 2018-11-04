@@ -9,26 +9,34 @@ db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
 
 
 # databases
-db_asu = sqlite3.connect(db_dir+'asu_house.db')
+db_asu = sqlite3.connect(db_dir+'hill-afb.db')
 db_nas = sqlite3.connect(db_dir+'north_island_nas.db')
 
 # loads asu data, interpolates and drops NAs
-asu = pd.read_sql_query("SELECT day, pressure_difference AS Pressure, tce_emission_rate, building_flow_rate FROM parameters;", db_asu).interpolate(limit_area='inside',limit=250).dropna()
+asu = pd.read_sql_query("SELECT * from daily_averages;", db_asu)
+phases = pd.read_sql_query("SELECT * from phases;", db_asu)
+
+asu.t = asu.t.apply(pd.to_datetime)
+phases.start = phases.start.apply(pd.to_datetime)
+phases.stop = phases.stop.apply(pd.to_datetime)
+
+phase1 = phases[(phases.cpm == 'off') & (phases.land_drain == 'open')]
+#phase2 = phases[(phases.cpm == 'off') & (phases.land_drain == 'closed')]
+phase3 = phases[(phases.cpm == 'off') & (phases.land_drain == 'closed')]
+
 
 # loads nas data, interpolates and drops NAs
-nas = pd.read_sql_query("SELECT tce_indoor_air AS Concentration, pressure_difference AS Pressure FROM north_island_nas;", db_nas).interpolate(limit_area='inside',limit=250).dropna()
-
-
-asu['Concentration'] = asu['tce_emission_rate']/asu['building_flow_rate']
+nas = pd.read_sql_query("SELECT tce_indoor_air AS c, pressure_difference AS p FROM north_island_nas;", db_nas).interpolate(limit_area='inside',limit=250).dropna()
 
 cpm_start, cpm_end = 780.0, 1157.0
-
-asu_pre_cpm = asu[(asu['day'] < cpm_start) & (asu['Pressure'] < 7.5)].copy().dropna()
-asu_post_cpm = asu[asu['day'] > cpm_end].copy().dropna()
+asu_pre_cpm = asu[asu['t'] < phase1['stop'].values[0]].copy()
+asu_post_cpm = asu[asu['t'] > phase3['start'].values[0]].copy()
 
 asu_pre_cpm.name = "ASU House, PP open"
 asu_post_cpm.name = "ASU House, PP closed"
 nas.name = "North Island"
+
+asu_pre_cpm['c'] = asu_pre_cpm['c'].replace(0.0, np.nan).dropna()
 
 dfs = []
 alpha = 0.6
@@ -36,18 +44,21 @@ cmaps = ["Blues", "Reds", "Greens"]
 
 
 label_patches = []
-
 for dp in [False]:
     df = pd.DataFrame({'x': [], 'y': []})
     g = sns.JointGrid(x="x", y="y", data=df) # empty joint grid
     for i, df in enumerate([nas, asu_pre_cpm, asu_post_cpm]):
-        print("Dataset: %s" % df.name)
+        dataset = df.name
+        print("Dataset: %s" % dataset)
 
-        df['Concentration'] = df['Concentration'].apply(pd.to_numeric, errors='ignore').apply(lambda x: np.log10(x)).replace([np.inf, -np.inf], np.nan).dropna()
-        df['Concentration'] -= df['Concentration'].mean()
-        df['Pressure'] = -1.0*df['Pressure'].dropna()
+        df['c'] = df['c'].apply(lambda x: np.log10(x)).replace([np.inf, -np.inf], np.nan)
+        df['c'] -= df['c'].mean()
+        df = df.dropna()
+        df['p'] = -1.0*df['p']
+        #df[['c','p']].to_csv('~/wtf.csv')
+
         if dp is True:
-            df['Pressure'] -= df['Pressure'].mean()
+            df['p'] -= df['p'].mean()
             name = 'both-deviating'
             xlabel = 'Deviation from mean indoor-outdoor pressure difference (Pa)'
         else:
@@ -55,13 +66,13 @@ for dp in [False]:
             xlabel = 'Indoor-outdoor pressure difference (Pa)'
         #df = df.dropna()
         r, p = stats.pearsonr(
-            df['Pressure'],
-            df['Concentration'],
+            df['p'],
+            df['c'],
         )
         # bivariate plot
         sns.kdeplot(
-            df['Pressure'],
-            df['Concentration'],
+            df['p'],
+            df['c'],
             cmap=cmaps[i],
             shade=True,
             shade_lowest=False,
@@ -72,7 +83,7 @@ for dp in [False]:
         color = sns.color_palette(cmaps[i])[2]
         # pressure univariate plot
         sns.kdeplot(
-            df['Pressure'],
+            df['p'],
             color=color,
             shade=True,
             shade_lowest=False,
@@ -82,7 +93,7 @@ for dp in [False]:
             )
         # concentration univariate plot
         sns.kdeplot(
-            df['Concentration'],
+            df['c'],
             color=color,
             shade=True,
             shade_lowest=False,
@@ -94,7 +105,7 @@ for dp in [False]:
 
         label_patch = mpatches.Patch(
             color = sns.color_palette(cmaps[i])[2],
-            label = '%s, r = %1.2f, p = %1.2f' % (df.name, r, p),
+            label = '%s, r = %1.2f, p = %1.2f' % (dataset, r, p),
         )
         label_patches.append(label_patch)
 
