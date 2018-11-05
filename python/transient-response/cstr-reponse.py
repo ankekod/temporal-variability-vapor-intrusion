@@ -22,10 +22,9 @@ dc1, dc2 = [], []
 Aes = []
 dcdt1, dcdt2 = [], []
 soils = []
-fig, (ax1, ax2) = plt.subplots(1,2)
 
 df.n *= 3600.0
-for Ae in [0.5, 1.0, 0.1]:
+for Ae in [0.5, 1.0, 1.5]:
 
     for soil in df['soil_type'].unique():
         ref = df[ (df['soil_type'] == soil) & ( df.p==-5 ) ]
@@ -42,7 +41,7 @@ for Ae in [0.5, 1.0, 0.1]:
         tau = 240 # max allowed time
         # initial/reference concentration
         y0 = ref.n/V/Ae
-        for n, p in zip(target.n, target.p):
+        for n, p in zip(target.n.values, target.p.values):
             # solving for target state change in variable values
             #print('Case: p = %1.1f, Ae = %1.1f' % (p, Ae))
             c = n/V/Ae
@@ -64,9 +63,9 @@ for Ae in [0.5, 1.0, 0.1]:
                     break
             t_eq = solver.t
             t1.append(t_eq)
-            dc1.append((c-y0))
-            dcdt1.append((c-y0)/t_eq)
-            print('Min. reached after %2.1f hours' % t_eq)
+            dc1.append(abs(float(c-y0)))
+            dcdt1.append(float((c-y0)/t_eq))
+            #print('Min. reached after %2.1f hours' % t_eq)
             # going back to reference state variables
             n = ref.n
             while solver.y < 0.99*y0.values:
@@ -79,27 +78,84 @@ for Ae in [0.5, 1.0, 0.1]:
                     break
             t_org = solver.t - t_eq
             t2.append(t_org)
-            dc2.append((y0-c))
-            dcdt2.append((y0-c)/t_org)
-            print('Max. reached after %2.1f hours' % t_org)
+            dc2.append(abs(float(y0-c)))
+            dcdt2.append(float((y0-c)/t_org))
+            #print('Max. reached after %2.1f hours' % t_org)
 
-
-for var in [soils,Aes,t1,t2,dc1,dc2,dcdt1,dcdt2]:
-    print(len(var))
-
-df2 = pd.DataFrame(
-    {'soil': soils,
+down  = pd.DataFrame({
+    'soil': soils,
     'Ae': Aes,
-    't1': t1,
-    't2': t2,
-    'dc1': dc1,
-    'dc2': dc2,
-    'dcdt1': dcdt1,
-    'dcdt2': dcdt2}
+    't': t1,
+    'dc': dc1,
+    'dcdt': dcdt1,
+})
+
+up = pd.DataFrame({
+    'soil': soils,
+    'Ae': Aes,
+    't': t2,
+    'dc': dc2,
+    'dcdt': dcdt2,
+})
+
+
+# relationship between t and dc figure
+
+"""
+
+fig, ax = plt.subplots()
+down[down['Ae']==0.5].plot(
+    x='t',
+    y='dc',
+    logy=True,
+    style='o',
+    ax=ax,
 )
 
-df2.plot(x='soil',y='t1',ax=ax1, label='Ae = %1.1f' % Ae)
-df2.plot(x='soil',y='t2',ax=ax2,  label='Ae = %1.1f' % Ae)
+up[up['Ae']==0.5].plot(
+    x='t',
+    y='dc',
+    logy=True,
+    style='o',
+    ax=ax,
+)
+plt.show()
 
-plt.legend() # implementera soil type, dc = x 
+"""
+
+# relationship between soil and t figure
+
+fig, ax = plt.subplots()
+
+down.pivot_table(
+    index='soil',
+    columns='Ae',
+).plot(
+    y='t',
+    ax=ax,
+    rot=45,
+)
+
+up.pivot_table(
+    index='soil',
+    columns='Ae',
+).plot(
+    y='t',
+    ax=ax,
+    rot=45,
+    style='--',
+)
+
+
+xlabels = []
+for str in down.soil.unique():
+    xlabels.append(str.title())
+
+
+ax.set_xticks(np.arange(0,len(xlabels)))
+ax.set_xticklabels(xlabels)
+ax.set_ylabel('Time to equilibrium (hr)')
+
+ax.legend(title='$A_e$ (1/hr)')
+
 plt.show()
