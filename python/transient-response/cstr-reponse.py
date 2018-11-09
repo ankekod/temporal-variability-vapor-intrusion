@@ -22,10 +22,10 @@ dc1, dc2 = [], []
 Aes = []
 dcdt1, dcdt2 = [], []
 soils = []
+c_max, c_min = [], []
 
 df.n *= 3600.0
 for Ae in [0.5, 1.0, 1.5]:
-
     for soil in df['soil_type'].unique():
         ref = df[ (df['soil_type'] == soil) & ( df.p==-5 ) ]
         target = df[ (df['soil_type'] == soil) & ( df.p==5 ) ]
@@ -41,10 +41,12 @@ for Ae in [0.5, 1.0, 1.5]:
         tau = 240 # max allowed time
         # initial/reference concentration
         y0 = ref.n/V/Ae
+        c_max.append(y0.values[0])
         for n, p in zip(target.n.values, target.p.values):
             # solving for target state change in variable values
             #print('Case: p = %1.1f, Ae = %1.1f' % (p, Ae))
             c = n/V/Ae
+            c_min.append(c)
             solver = LSODA(
                 dudt,
                 t0,
@@ -98,6 +100,14 @@ up = pd.DataFrame({
     'dcdt': dcdt2,
 })
 
+both = pd.DataFrame({
+    'soil': soils,
+    'Ae': Aes,
+    't_down': t1,
+    't_up': t2,
+    'c_max': c_max,
+    'c_min': c_min,
+}).to_csv('./data/transient-response/cstr-changes.csv')
 
 # relationship between t and dc figure
 
