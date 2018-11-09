@@ -80,8 +80,8 @@ df = df[df['Ae']==0.5]
 
 
 fig, ax = plt.subplots()
-sns.kdeplot(pre_cpm['dcdt'],ax=ax,label='c, PP open')
-sns.kdeplot(post_cpm['dcdt'],ax=ax,label='c, PP closed')
+sns.kdeplot(pre_cpm['dalphadt'],ax=ax,label='c, PP open')
+sns.kdeplot(post_cpm['dalphadt'],ax=ax,label='c, PP closed')
 ax.set_xlabel('$\\frac{\\Delta \\log(c_\\mathrm{indoor})}{\\Delta t}$')
 
 ys = np.linspace(0.5,3.0,len(df.index))
