@@ -7,8 +7,8 @@ import sqlite3
 import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-#db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
+#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
 
@@ -28,13 +28,45 @@ asu = pd.read_sql_query(
     db,
 ).interpolate(method='piecewise_polynomial')
 
+asu = asu.dropna()
+asu.time = asu.time.apply(pd.to_datetime)
+
 K_H = 0.403
 asu['alpha'] = asu['concentration']/(asu['gw_concentration']*1e3*K_H)
 
 
 phases = pd.read_sql_query("SELECT * from phases;", db)
 asu.air_exchange_rate *= 24.0
-asu.time = asu.time.apply(pd.to_datetime)
+
+
+#winter = 12 - 2
+#spring = 3-5
+#summer = 6-8
+#fall = 9-11
+
+asu['month'] = asu['time'].map(lambda x: x.month) # assign integer for each month
+
+seasons = {
+    'winter': (12,2),
+    'spring': (3,5),
+    'summer': (6,8),
+    'fall': (9,11),
+}
+
+def get_season(x):
+    if (x==12) or (x==1) or (x==2):
+        return 'winter'
+    elif (x==3) or (x==4) or (x==5):
+        return 'spring'
+    elif (x==6) or (x==7) or (x==8):
+        return 'summer'
+    elif (x==9) or (x==10) or (x==11):
+        return 'fall'
+    else:
+        return 'error'
+asu['season'] = asu['month'].apply(lambda x: get_season(x))
+print(asu['season'].unique())
+
 phases.start = phases.start.apply(pd.to_datetime)
 phase1 = phases[(phases.cpm == 'off') & (phases.land_drain == 'open')]
 phase3 = phases[(phases.cpm == 'off') & (phases.land_drain == 'closed')]
@@ -77,25 +109,46 @@ df['dcdt_down'] = (df['c_min']-df['c_max'])/df['t_down']
 
 df = df[df['Ae']==0.5]
 
-
+def custom_x_ticks(ax):
+    my_xticks = np.log10([0.05, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0])
+    my_xtick_labels = ["%.2f" % x_tick for x_tick in 10.0**my_xticks]
+    ax.set_xlim((my_xticks[0],my_xticks[-1]))
+    ax.set_xticks(my_xticks)
+    ax.set_xticklabels(my_xtick_labels)
+    ax.set_xlabel('$\\frac{\\Delta \\log(\\alpha)}{\\Delta t}$')
+    return
 
 fig, ax = plt.subplots()
 sns.kdeplot(pre_cpm['dalphadt'],ax=ax,label='c, PP open')
 sns.kdeplot(post_cpm['dalphadt'],ax=ax,label='c, PP closed')
-ax.set_xlabel('$\\frac{\\Delta \\log(c_\\mathrm{indoor})}{\\Delta t}$')
+
 
 ys = np.linspace(0.5,3.0,len(df.index))
-
-print(ys)
-for i, soil, dcdt_down, dcdt_up in zip(df.index, df.soil, df.dcdt_down, df.dcdt_up):
+df2 = df[df['soil']=='sandy-clay'].copy()
+for i, soil, dcdt_down, dcdt_up in zip(df2.index, df2.soil, df2.dcdt_down, df2.dcdt_up):
     ax.plot([dcdt_down, 0, dcdt_up],np.repeat(ys[i], 3), label='%s' % soil.title())
-
-my_xticks = np.log10([0.05, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0])
-my_xtick_labels = ["%.2f" % x_tick for x_tick in 10.0**my_xticks]
-#g.ax_joint.set_xlim((-28,18))
-ax.set_xlim((my_xticks[0],my_xticks[-1]))
 ax.set_ylim([0,3.75])
-ax.set_xticks(my_xticks)
-ax.set_xticklabels(my_xtick_labels)
+
+custom_x_ticks(ax)
 ax.legend(loc='best')
+#plt.show()
+
+
+fig, ax = plt.subplots()
+for season in asu['season'].unique():
+    sns.kdeplot(pre_cpm[pre_cpm['season']==season]['dalphadt'],ax=ax,label='%s' % season.title())
+    #sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],ax=ax,label='c, PP closed')
+custom_x_ticks(ax)
+ax.set_title('PP Open')
+
+fig, ax = plt.subplots()
+for season in asu['season'].unique():
+    if season != 'summer':
+        sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],ax=ax,label='%s' % season.title())
+    else:
+        continue
+    #sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],ax=ax,label='c, PP closed')
+custom_x_ticks(ax)
+ax.set_title('PP Closed')
+
 plt.show()
