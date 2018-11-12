@@ -7,8 +7,8 @@ import sqlite3
 import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-#db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
+#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
 
@@ -31,7 +31,7 @@ asu = pd.read_sql_query(
     np.nan,
 ).interpolate(
     method='piecewise_polynomial',
-).dropna()
+).dropna().sort_values('time')
 
 
 #asu = asu.dropna()
@@ -65,7 +65,6 @@ def get_season(x):
     else:
         return 'error'
 asu['season'] = asu['month'].apply(lambda x: get_season(x))
-print(asu['season'].unique())
 
 phases.start = phases.start.apply(pd.to_datetime)
 phase1 = phases[(phases.cpm == 'off') & (phases.land_drain == 'open')]
@@ -76,10 +75,11 @@ filter3 = (asu['time'] > phase3['start'].values[0])
 pre_cpm = asu.loc[filter1].copy()
 post_cpm = asu.loc[filter3].copy()
 
-convert_time = lambda df: (df.time.diff()/np.timedelta64(1,'D')).apply(float)
+convert_time = lambda df, scale: (df.time.diff()/np.timedelta64(1,scale)).apply(float)
 
-pre_cpm['dt'] = convert_time(pre_cpm)
-post_cpm['dt'] = convert_time(post_cpm)
+
+pre_cpm['dt'] = convert_time(pre_cpm,'h')
+post_cpm['dt'] = convert_time(post_cpm,'h')
 
 def dc(df,log=True,type='concentration'):
     if log == True:
@@ -99,7 +99,6 @@ post_cpm['dalpha'] = dc(post_cpm,log=True,type='alpha')
 post_cpm['dalphadt'] = post_cpm['dalpha']/post_cpm['dt']
 
 pre_cpm = pre_cpm.replace([np.inf, -np.inf], np.nan).dropna()
-
 post_cpm = post_cpm.replace([np.inf, -np.inf], np.nan).dropna()
 
 
@@ -108,53 +107,72 @@ df = pd.read_csv('./data/transient-response/cstr-changes.csv')
 mol_m3_to_ug_m3 = 131.4*1e6
 df[['c_max','c_min']] *= mol_m3_to_ug_m3
 df[['c_max','c_min']] = df[['c_max','c_min']].apply(np.log10)
-df[['t_down','t_up']] /= 24.0
+#df[['t_down','t_up']] /= 24.0
 df['dcdt_up'] = (df['c_max']-df['c_min'])/df['t_up']
 df['dcdt_down'] = (df['c_min']-df['c_max'])/df['t_down']
 
 df = df[df['Ae']==0.5]
-print(len(pre_cpm),len(post_cpm))
-def custom_x_ticks(ax):
-    my_xticks = np.log10([0.01,0.05, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0,100.0])
+def custom_x_ticks(ax,my_xticks=np.log10([0.5, 1.0, 5.0])):
     my_xtick_labels = ["%.2f" % x_tick for x_tick in 10.0**my_xticks]
-    #ax.set_xlim((my_xticks[0],my_xticks[-1]))
+    ax.set_xlim((my_xticks[0],my_xticks[-1]))
     ax.set_xticks(my_xticks)
     ax.set_xticklabels(my_xtick_labels)
-    ax.set_xlabel('$\\frac{\\Delta \\log(\\alpha)}{\\Delta t}$')
-    ax.set_ylim([0,1.5])
+    ax.set_xlabel('$\\frac{\\Delta \\log(\\alpha)}{\\Delta \\mathrm{hour}}$')
+    #ax.set_ylim([0,1.5])
+    plt.tight_layout()
     return
 
 fig, ax = plt.subplots()
-print(pre_cpm['dalphadt'])
-sns.distplot(pre_cpm['dalphadt'],ax=ax,label='c, PP open')
-sns.kdeplot(post_cpm['dalphadt'],ax=ax,label='c, PP closed')
+sns.kdeplot(pre_cpm['dalphadt'],gridsize=5e3,ax=ax,label='PP open')
+sns.kdeplot(post_cpm['dalphadt'],gridsize=5e3,ax=ax,label='PP closed')
 
-
-ys = np.linspace(0.5,3.0,len(df.index))
-df2 = df[df['soil']=='sandy-clay'].copy()
-for i, soil, dcdt_down, dcdt_up in zip(df2.index, df2.soil, df2.dcdt_down, df2.dcdt_up):
-    ax.plot([dcdt_down, 0, dcdt_up],np.repeat(ys[i], 3), label='%s' % soil.title())
+ymin, ymax = ax.get_ylim()
+dx = (ymax-ymin)/len(df.index)
+ys = np.linspace(ymin+dx,ymax-dx,len(df.index))
+#df2 = df[df['soil']=='sandy-clay'].copy()
+for i, soil, dcdt_down, dcdt_up in zip(df.index, df.soil, df.dcdt_down, df.dcdt_up):
+    #if soil == 'sandy-clay':
+    ax.plot([dcdt_down, 0, dcdt_up],np.repeat(ys[i], 3),'o-', label='%s' % soil.title())
 
 custom_x_ticks(ax)
 ax.legend(loc='best')
-#plt.show()
 
 
+# season plots (pre-CPM)
 fig, ax = plt.subplots()
 for season in asu['season'].unique():
-    sns.kdeplot(pre_cpm[pre_cpm['season']==season]['dalphadt'],ax=ax,label='%s' % season.title())
-    #sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],ax=ax,label='c, PP closed')
+    sns.kdeplot(pre_cpm[pre_cpm['season']==season]['dalphadt'],gridsize=5e3,ax=ax,label='%s' % season.title())
 custom_x_ticks(ax)
 ax.set_title('PP Open')
-
+# season plots (post-CPM)
 fig, ax = plt.subplots()
 for season in asu['season'].unique():
     if season != 'summer':
-        sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],ax=ax,label='%s' % season.title())
+        sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],gridsize=5e3,ax=ax,label='%s' % season.title())
     else:
         continue
-    #sns.kdeplot(post_cpm[post_cpm['season']==season]['dalphadt'],ax=ax,label='c, PP closed')
 custom_x_ticks(ax)
 ax.set_title('PP Closed')
 
+# resampling plots
+
+time_scales = ('h','D','W','M')
+
+fig, ax = plt.subplots()
+
+for time_scale in time_scales:
+    if time_scale == 'h':
+        resample = asu.copy()
+    else:
+        print('Resampling with %s period' % time_scale)
+        resample = asu[['time','alpha']].copy().resample('1'+time_scale, on='time', kind='timestamp').mean().reset_index()
+
+    resample['dc'] = dc(resample,log=True,type='alpha')
+    resample['dt'] = convert_time(resample,time_scale)
+    resample['dcdt'] = resample['dc']/resample['dt']
+    resample = resample.replace([np.inf, -np.inf], np.nan)
+
+
+    sns.kdeplot(resample['dcdt'],gridsize=6e3,ax=ax,label=time_scale)
+custom_x_ticks(ax,my_xticks=np.log10([0.05,0.1,0.5,1,5,10,50,100]))
 plt.show()
