@@ -7,28 +7,34 @@ import sqlite3
 import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
-#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+#db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
 
 asu = pd.read_sql_query(
     "SELECT\
-        da.*, \
+        td.*, \
         gw.concentration as gw_concentration \
-    FROM daily_averages da\
-    LEFT JOIN groundwater_concentration gw USING(time)\
+    FROM \"td-basement\" td\
+    LEFT JOIN groundwater_concentration gw ON (date(td.time) == date(gw.time))\
     UNION ALL\
     SELECT\
-        da.*, \
+        td.*, \
         gw.concentration as gw_concentration \
     FROM groundwater_concentration gw\
-    LEFT JOIN daily_averages da USING(time)\
-    WHERE da.time IS NULL;",
+    LEFT JOIN \"td-basement\" td ON (date(td.time) == date(gw.time))\
+    WHERE td.time IS NULL;",
     db,
-).interpolate(method='piecewise_polynomial')
+).replace(
+    0,
+    np.nan,
+).interpolate(
+    method='piecewise_polynomial',
+).dropna()
 
-asu = asu.dropna()
+
+#asu = asu.dropna()
 asu.time = asu.time.apply(pd.to_datetime)
 
 K_H = 0.403
@@ -36,13 +42,7 @@ asu['alpha'] = asu['concentration']/(asu['gw_concentration']*1e3*K_H)
 
 
 phases = pd.read_sql_query("SELECT * from phases;", db)
-asu.air_exchange_rate *= 24.0
 
-
-#winter = 12 - 2
-#spring = 3-5
-#summer = 6-8
-#fall = 9-11
 
 asu['month'] = asu['time'].map(lambda x: x.month) # assign integer for each month
 
@@ -98,6 +98,11 @@ pre_cpm['dalphadt'] = pre_cpm['dalpha']/pre_cpm['dt']
 post_cpm['dalpha'] = dc(post_cpm,log=True,type='alpha')
 post_cpm['dalphadt'] = post_cpm['dalpha']/post_cpm['dt']
 
+pre_cpm = pre_cpm.replace([np.inf, -np.inf], np.nan).dropna()
+
+post_cpm = post_cpm.replace([np.inf, -np.inf], np.nan).dropna()
+
+
 
 df = pd.read_csv('./data/transient-response/cstr-changes.csv')
 mol_m3_to_ug_m3 = 131.4*1e6
@@ -108,18 +113,20 @@ df['dcdt_up'] = (df['c_max']-df['c_min'])/df['t_up']
 df['dcdt_down'] = (df['c_min']-df['c_max'])/df['t_down']
 
 df = df[df['Ae']==0.5]
-
+print(len(pre_cpm),len(post_cpm))
 def custom_x_ticks(ax):
-    my_xticks = np.log10([0.05, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0])
+    my_xticks = np.log10([0.01,0.05, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0,100.0])
     my_xtick_labels = ["%.2f" % x_tick for x_tick in 10.0**my_xticks]
-    ax.set_xlim((my_xticks[0],my_xticks[-1]))
+    #ax.set_xlim((my_xticks[0],my_xticks[-1]))
     ax.set_xticks(my_xticks)
     ax.set_xticklabels(my_xtick_labels)
     ax.set_xlabel('$\\frac{\\Delta \\log(\\alpha)}{\\Delta t}$')
+    ax.set_ylim([0,1.5])
     return
 
 fig, ax = plt.subplots()
-sns.kdeplot(pre_cpm['dalphadt'],ax=ax,label='c, PP open')
+print(pre_cpm['dalphadt'])
+sns.distplot(pre_cpm['dalphadt'],ax=ax,label='c, PP open')
 sns.kdeplot(post_cpm['dalphadt'],ax=ax,label='c, PP closed')
 
 
@@ -127,7 +134,6 @@ ys = np.linspace(0.5,3.0,len(df.index))
 df2 = df[df['soil']=='sandy-clay'].copy()
 for i, soil, dcdt_down, dcdt_up in zip(df2.index, df2.soil, df2.dcdt_down, df2.dcdt_up):
     ax.plot([dcdt_down, 0, dcdt_up],np.repeat(ys[i], 3), label='%s' % soil.title())
-ax.set_ylim([0,3.75])
 
 custom_x_ticks(ax)
 ax.legend(loc='best')
