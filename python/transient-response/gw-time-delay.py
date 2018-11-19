@@ -56,14 +56,14 @@ for shift in shifts:
     dt.append(df.time.min() - asu.time.min())
 
 
-time_delay = pd.DataFrame({'dt': dt, 'r': r, 'var': var})
+time_delay = pd.DataFrame({'dt': dt, 'r': r, 'std': var})
 
 
 time_delay.dt /= np.timedelta64('1','D')
-time_delay.plot(y='r',ax=ax)
+time_delay.plot(y=['r','std'],ax=ax)
 
 asu_shifted = asu.copy()
-asu_shifted['gw_concentration'] = asu_shifted['gw_concentration'].shift(153)
+asu_shifted['gw_concentration'] = asu_shifted['gw_concentration'].shift(426)
 
 
 
