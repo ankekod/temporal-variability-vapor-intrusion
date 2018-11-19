@@ -7,8 +7,8 @@ import sqlite3
 import seaborn as sns
 from scipy.stats import pearsonr
 
-#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+#db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
 
@@ -48,7 +48,18 @@ time_delay = pd.DataFrame({'dt': dt, 'r': r})
 
 
 time_delay.dt /= np.timedelta64('1','D')
+#time_delay.plot(y='r',ax=ax)
+
+asu_shifted = asu.copy()
+asu_shifted['gw_concentration'] = asu_shifted['gw_concentration'].shift(125)
+
+K_H = 0.403
 
 
-time_delay.plot(x='dt',y='r',ax=ax)
+asu['alpha'] = asu['concentration']/(asu['gw_concentration']*1e3*K_H)
+asu_shifted['alpha'] = asu_shifted['concentration']/(asu_shifted['gw_concentration']*1e3*K_H)
+
+asu.plot(x='time',y='alpha',logy='True',ax=ax,label='ASU')
+asu_shifted.plot(x='time',y='alpha',logy='True',ax=ax,label='ASU Shifted')
+
 plt.show()
