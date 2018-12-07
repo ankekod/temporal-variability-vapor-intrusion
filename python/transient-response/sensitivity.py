@@ -7,7 +7,8 @@ import sqlite3
 import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/Dropbox/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
 
@@ -73,5 +74,7 @@ cols_to_drop = ['StopTime','Month','EntryRate']
 df.drop(columns=cols_to_drop,inplace=True)
 pre_cpm.drop(columns=cols_to_drop,inplace=True)
 post_cpm.drop(columns=cols_to_drop,inplace=True)
-#sns.pairplot(post_cpm, hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
-#plt.show()
+sns.pairplot(post_cpm, hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
+
+# TODO: change axis labels (adding units) and adjust ticks for the indoor concentration
+plt.show()

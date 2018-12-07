@@ -7,7 +7,9 @@ import sqlite3
 import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/Dropbox/vapor-intrusion-dbs/'
+
 #db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
@@ -16,7 +18,7 @@ asu = pd.read_sql_query(
     "SELECT\
         td.*, \
         gw.concentration as gw_concentration \
-    FROM \"td-basement\" td\
+    FROM TDBasement td\
     LEFT JOIN groundwater_concentration gw ON (date(td.time) == date(gw.time))\
     UNION ALL\
     SELECT\
@@ -174,7 +176,7 @@ custom_x_ticks(ax)
 ax.set_title('PP Closed')
 
 # resampling plots
-
+# TODO: repeat this analysis but within each season 
 time_scales = ('h', 'D', 'W', 'M')
 
 fig, ax = plt.subplots()
