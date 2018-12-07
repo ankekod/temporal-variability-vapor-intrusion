@@ -32,12 +32,10 @@ phases = pd.read_sql_query("SELECT * from phases;", db)
 phase3 = phases[(phases.cpm == 'off') & (phases.land_drain == 'closed')]
 
 
-
-
 asu.time = asu.time.apply(pd.to_datetime)
 filter3 = (asu['time'] > phase3['start'].values[0])
 
-shifts = np.arange(0,len(asu)-1)
+shifts = np.arange(0, len(asu) - 1)
 r = []
 dt = []
 var = []
@@ -46,11 +44,11 @@ fig, ax = plt.subplots()
 for shift in shifts:
     df = asu.copy()
     df.gw_concentration = df.gw_concentration.shift(shift)
-    df['alpha'] = df['concentration']/(df['gw_concentration']*1e3*K_H)
+    df['alpha'] = df['concentration'] / (df['gw_concentration'] * 1e3 * K_H)
     df['alpha'] = df['alpha'].apply(np.log10)
     df = df.loc[filter3]
     df = df.dropna()
-    r.append(pearsonr(df.concentration,df.gw_concentration)[0])
+    r.append(pearsonr(df.concentration, df.gw_concentration)[0])
     var.append(df['alpha'].std())
     #df.plot(x='time',y=['concentration','gw_concentration'],logy=True,ax=ax,style=['-','--'],label=['Concentation, shift = %i' % shift, 'GW, shift = %i' % shift])
     dt.append(df.time.min() - asu.time.min())
@@ -59,17 +57,16 @@ for shift in shifts:
 time_delay = pd.DataFrame({'dt': dt, 'r': r, 'std': var})
 
 
-time_delay.dt /= np.timedelta64('1','D')
-time_delay.plot(y=['r','std'],ax=ax)
+time_delay.dt /= np.timedelta64('1', 'D')
+time_delay.plot(y=['r', 'std'], ax=ax)
 
 asu_shifted = asu.copy()
 asu_shifted['gw_concentration'] = asu_shifted['gw_concentration'].shift(426)
 
 
-
-
-asu['alpha'] = asu['concentration']/(asu['gw_concentration']*1e3*K_H)
-asu_shifted['alpha'] = asu_shifted['concentration']/(asu_shifted['gw_concentration']*1e3*K_H)
+asu['alpha'] = asu['concentration'] / (asu['gw_concentration'] * 1e3 * K_H)
+asu_shifted['alpha'] = asu_shifted['concentration'] / \
+    (asu_shifted['gw_concentration'] * 1e3 * K_H)
 
 
 fig, ax = plt.subplots()
@@ -78,9 +75,8 @@ fig, ax = plt.subplots()
 asu = asu.loc[filter3]
 asu_shifted = asu_shifted.loc[filter3]
 
-asu.plot(x='time',y='alpha',logy='True',ax=ax,label='ASU')
-asu_shifted.plot(x='time',y='alpha',logy='True',ax=ax,label='ASU Shifted')
-
+asu.plot(x='time', y='alpha', logy='True', ax=ax, label='ASU')
+asu_shifted.plot(x='time', y='alpha', logy='True', ax=ax, label='ASU Shifted')
 
 
 fig, ax = plt.subplots()
@@ -88,8 +84,8 @@ asu['alpha'] = asu['alpha'].apply(np.log10)
 asu_shifted['alpha'] = asu_shifted['alpha'].apply(np.log10)
 
 
-sns.kdeplot(asu['alpha'],ax=ax,label='ASU')
-sns.kdeplot(asu_shifted['alpha'],ax=ax,label='ASU Shifted')
+sns.kdeplot(asu['alpha'], ax=ax, label='ASU')
+sns.kdeplot(asu_shifted['alpha'], ax=ax, label='ASU Shifted')
 
 
 plt.show()

@@ -11,8 +11,8 @@ db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
 
 db = sqlite3.connect(db_dir + 'hill-afb.db')
 
-asu = pd.read_sql_query("SELECT * from daily_averages;",db,
-).sort_values('time')
+asu = pd.read_sql_query("SELECT * from daily_averages;", db,
+                        ).sort_values('time')
 asu.time = asu.time.apply(pd.to_datetime)
 
 asu['pressure'] *= -1
@@ -35,10 +35,10 @@ asu['pcumsum'] = asu['dp'].cumsum()
 fig, ax1 = plt.subplots()
 ax2 = ax1.twinx()
 
-asu.plot(x='time',y='concentration',color='red',logy=True,ax=ax1)
-asu.plot(x='time',y=['csigncumsum','psigncumsum'],ax=ax2)
+asu.plot(x='time', y='concentration', color='red', logy=True, ax=ax1)
+asu.plot(x='time', y=['csigncumsum', 'psigncumsum'], ax=ax2)
 
 
-sns.jointplot(asu['psigncumsum'],asu['concentration'],kind='reg')
+sns.jointplot(asu['psigncumsum'], asu['concentration'], kind='reg')
 
 plt.show()
