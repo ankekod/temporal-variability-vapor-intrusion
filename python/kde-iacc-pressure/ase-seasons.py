@@ -75,8 +75,12 @@ pre_cpm.name = "ASU House, PP open"
 post_cpm.name = "ASU House, PP closed"
 
 alpha = 0.6
-cmaps = ["Blues", "Reds", "Greens", "Oranges"]
-
+cmaps = {
+    'Winter': 'Blues',
+    'Spring': 'Greens',
+    'Summer': 'Reds',
+    'Fall': 'Oranges',
+}
 
 dp = False
 
@@ -107,14 +111,14 @@ for dataset in (pre_cpm,post_cpm,):
         sns.kdeplot(
             df['Pressure'],
             df['IndoorConcentration'],
-            cmap=cmaps[i],
+            cmap=cmaps[season],
             shade=True,
             shade_lowest=False,
             alpha=alpha,
             ax=g.ax_joint,
             )
 
-        color = sns.color_palette(cmaps[i])[2]
+        color = sns.color_palette(cmaps[season])[2]
         # pressure univariate plot
         sns.kdeplot(
             df['Pressure'],
@@ -138,7 +142,7 @@ for dataset in (pre_cpm,post_cpm,):
             )
 
         label_patch = mpatches.Patch(
-            color = sns.color_palette(cmaps[i])[2],
+            color = sns.color_palette(cmaps[season])[2],
             label = '%s, r = %1.2f, p = %1.2f' % (season, r, p),
         )
         label_patches.append(label_patch)
