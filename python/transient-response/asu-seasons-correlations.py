@@ -47,7 +47,7 @@ def get_season(x):
 df['Season'] = df['Month'].apply(lambda x: get_season(x))
 
 
-df[['IndoorConcentration','EntryRate']] = df[['IndoorConcentration','EntryRate']].apply(np.log10)
+df[['IndoorConcentration','EmissionRate']] = df[['IndoorConcentration','EmissionRate']].apply(np.log10)
 df.interpolate(inplace=True)
 df = df[df['Pressure'] < 35.0]
 df['Pressure'] *= -1
@@ -70,7 +70,7 @@ pre_cpm = df.loc[filter1].copy()
 post_cpm = df.loc[filter3].copy()
 
 
-cols_to_drop = ['StopTime','Month','EntryRate']
+cols_to_drop = ['StopTime','Month','EmissionRate']
 df.drop(columns=cols_to_drop,inplace=True)
 pre_cpm.drop(columns=cols_to_drop,inplace=True)
 post_cpm.drop(columns=cols_to_drop,inplace=True)
