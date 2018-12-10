@@ -109,7 +109,7 @@ for dataset in (indianapolis,):
         #dataset = dataset.name
         df = dataset[dataset['Season']==season]
         print("Dataset: %s, Season: %s" % (dataset.name,season))
-
+        # TODO: use dataset mean instead of seasonal mean 
         df['IndoorConcentration'] -= df['IndoorConcentration'].mean()
 
         if dp is True:
