@@ -8,9 +8,9 @@ import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
 #db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-db_dir = '/home/jonathan/Dropbox/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/Dropbox/var/'
 
-db = sqlite3.connect(db_dir + 'indianapolis.db')
+db = sqlite3.connect(db_dir + 'Indianapolis.db')
 
 observation = pd.read_sql_query(
     "SELECT StopDate AS StopTime FROM Observation_Status_Data WHERE Variable='Mitigation' AND Value='not yet installed';", db, )

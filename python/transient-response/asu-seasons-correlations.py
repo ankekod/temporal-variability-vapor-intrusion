@@ -8,9 +8,9 @@ import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
 #db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-db_dir = '/home/jonathan/Dropbox/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/Dropbox/var/'
 
-db = sqlite3.connect(db_dir + 'hill-afb.db')
+db = sqlite3.connect(db_dir + 'HillAFB.db')
 
 indoor = pd.read_sql_query( "SELECT * FROM DailyAverages;", db, )
 soil_gas = pd.read_sql_query( "SELECT * FROM AverageSubSurfaceSoilGasConcentration;", db, )
