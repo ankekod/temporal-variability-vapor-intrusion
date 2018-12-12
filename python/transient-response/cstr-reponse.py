@@ -13,10 +13,14 @@ figures_dir = './figures/transient-response/'
 
 # parameters
 V = 200.0
-df = pd.read_csv('./data/soils/all-data.csv')
+#df = pd.read_csv('./data/soils/all-data.csv') # no PP data
+
+# pp data stuff
+df = pd.read_csv('./data/preferential-pathway-sensitivity/param-preferential-pathway.csv', header=4) # PP data (only 1 soil)
+df['soil_type'] = np.repeat('sandy-clay',len(df))
+df = df[ (df['SB']==1) & (df['chi']==1) ]
 
 Ae = 0.5
-
 t1, t2 = [], []
 dc1, dc2 = [], []
 Aes = []
@@ -27,8 +31,8 @@ c_max, c_min = [], []
 df.n *= 3600.0
 for Ae in [0.5, 1.0, 1.5]:
     for soil in df['soil_type'].unique():
-        ref = df[ (df['soil_type'] == soil) & ( df.p==-5 ) ]
-        target = df[ (df['soil_type'] == soil) & ( df.p==5 ) ]
+        ref = df[ (df['soil_type'] == soil) & ( df.p==-0.5 ) ]
+        target = df[ (df['soil_type'] == soil) & ( df.p==0.5 ) ]
         Aes.append(Ae)
         soils.append(soil)
         # unsteady cstr method
@@ -41,6 +45,7 @@ for Ae in [0.5, 1.0, 1.5]:
         tau = 240 # max allowed time
         # initial/reference concentration
         y0 = ref.n/V/Ae
+        print(y0)
         c_max.append(y0.values[0])
         for n, p in zip(target.n.values, target.p.values):
             # solving for target state change in variable values
@@ -67,7 +72,7 @@ for Ae in [0.5, 1.0, 1.5]:
             t1.append(t_eq)
             dc1.append(abs(float(c-y0)))
             dcdt1.append(float((c-y0)/t_eq))
-            #print('Min. reached after %2.1f hours' % t_eq)
+            print('Min. reached after %2.1f hours' % t_eq)
             # going back to reference state variables
             n = ref.n
             while solver.y < 0.99*y0.values:
@@ -82,7 +87,7 @@ for Ae in [0.5, 1.0, 1.5]:
             t2.append(t_org)
             dc2.append(abs(float(y0-c)))
             dcdt2.append(float((y0-c)/t_org))
-            #print('Max. reached after %2.1f hours' % t_org)
+            print('Max. reached after %2.1f hours' % t_org)
 
 down  = pd.DataFrame({
     'soil': soils,
@@ -101,36 +106,15 @@ up = pd.DataFrame({
 })
 
 both = pd.DataFrame({
-    'soil': soils,
+    'Soil': soils,
     'Ae': Aes,
-    't_down': t1,
-    't_up': t2,
-    'c_max': c_max,
-    'c_min': c_min,
-}).to_csv('./data/transient-response/cstr-changes.csv')
+    'TimeDown': t1,
+    'TimeUp': t2,
+    'Cmax': c_max,
+    'Cmin': c_min,
+}).to_csv('./data/transient-response/cstr-changes-pp.csv',index=False)
 
 # relationship between t and dc figure
-
-"""
-
-fig, ax = plt.subplots()
-down[down['Ae']==0.5].plot(
-    x='t',
-    y='dc',
-    logy=True,
-    style='o',
-    ax=ax,
-)
-
-up[up['Ae']==0.5].plot(
-    x='t',
-    y='dc',
-    logy=True,
-    style='o',
-    ax=ax,
-)
-plt.show()
-
 """
 
 # relationship between soil and t figure
@@ -169,3 +153,4 @@ ax.set_ylabel('Time to equilibrium (hr)')
 ax.legend(title='$A_e$ (1/hr)')
 
 plt.show()
+"""
