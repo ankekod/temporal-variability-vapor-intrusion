@@ -8,7 +8,7 @@ import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
 #db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-db_dir = '/home/jonathan/Dropbox/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/Dropbox/var/'
 
 #db_dir = 'C://Users/jstroem/lib/vapor-intrusion-dbs/'
 
@@ -176,7 +176,7 @@ custom_x_ticks(ax)
 ax.set_title('PP Closed')
 
 # resampling plots
-# TODO: repeat this analysis but within each season 
+# TODO: repeat this analysis but within each season
 time_scales = ('h', 'D', 'W', 'M')
 
 fig, ax = plt.subplots()
