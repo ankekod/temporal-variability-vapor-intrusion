@@ -7,7 +7,6 @@ import sqlite3
 import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
-#db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
 db_dir = '/home/jonathan/Dropbox/var/'
 
 db = sqlite3.connect(db_dir + 'Indianapolis.db')
@@ -98,4 +97,5 @@ indianapolis = indianapolis.drop(columns=['StopTime','Month'])
 # TODO: change axis labels (adding units) and adjust ticks for the indoor concentration
 
 sns.pairplot(indianapolis, hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
+plt.savefig('./figures/multivariate_analysis/indianapolis_season.pdf',dpi=300)
 plt.show()
