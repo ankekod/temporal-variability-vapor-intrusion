@@ -453,7 +453,7 @@ Strategies for screening for preferential pathway are discussed by \citeauthor{n
 \subsubsection{Multivariate Analysis}
 
 \begin{figure}[htb!]
-  \caption{Seasonal distribution of relevant VI parameters and indoor air contaminant concentration at the ASU site. Only period after land drain was closed considered.}
+  \caption{Seasonal distribution of relevant VI parameters and indoor air contaminant concentration at the ASU site. Only period after the land drain was closed considered.}
   \label{fig:asu_season}
   \includegraphics[width=\textwidth]{asu_season.pdf}
 \end{figure}
@@ -465,44 +465,102 @@ Strategies for screening for preferential pathway are discussed by \citeauthor{n
 \end{figure}
 
 Pressure alone does not seem adequately be able to predict the variability observed at the ASU and Indianapolis VI sites, necessitating a multivariate analysis to better understand the distribution of indoor air contaminant concentration.
-% Add references motivating the choice of parameters
+% TODO: Add references motivating the choice of parameters
 This is acheived by examining the distribution various parameters recorded at these sites, and how they relate to eachother.
 It is known that VI potential differs across the seasons, thus the seasonal distribution of each parameter is considered.
+Winter is defined as from December to Feburary, spring from March to April, summer from June to August and fall from September to November.
+For the ASU site dataset, only the period after the land drain was closed is considered, and the Indianapolis site data only considers the period before the SSD system was installed, and only considers the concentration of PCE.
+The distributions of parameters that these two sites share are:
+\begin{itemize}
+  \item Daily average of the logarithmic indoor air contaminant concentration (TCE at ASU and PCE at Indianapolis).
+  \item Daily average groundwater concentration.
+  \item Daily average indoor/outdoor pressure difference.
+  \item Daily average vapor concentration in the immediate sub-foundation.
+\end{itemize}
+At the ASU site, the daily average air exchange rate is also given, while at the Indianapolis the daily average outdoor temperature is given.
+All of this is shown in Figures (\ref{fig:asu_season}) and (\ref{fig:indianapolis_season}). \par
 
-\begin{acknowledgement}
-This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
-\end{acknowledgement}
+On the diagonal plots in both of these figures, the KDE distributions of each parameter is plotted, with the y-axis denotes the probability density and the x-axis the numeric value associated with that probability density.
+The off-diagonals plots are symmetrical, and show the relationship between two parameters.
+E.g. in the bottom left plot in Figure (\ref{fig:asu_season}), the relationship between the subfoundation TCE concentration and air exchange rate is shown.
+A tight cluster resembling a straight line would indicate a linear relationship between the two factors, and the opposite would indicate no real relationship between the two factors exists. \par
+
+What is immediately apparent from these two figures is that there is a very clear seasonal discrepancy between most of the parameters plotted.
+Most significant of which is that the indoor air contaminant concentration is the lowest and exhibit the least amount of variation during summer.
+During winter the opposite may be seen, where indoor air contaminant concentations are generally higher, and exhibit higher variabilty.
+There is roughly an order of magnitude difference in indoor air concentration between summer and winter, with a few factors (2-3) of variabilty during summer and close to an order of magnitude during winter (albeit this is quite rare).
+Indoor air contaminant concentrations fall somewhere inbetween this for the other seasons.
+This suggests that maximum VI potential is achieved during winter or colder periods, indicating this may be the best period for VI site investgations, although one be aware of the larger variability during this period too. \par
+
+The reasons for these seasonal trends is not clear by a simple univariate analysis, as has been previously discussed.
+This is supported by looking at the relationships between the TCE in indoor air and other parameters in Figure (\ref{fig:asu_season}), where no one clear linear relationship exists, but there are some general correlations that can be made, e.g. one can clearly see that higher depressurziation is associated with higher TCE in indoor air.
+The TCE in indoor air during summer is a good example of how multiple factors play a role here to determine VI.
+For instance, the subfoundation concentration is the highest during this period, and the air exchange rate is the lowest, which would indicate that the highest concentrations of TCE in indoor air would be found during summer.
+But, by looking at the pressure distributions, the house is practically always overpressurized, preventing contaminant entry and reducing variability. \par
+
+At both of these sites, summer is characterized by low contaminant concentrations and low variability as well as a tendency for the structures to be overpressurized, as can be seen in Figure (\ref{fig:indianapolis_season}).
+This is likely due to less heating required during warmer periods, removing the stack effect.
+It is also interesting to note that at the ASU site, the air exchange rate is the lowest during warmer periods, which is the opposite of what would be expected, as windows and doors are more likely to be open during these periods, increasing air exchange.
+However, increasing air exchange rate would simply further decrease indoor air contaminant concentrations during these periods, which is consistent with the previous conclusions.
+% TODO: Add reference to the Ae found at different sites during different seasons
+
+
 
 \subsubsection{Rates of Change in Indoor Air Contaminant Concentration}
 
 \begin{figure}[htb!]
-  \caption{}
-  \label{fig:}
+  \caption{Hourly changes in (logarithmic) indoor air contaminant concentration at the ASU and Indianapolis sites}
+  \label{fig:rate_of_change}
   % "Overview" plot
   \begin{subfigure}{0.45\textwidth}
-    \caption{}
-    \label{fig:}
+    \caption{ASU site, PP open. Seasonal effect considered.}
+    \label{fig:rate_of_change_season_asu_pp_open}
     \includegraphics[width=\textwidth]{rate_of_change_season_asu_pp_open.pdf}
   \end{subfigure}
   % Violinplot figure
   \begin{subfigure}{0.45\textwidth}
-    \caption{}
-    \label{fig:}
+    \caption{ASU site, PP closed. Seasonal effect considered.}
+    \label{fig:rate_of_change_season_asu_pp_closed}
     \includegraphics[width=\textwidth]{rate_of_change_season_asu_pp_closed.pdf}
   \end{subfigure}
   % Indianapolis
   \begin{subfigure}{0.45\textwidth}
-    \caption{}
-    \label{fig:}
+    \caption{Indianapolis site, only PCE considered. Seasonal effect considered.}
+    \label{fig:rate_of_change_season_indianapolis}
     \includegraphics[width=\textwidth]{rate_of_change_season_indianapolis.pdf}
   \end{subfigure}
   % Indianapolis
   \begin{subfigure}{0.45\textwidth}
-    \caption{}
-    \label{fig:}
+    \caption{ASU and Indianapolis sites, compared to predicted rates of changes.}
+    \label{fig:rate_of_change_simulations}
     \includegraphics[width=\textwidth]{rate_of_change_simulations.pdf}
   \end{subfigure}
+  % "Overview" plot
+  \begin{subfigure}{0.45\textwidth}
+    \caption{Different resampling frequencies of the Indianapolis site data of the entire ASU site data.}
+    \label{fig:resampling_asu}
+    \includegraphics[width=\textwidth]{resampling_asu.pdf}
+  \end{subfigure}
+  % Violinplot figure
+  \begin{subfigure}{0.45\textwidth}
+    \caption{Different resampling frequencies of the Indianapolis site data, only PCE considered.}
+    \label{fig:resampling_indianapolis}
+    \includegraphics[width=\textwidth]{resampling_indianapolis.pdf}
+  \end{subfigure}
 \end{figure}
+
+Most of the analysis so far has investigated how various factors impact indoor air contaminant concentrations, but this does says nothing about how quickly this can change across time.
+Knowing how much indoor air contaminant concentrations may change over a given time period is important to understand reduce the number of times indoor air samples have to be collected to estabilish some certainty that the relevant indoor air contaminant concentration has been captured. \par
+
+To examine this, the ASU and Indianapolis datasets are used again, and the 
+
+\begin{equation}
+  \frac{\Delta\log{(c)}}{\Delta t} = \frac{\log{(c(t_2))} - \log{(c(t_1))}}{t_2 - t_1}
+\end{equation}
+
+\begin{acknowledgement}
+This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
+\end{acknowledgement}
 
 \begin{table}[htb!]
   \caption{Abbreviations \& symbols}
