@@ -13,7 +13,9 @@
   {./../figures/air-exchange-rate/},
   {./../figures/kde-iacc-pressure/},
   {./../figures/preferential-pathway-sensitivity/},
-  {./../figures/transient-response/}
+  {./../figures/transient-response/},
+  {./../figures/multivariate_analysis/},
+  {./../figures/rate_of_change/},
 }
 \usepackage{lineno}
 \linenumbers
@@ -375,13 +377,13 @@ It is clear here that there is only a very minor difference made in assuming a c
   \caption{Sensitivity analysis of IACC dependence on indoor/outdoor pressure difference for cases featuring a preferential pathway (\ref{fig:ss-sensitivity-analysis-pp}) and without a preferential pathway (\ref{fig:ss-sensitivity-analysis-no-pp}). Results compared with field data from ASU house.}
   \label{fig:ss-sensitivity-analysis}
   % "Overview" plot
-  \begin{subfigure}{0.55\textwidth}
+  \begin{subfigure}{0.45\textwidth}
     \caption{preferential pathway present. Sensitivity to the presence of a gravel sub-base and contamination in the preferential pathway considered.}
     \label{fig:ss-sensitivity-analysis-pp}
     \includegraphics[width=\textwidth]{yes-pp.pdf}
   \end{subfigure}
   % Violinplot figure
-  \begin{subfigure}{0.55\textwidth}
+  \begin{subfigure}{0.45\textwidth}
     \caption{No preferential pathway present. Sensitivitiy to the presence of a gravel sub-base considered.}
     \label{fig:ss-sensitivity-analysis-no-pp}
     \includegraphics[width=\textwidth]{no-pp.pdf}
@@ -448,201 +450,59 @@ Based on the simulated cases in Figure \ref{fig:ss-sensitivity-analysis} it can 
 In the absense of any of these conditions, a preferential pathway is unlikely to be a signficant contributor to VI.
 Strategies for screening for preferential pathway are discussed by \citeauthor{nielsen_remediation_2017}\cite{nielsen_remediation_2017}. \par
 
+\subsubsection{Multivariate Analysis}
 
-\begin{comment}
-
-Clearly, PPs pose a major problem for site investigations, in particular because they may be difficult or even impossible to anticipate or uncover; even at a well studied site like the ASU house it took years to discover the PP.
-Therefore, there is a need to consider other indications that a PP is present.
-
-% Sensitivity analysis plot showing when a PP is relevant
 \begin{figure}[htb!]
-  \caption{Attenuation factor relative to contaminant vapor in equilibrium with groundwater as a function of indoor-outdoor pressure difference. The effects of a preferential pathway, that is either contaminated or uncontaminated as well as that of having a gravel sub-base vs. uniform sandy clay soil are considered.}
-  \label{fig:model_results_sensitivity_analysis}
-  % Upper left
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:model_results_sensitivity_analysis_0}
-    \includegraphics[width=\textwidth]{ss_pp_sensitivity_analysis_0.png}
-  \end{subfigure}
-  % Upper right
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:model_results_sensitivity_analysis_1}
-    \includegraphics[width=\textwidth]{ss_pp_sensitivity_analysis_1.png}
-  \end{subfigure}
-  % Middle left
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:model_results_sensitivity_analysis_2}
-    \includegraphics[width=\textwidth]{ss_pp_sensitivity_analysis_2.png}
-  \end{subfigure}
-  % Middle right
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:model_results_sensitivity_analysis_3}
-    \includegraphics[width=\textwidth]{ss_pp_sensitivity_analysis_3.png}
-  \end{subfigure}
-  % Lower left
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:model_results_sensitivity_analysis_4}
-    \includegraphics[width=\textwidth]{ss_pp_sensitivity_analysis_4.png}
-  \end{subfigure}
-  % Lower right
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:model_results_sensitivity_analysis_5}
-    \includegraphics[width=\textwidth]{ss_pp_sensitivity_analysis_5.png}
-  \end{subfigure}
+  \caption{Seasonal distribution of relevant VI parameters and indoor air contaminant concentration at the ASU site. Only period after land drain was closed considered.}
+  \label{fig:asu_season}
+  \includegraphics[width=\textwidth]{asu_season.pdf}
 \end{figure}
 
-One way has been suggested by the situation at the ASU house, where there clearly was a PP containing contaminant vapor, and the PP exited into a gravel (permeable) sub-base.
-This situation can be examined using the VI model introduced earlier by examining how IACC is impacted by various factors over a range of indoor-outdoor pressure difference values.
-Instead of representing IACC as absolute concentration, we now non-dimensionalize with respect to the vapor in equilibrium with the groundwater contaminant concentration.
-This non-dimensionalized property is commonly called the attenuation factor and is denoted by $\alpha_\mathrm{gw}$.
-The result of a sensitivity analysis relative to several factors is seen in Figure \ref{fig:model_results_sensitivity_analysis}.
-These examine scenarios in which the indoor-outdoor pressure difference is a driver for VI.
-
-In this figure, all the graphs in the left column show results for a scenario, in which the house has a gravel sub-base, with the remaining surrounding soil assumed to be sandy clay.
-All the right column graphs features only sandy clay soil, directly in contact with the slab.
-Figure \ref{fig:model_results_sensitivity_analysis_0} considers an uncontaminated PP ($\chi = 0$), i.e. the PP delivers clean air to beneath the slab.
-In \ref{fig:model_results_sensitivity_analysis_1} there is no PP present at all, giving a reference state for a "normal" VI scenario.
-\ref{fig:model_results_sensitivity_analysis_2} features a contaminated PP ($\chi = 1$), i.e. the PP delivers contaminant vapor at a concentration characteristic of underlying groundwater.
-
-In terms of conditions that may lead to significant temporal transients in $\alpha_\mathrm{gw}$, driven by indoor-outdoor pressure difference, most of the cases in this analysis show negative results.
-There are only two combinations of factors where significant changes in $\alpha_\mathrm{gw}$ accompany the changes in indoor-outdoor pressure difference, both involving the permeable (gravel) sub-base into which a PP enters.
-In \ref{fig:model_results_sensitivity_analysis_2}, the PP is filled with contaminant vapor whereas figure \ref{fig:model_results_sensitivity_analysis} involves the PP only delivering "clean" air to the gravel sub-base.
-When the building is overpressurized (positive indoor-outdoor pressure difference), the two cases exhibit similar behavior, i.e. $\alpha_\mathrm{gw}$ is low as expected.
-
-When the building is underpressurized, the uncontaminated PP case involves barely any increase in $\alpha_\mathrm{gw}$ while there is a very significant increase in $\alpha_\mathrm{gw}$ in the contaminated PP case.
-For the contaminated PP scenario, this is quite easy to understand, as the extra air flow provided by the PP into the gravel sub-base very effectively disperses contaminant vapor across the sub-base and the contaminant entry rate is increased.
-
-When the PP is provides clean air, the increase in air flow into the sub-base with depressurization is the same.
-However, the resulting increase in air entry rate does not bring in more contaminant as clean air is being drawn in.
-This means that most of the contaminant entry rate is still only controlled by the usual process of diffusion through the soil, giving a result that is actually similar to that for the "no PP and with gravel sub-base" scenario.
-Thus, for a PP to be a significant contributor to contaminant entry at a VI site the conditions such as featured in the bottom left case are required, i.e. a permeable sub-base and the PP must be a source of contaminant.
-
-Various techniques for determining the potential for sewer gas entry into a house are described by \citeauthor{nielsen_remediation_2017-1}\cite{nielsen_remediation_2017-1}.
-Collecting contaminant vapor samples from nearby manholes is also recommended, however one should be aware that contaminant vapors can potentially travel very long distances in a sewer system\cite{mchugh_evidence_2017,roghani_occurrence_2018,riis_vapor_2010}.
-
-% Models specific to ASU & North Island
 \begin{figure}[htb!]
-  \caption{Attenuation factor vs. indoor-outdoor pressure difference when considering VI scenarios similar to the ASU house and the North Island NAS site (\ref{fig:ss_asu} and \ref{fig:ss_north_island} respectively).}
-  \label{fig:model_results_asu_north_island}
-  % ASU
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:ss_asu}
-    \includegraphics[width=\textwidth]{ss_asu.png}
-  \end{subfigure}
-  % North Island
-  \begin{subfigure}[t]{0.45\textwidth}
-    \caption{ }
-    \label{fig:ss_north_island}
-    \includegraphics[width=\textwidth]{ss_north_island.png}
-  \end{subfigure}
+  \caption{Seasonal distribution of relevant VI parameters and indoor air contaminant concentration at the Indianapolis site. Only PCE considered.}
+  \label{fig:indianapolis_season}
+  \includegraphics[width=\textwidth]{indianapolis_season.pdf}
 \end{figure}
 
-At the ASU house, after the PP was closed, there was still roughly an order of magnitude variation in IACC, the reasons for which Figure \ref{fig:model_results_sensitivity_analysis} does not address.
-Likewise, there was more than two orders of magnitude observed at the North Island site over the indoor-outdoor pressure difference ranges simulated despite there not being a PP present.
-Therefore, it is of interest to examine these sites a bit further using the model.
-
-The foundation crack at the ASU house seems by all accounts to be quite small, roughly 180x1 cm and located close to the PP\cite{guo_vapor_2015}.
-This crack is smaller than the one assumed in the model used in Figure \ref{fig:model_results_sensitivity_analysis}.
-The influence of indoor-outdoor pressure difference is explored for a case in which a smaller crack area is assumed.
-We also consider the effects of having a significantly lower air exchange rate, 0.1 vs. the regular 0.5 per hour.
-
-The results of the case shown in Figure \ref{fig:model_results_sensitivity_analysis_2} is shown in Figure \ref{fig:ss_asu}.
-Even though there is an increase in $\alpha_\mathrm{gw}$ with increased underpressurization, it is no where near the roughly one order of magnitude recorded at the ASU house after the PP was closed.
-So while crack dimensions can clearly influence $\alpha_\mathrm{gw}$, they cannot be used to infer a bigger role for pressure difference in temporal variations in $\alpha_\mathrm{gw}$ or IACC.
-The influence of air exchange rate on $\alpha_\mathrm{gw}$ predictions is also shown in Figure \ref{fig:model_results_asu_north_island}.
-Clearly, the value of air exchange rate at steady-state conditions will only influence absolute concentrations in the structure.
-Ultimately, the reason for the transient variability in IACC during the post-CPM period at the ASU house remains elusive, as a Pearson's r analysis between IACC and various factors do not yield any explanation.
-
-In the case of the North Island site, variations in IACC are clearly not related to the existence of a PP.
-The soil underlying the North Island site is more sand-like\cite{hosangadi_high-frequency_2017}.
-The significance of this is that sand soil is much more permeable than sandy clay soil, which means that $\alpha_\mathrm{gw}$ will be much more sensitive to changes in indoor-outdoor pressure difference.
-Thus, another "normal" VI scenario was run but this time with sand soil instead of sandy clay, the results of which may be seen in Figure \ref{fig:ss_north_island}.
-Under these conditions, $\alpha_\mathrm{gw}$ changes significantly with pressurization, spanning roughly two orders of magnitude.
-This is consistent with what was observed at North Island, as there the span of IACC values was roughly the same across this range of indoor-outdoor pressure difference values.
-This simulation, together with the Pearson $r = -0.64$ for North Island in Figure \ref{fig:kde-asu-nas} suggest that under conditions where the soil around a structure is relatively permeable, indoor-outdoor pressure difference can be a significant driving forces for transient changes in IACC.
-Therefore, recording the indoor-outdoor pressure difference at a site (in particular if the soil is permeable) may offer insight into the potential for transient changes in IACC (some good methods for doing this are suggested by \citeauthor{nielsen_remediation_2017-1}\cite{nielsen_remediation_2017-1}).
-
-% Transient part
-\subsubsection{Transient Modeling}
-
-Analyzing the impact of a PP using steady-state simulations such as those in Figures \ref{fig:model_results_sensitivity_analysis} and does not revealing about how quickly IACC can change in the presence of a PP.
-A transient simulation of a VI scenario that is characterized by a PP has been performed, where only the indoor-outdoor pressure difference was temporally changed.
-The pressure difference is changed in a sinusoidal fashion, defined by \eqref{eq:p_transient},
-\begin{equation}
-  \label{eq:p_transient}
-  p_\mathrm{in/out} = 10 \sin{(2 \pi t)} - 0.5
-\end{equation}
-where $t$ is given in days and $p_\mathrm{in/out}$ is the indoor-outdoor pressure difference in Pa.
-Figure \ref{fig:transient_simulation} shows the results of this simulation.
-
-\begin{figure}
-  \caption{Transient response of TCE in indoor air (as attenuation factor) and in the surrounding soil \& gravel sub-base for a PP VI scenario subject to sinusoidal indoor-outdoor pressure fluctuations.
-  \ref{fig:alpha_response} shows the attenuation factor and indoor-outdoor pressure across time.
-  Figures \ref{fig:soil_30_hr} \& \ref{fig:soil_42_hr} show the contaminant concentration (normalized to the contaminant vapor in equilibrium with groundwater) in the surrounding soil \& gravel sub-base at different depths and times.}
-  \label{fig:transient_simulation}
-  % Transient response figure
-  \begin{subfigure}[t]{0.75\textwidth}
-    \caption{ }
-    \label{fig:alpha_response}
-    \includegraphics[width=\textwidth]{alpha_transient.png}
-  \end{subfigure}
-  % Soil t = 30 hr ...
-  \begin{subfigure}[c]{0.45\textwidth}
-    \caption{t = 30 hr}
-    \label{fig:soil_30_hr}
-    \includegraphics[width=\textwidth]{tri_layer_soil_concs1.png}
-  \end{subfigure}
-  % Soil t = 42 hr ...
-  \begin{subfigure}[c]{0.45\textwidth}
-    \caption{t = 42 hr}
-    \label{fig:soil_42_hr}
-    \includegraphics[width=\textwidth]{tri_layer_soil_concs2.png}
-  \end{subfigure}
-  % Color map
-  \begin{subfigure}[c]{0.05\textwidth}
-    \phantomcaption{ }
-    %\label{fig:cmap}
-    \includegraphics[width=\textwidth]{cmap.png}
-  \end{subfigure}
-\end{figure}
-
-Figure \ref{fig:alpha_response} shows the IACC response, given as attenuation factor relative to contaminant vapor in equilibrium with groundwater, and the indoor-outdoor pressure difference with time.
-What is apparent is that $\alpha_\mathrm{gw}$ closely follows the indoor-outdoor pressure difference, with the max./min. $\alpha_\mathrm{gw}$ being reached roughly 0.5 hours after the indoor-outdoor pressure difference reaches its max./min..
-The reader should be aware that the assumption that the indoor air space can be modeled as a CST overestimates how dynamic this process is as a real house probably would not be perfectly mixed on as a short time scale as this.
-Regardless, this suggests that VI sites characterized by PPs are highly dynamic and IACC's may change quickly in response to changing indoor-outdoor pressure differences, consistent with what was observed at the ASU house\cite{holton_temporal_2013}.
-Again, the dynamics of the indoor-outdoor pressure difference at a VI site can offer insight into the potential for transient behavior of IACC.
-
-Figures \ref{fig:soil_30_hr} and \ref{fig:soil_42_hr} show the contaminant concentration (normalized to the contaminant vapor in equilibrium with groundwater) in the soil and gravel sub-base at three different depths at times of 30 and 42 hr respectively corresponding to roughly the maximum in overpressurization and depressurization respectively.
-The top layer is 3 m above groundwater and immediately under the house foundation (indicated by the black square).
-The middle and bottom layers are 2 and 1 m above groundwater respectively.
-The black streamlines show the contaminant transport flow paths.
-The region closest to the PP is expanded in the circular insets.
-
-The impact of the PP on the contaminant vapor concentration in the subsurface is apparent in these figures, as one easily sees how (especially) the gravel sub-base is filled up.
-The contaminant vapor concentration is the highest closest to the PP (which is located at the edge of the gravel sub-base) and decreases with increased distance from the PP.
-Note that a very small amount of contaminant vapor leaves the gravel sub-base, as the sandy clay has a relatively large resistance to transport compared with gravel.
-This makes it difficult to detect the contribution of the PP outside the foundation footprint.
-However, this may not always be true, as vapor contaminant from the PP would disperse more easily into more permeable soils.
-
-It should also be noted that the vapor contaminant emanating from the PP in this model is relatively high concentration; the vapor contaminant concentration is equal to that in equilibrium with the groundwater source.
-This does not always seem to be the case, as VI sites that have uncovered PPs find that the vapor contaminant emanating from the PP can be lower than that\cite{guo_vapor_2015}.
-Therefore, it may be much more difficult than it may appear in Figures \ref{fig:soil_30_hr} and \ref{fig:soil_42_hr} to localize a vapor contaminant hotspot as a way to determining the presence of a PP at a particular VI site.
-
-The insert circles in figures \ref{fig:soil_30_hr} and \ref{fig:soil_42_hr} also show that for the simulated time period, only a small amount of the contaminant enters the structure (as evident by the blue low concentration zone around the perimeter), yet a very large increase in $\alpha_\mathrm{gw}$ occurs.
-The concentration in the rest of the sub-base is unchanged.
-This suggests that once a PP has deposited contaminant underneath a structure, it may persist for a long time period, as pointed out by \citeauthor{guo_vapor_2015}\cite{guo_vapor_2015}.
-
-\end{comment}
+Pressure alone does not seem adequately be able to predict the variability observed at the ASU and Indianapolis VI sites, necessitating a multivariate analysis to better understand the distribution of indoor air contaminant concentration.
+% Add references motivating the choice of parameters
+This is acheived by examining the distribution various parameters recorded at these sites, and how they relate to eachother.
+It is known that VI potential differs across the seasons, thus the seasonal distribution of each parameter is considered.
 
 \begin{acknowledgement}
 This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
 \end{acknowledgement}
+
+\subsubsection{Rates of Change in Indoor Air Contaminant Concentration}
+
+\begin{figure}[htb!]
+  \caption{}
+  \label{fig:}
+  % "Overview" plot
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \label{fig:}
+    \includegraphics[width=\textwidth]{rate_of_change_season_asu_pp_open.pdf}
+  \end{subfigure}
+  % Violinplot figure
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \label{fig:}
+    \includegraphics[width=\textwidth]{rate_of_change_season_asu_pp_closed.pdf}
+  \end{subfigure}
+  % Indianapolis
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \label{fig:}
+    \includegraphics[width=\textwidth]{rate_of_change_season_indianapolis.pdf}
+  \end{subfigure}
+  % Indianapolis
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \label{fig:}
+    \includegraphics[width=\textwidth]{rate_of_change_simulations.pdf}
+  \end{subfigure}
+\end{figure}
 
 \begin{table}[htb!]
   \caption{Abbreviations \& symbols}
