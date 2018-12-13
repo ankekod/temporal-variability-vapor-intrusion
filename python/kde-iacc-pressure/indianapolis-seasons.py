@@ -11,9 +11,9 @@ import matplotlib.patches as mpatches
 
 data_dir = './data/preferential-pathway-sensitivity/'
 #db_dir = '/home/jonathan/lib/vapor-intrusion-dbs/'
-db_dir = '/home/jonathan/Dropbox/vapor-intrusion-dbs/'
+db_dir = '/home/jonathan/Dropbox/var/'
 
-db = sqlite3.connect(db_dir + 'indianapolis.db')
+db = sqlite3.connect(db_dir + 'Indianapolis.db')
 
 observation = pd.read_sql_query(
     "SELECT StopDate AS StopTime FROM Observation_Status_Data WHERE Variable='Mitigation' AND Value='not yet installed';", db, )
@@ -109,8 +109,8 @@ for dataset in (indianapolis,):
         #dataset = dataset.name
         df = dataset[dataset['Season']==season]
         print("Dataset: %s, Season: %s" % (dataset.name,season))
-        # TODO: use dataset mean instead of seasonal mean 
-        df['IndoorConcentration'] -= df['IndoorConcentration'].mean()
+        # TODO: use dataset mean instead of seasonal mean
+        df['IndoorConcentration'] -= dataset['IndoorConcentration'].mean()
 
         if dp is True:
             df['p'] -= df['p'].mean()
@@ -173,7 +173,7 @@ for dataset in (indianapolis,):
     g.ax_joint.set_yticklabels(my_ytick_labels)
     g.ax_joint.legend(handles=label_patches, loc='upper left')
     plt.tight_layout()
-    plt.savefig('./figures/kde-iacc-pressure/%s-seasons.pdf' % dataset.name.replace(',','').replace(' ','_').lower(), dpi=300)
+    plt.savefig('./figures/kde-iacc-pressure/%s_seasons.pdf' % dataset.name.replace(',','').replace(' ','_').lower(), dpi=300)
     # TODO: dynamically change axis limits?
     #plt.show()
     plt.clf()
