@@ -464,12 +464,9 @@ Strategies for screening for preferential pathway are discussed by \citeauthor{n
   \includegraphics[width=\textwidth]{indianapolis_season.pdf}
 \end{figure}
 
-Pressure alone does not seem adequately be able to predict the variability observed at the ASU and Indianapolis VI sites, necessitating a multivariate analysis to better understand the distribution of indoor air contaminant concentration.
+Indoor/outdoor pressure differences or air exchange rate alone do not seem adequately be able to predict the variability observed at the ASU and Indianapolis VI sites, necessitating a multivariate analysis to better understand the distribution of indoor air contaminant concentration.
 % TODO: Add references motivating the choice of parameters
 This is acheived by examining the distribution various parameters recorded at these sites, and how they relate to eachother.
-It is known that VI potential differs across the seasons, thus the seasonal distribution of each parameter is considered.
-Winter is defined as from December to Feburary, spring from March to April, summer from June to August and fall from September to November.
-For the ASU site dataset, only the period after the land drain was closed is considered, and the Indianapolis site data only considers the period before the SSD system was installed, and only considers the concentration of PCE.
 The distributions of parameters that these two sites share are:
 \begin{itemize}
   \item Daily average of the logarithmic indoor air contaminant concentration (TCE at ASU and PCE at Indianapolis).
@@ -478,23 +475,26 @@ The distributions of parameters that these two sites share are:
   \item Daily average vapor concentration in the immediate sub-foundation.
 \end{itemize}
 At the ASU site, the daily average air exchange rate is also given, while at the Indianapolis the daily average outdoor temperature is given.
-All of this is shown in Figures (\ref{fig:asu_season}) and (\ref{fig:indianapolis_season}). \par
+All of this is shown in Figures (\ref{fig:asu_season}) and (\ref{fig:indianapolis_season}).
+It is known that VI potential differs across the seasons, thus the seasonal distribution of each parameter is considered.
+Winter is defined as from December to Feburary, spring from March to April, summer from June to August and fall from September to November.
+For the ASU site dataset, only the period after the land drain was closed is considered, and the Indianapolis site data only considers the period before the SSD system was installed, and only considers the concentration of PCE.\par
 
 On the diagonal plots in both of these figures, the KDE distributions of each parameter is plotted, with the y-axis denotes the probability density and the x-axis the numeric value associated with that probability density.
 The off-diagonals plots are symmetrical, and show the relationship between two parameters.
-E.g. in the bottom left plot in Figure (\ref{fig:asu_season}), the relationship between the subfoundation TCE concentration and air exchange rate is shown.
+E.g. in the bottom left plot in Figure \ref{fig:asu_season}, the relationship between the subfoundation TCE concentration and air exchange rate is shown.
 A tight cluster resembling a straight line would indicate a linear relationship between the two factors, and the opposite would indicate no real relationship between the two factors exists. \par
 
 What is immediately apparent from these two figures is that there is a very clear seasonal discrepancy between most of the parameters plotted.
-Most significant of which is that the indoor air contaminant concentration is the lowest and exhibit the least amount of variation during summer.
+Most significant of which is that the indoor air contaminant concentration is the lowest, and exhibit the least amount of variation during summer.
 During winter the opposite may be seen, where indoor air contaminant concentations are generally higher, and exhibit higher variabilty.
 There is roughly an order of magnitude difference in indoor air concentration between summer and winter, with a few factors (2-3) of variabilty during summer and close to an order of magnitude during winter (albeit this is quite rare).
 Indoor air contaminant concentrations fall somewhere inbetween this for the other seasons.
-This suggests that maximum VI potential is achieved during winter or colder periods, indicating this may be the best period for VI site investgations, although one be aware of the larger variability during this period too. \par
+This suggests that maximum VI potential is achieved during winter or colder periods, indicating this may be the best period for VI site investgations, although one should be aware of the larger variability during this period. \par
 
 The reasons for these seasonal trends is not clear by a simple univariate analysis, as has been previously discussed.
-This is supported by looking at the relationships between the TCE in indoor air and other parameters in Figure (\ref{fig:asu_season}), where no one clear linear relationship exists, but there are some general correlations that can be made, e.g. one can clearly see that higher depressurziation is associated with higher TCE in indoor air.
-The TCE in indoor air during summer is a good example of how multiple factors play a role here to determine VI.
+This is supported by looking at the relationships between the TCE in indoor air and other parameters in Figure \ref{fig:asu_season}, where no one clear linear relationship exists, but there are some general correlations that can be made, e.g. one can clearly see that higher depressurziation is associated with higher TCE in indoor air.
+The TCE in indoor air during summer is a good example of how multiple factors can play a complex role in determining VI potential.
 For instance, the subfoundation concentration is the highest during this period, and the air exchange rate is the lowest, which would indicate that the highest concentrations of TCE in indoor air would be found during summer.
 But, by looking at the pressure distributions, the house is practically always overpressurized, preventing contaminant entry and reducing variability. \par
 
@@ -549,14 +549,48 @@ However, increasing air exchange rate would simply further decrease indoor air c
   \end{subfigure}
 \end{figure}
 
-Most of the analysis so far has investigated how various factors impact indoor air contaminant concentrations, but this does says nothing about how quickly this can change across time.
-Knowing how much indoor air contaminant concentrations may change over a given time period is important to understand reduce the number of times indoor air samples have to be collected to estabilish some certainty that the relevant indoor air contaminant concentration has been captured. \par
+Most of the analysis so far has investigated how various factors impact indoor air contaminant concentrations, but this revleas little regarding how quickly this can change over time.
+Knowing how much indoor air contaminant concentration may change over a given time period is important to reduce the number of times indoor air samples have to be collected to establish the relevant indoor air contaminant concentration. \par
 
-To examine this, the ASU and Indianapolis datasets are used again, and the 
-
+To examine this, the ASU and Indianapolis datasets are used again, where the rate of change in indoor air contaminant concentration is calculated, and probability distributions for these valuese given using the KDE method.
+The rate of change in indoor air contaminant concentration is given by \eqref{eq:rate_of_change}
 \begin{equation}
-  \frac{\Delta\log{(c)}}{\Delta t} = \frac{\log{(c(t_2))} - \log{(c(t_1))}}{t_2 - t_1}
+  \frac{\Delta\log{(c)}}{\Delta t} = \frac{\log{(c(t_2))} - \log{(c(t_1))}}{t_2 - t_1} \label{eq:rate_of_change}
 \end{equation}
+where $c$ is the indoor air contaminant concentration, $t$ is some timeperiod where the concentration is known and $\log$ is the base-10 logarithm.
+In the ASU dataset, indoor air contaminant concentrations were (for the most part) taken at 4-hour intervals\cite{holton_long-term_2015}, while at the Indianapolis site samples were not collected with the same regularity, but several samples were taken everyday for any given sampling location\cite{u.s._environmental_protection_agency_assessment_2015}, giving high time-resolution datasets to work with.
+
+In Figure \ref{fig:rate_of_change_season_asu_pp_open} and \ref{fig:rate_of_change_season_asu_pp_closed} the distributions of the rate of change on an hourly basis, i.e. how much the contaminant concentration changed over one hour ($t_2 - t_1 = 1 \; \mathrm{hour}$), is shown divided up into each season.
+Both of the figures consider non-CPM periods, but Figure \ref{fig:rate_of_change_season_asu_pp_open} only contains data from the period when the preferential pathway still open and \ref{fig:rate_of_change_season_asu_pp_closed} data from after the the preferential pathway was closed.
+
+These distributions show that on an hourly basis, only minor changes in indoor air contaminant concentration may be expected; roughly one could at most expect at 50\% increase and a 25\% decrease in indoor air contaminant concentration over a hour at this site.
+No significant seasonal difference in the rate of changes seems to exist within either period, except for during summer after the land drain was closed, where greater rates of change indoor air contaminant concentration were more prevalent, albeit still minor.
+The preferential pathway had a minor impact on the rate of change, increasing the probability of relatievly greater changes, but again only minor differences.
+
+In Figure \ref{fig:rate_of_change_season_indianapolis} the distribution of hourly rate of change in PCE concentration at the Indianapolis site is shown.
+The conclusions from the ASU house hold here as well, with only minor rates of change observed and no seasonal difference.
+
+This suggests that no significant changes in indoor air contaminant concentration may be expected on a hourly basis regardless of the presence of a preferential pathway as well as the hourly rate of change is seasonally independent.
+
+Indoor air contaminant concentrations may however change much more significantly after a longer time period.
+This may be investigated by resampling the two datasets over different time periods and aggregating by the mean concentration within each time period.
+The rate of change is again calculated using \eqref{eq:rate_of_change}, but unlike in the previous figures, $t_2 - t_1 = 1$ day, week or month.
+
+Since there was no major difference in rate of change in indoor air concentratin between the preferential pathway open/closed periods, the entire non-CPM period of the ASU house dataset is used for this analysis.
+Figure \ref{fig:resampling_asu} and \ref{fig:resampling_indianapolis} shows the distributions of rate of change in indoor air contaminant concentration resampled over a daily, weekly and monthly basis at the ASU house and Indianapolis house respectively.
+
+As one might expect, the probability of a larger change in indoor air contaminant increases, as the resampling timeperiod increases.
+Only minor changes in indoor air concentration may be expected on a daily basis, albeit larger changes are more likely to occur than on an hourly basis.
+At the ASU site, as the resampling timeperiod increases, larger changes become more probable, where on a monthly resampling period half an order magnitude change start to become probable.
+At the Indianapolis site, the rate of change over the resampling periods are smaller, and less probable than at the ASU site.
+But similarily, after a monthly period, larger changes begin to become more prevalent.
+
+One should keep in mind that by using the mean to aggregate the indoor air concentration, there is a tendency for data to be "smoothed out", missing some of the outliers, especially as the resampling period increases.
+Regardless, this analysis suggests that sampling indoor air on a daily basis may be unnecessary as little new information may be gained.
+And sampling on a monthly basis may be too long of a period, and important information may be missed.
+
+
+
 
 \begin{acknowledgement}
 This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
