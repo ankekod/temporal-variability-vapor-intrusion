@@ -11,6 +11,8 @@ import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
+db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
+
 fig_dir = './figures/rate_of_change/'
 db = sqlite3.connect(db_dir + 'HillAFB.db')
 db_indianapolis = sqlite3.connect(db_dir + 'Indianapolis.db')
@@ -142,7 +144,7 @@ def process_simulation(path):
     return simulation
 
 def custom_x_ticks(ax, my_xticks=np.log10([0.5, 1.0, 5.0])):
-    my_xtick_labels = ["%1.1e" % x_tick for x_tick in 10.0**ax.get_xticks()]
+    my_xtick_labels = ["%1.3f" % x_tick for x_tick in 10.0**ax.get_xticks()]
     #ax.set_xlim((my_xticks[0], my_xticks[-1]))
     #ax.set_xticks(my_xticks)
     ax.set_xticklabels(my_xtick_labels)
@@ -170,7 +172,7 @@ def plot_facetgrid(df):
     g.despine(bottom=True, left=True)
     g.axes[-1][0].set_xlabel('Contaminant in Indoor Air $\\mathrm{(\\mu g/m^3)}$')
     custom_x_ticks(g.axes[-1][0],my_xticks=np.log10([0.001,0.01,0.1,1,10,100]))
-    return
+    return g
 #plt.show()
 
 
@@ -178,13 +180,14 @@ asu, pre_cpm, post_cpm = process_asu()
 asu = asu[asu['PP'] != 'CPM'].reset_index() # removes cpm period
 asu['Category'] = 'PP ' + asu['PP'] + ', ' + asu['Season']
 sns.set_palette(('Blue','Green','Red','Orange','Orange','Blue','Green','Red',))
-plot_facetgrid(asu)
+g = plot_facetgrid(asu)
+g.axes[-1][0].set_xlabel('TCE in Indoor Air $\\mathrm{(\\mu g/m^3)}$')
 
 
 indianapolis = process_indianapolis()
 indianapolis['Category'] = indianapolis['Specie'] + ', ' + indianapolis['Season']
 sns.set_palette(('Red','Red','Red','Orange','Orange','Orange','Blue','Blue','Blue',))
-plot_facetgrid(indianapolis)
+g = plot_facetgrid(indianapolis)
 #plt.show()
 
 resampled = pd.DataFrame({'Resampling': [], 'Delta': [], 'Dataset': []})
