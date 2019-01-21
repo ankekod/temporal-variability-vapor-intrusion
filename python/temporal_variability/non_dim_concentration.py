@@ -10,7 +10,7 @@ from scipy import stats
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
-#db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
+db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
 
 db = sqlite3.connect(db_dir + 'HillAFB.db')
 
@@ -74,21 +74,31 @@ filter3 = (asu['StopTime'] > phase3['StartTime'].values[0])
 
 pre_cpm = asu.loc[filter1].copy()
 post_cpm = asu.loc[filter3].copy()
+non_cpm = pd.concat([pre_cpm, post_cpm])
+
+
+fig, ax = plt.subplots()
+r, p = stats.pearsonr( non_cpm['Pressure'], non_cpm['AirExchangeRate'],)
+ax.set_title('r = %1.2f, p = %1.2f' % (r, p))
+
+sns.kdeplot(non_cpm['Pressure'], non_cpm['AirExchangeRate'],clip=((-3,3),(0,2)), shade_lowest=False,shade=True,  ax=ax)
+
+
 
 # Attenunation from subsurface concentration correlation with pressure and air exchange plots
 fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2,sharey=True)
 
 r, p = stats.pearsonr( pre_cpm['Pressure'], pre_cpm['AttenuationSubSurface'],)
-ax1.set_title('r = %1.2f' % r)
+ax1.set_title('r = %1.2f, p = %1.2f' % (r, p))
 
 r, p = stats.pearsonr( pre_cpm['AirExchangeRate'], pre_cpm['AttenuationSubSurface'],)
-ax2.set_title('r = %1.2f' % r)
+ax2.set_title('r = %1.2f, p = %1.2f' % (r, p))
 r, p = stats.pearsonr( post_cpm['Pressure'], post_cpm['AttenuationSubSurface'],)
 
-ax3.set_title('r = %1.2f' % r)
+ax3.set_title('r = %1.2f, p = %1.2f' % (r, p))
 r, p = stats.pearsonr( post_cpm['AirExchangeRate'], post_cpm['AttenuationSubSurface'],)
 
-ax4.set_title('r = %1.2f' % r)
+ax4.set_title('r = %1.2f, p = %1.2f' % (r, p))
 
 sns.kdeplot(pre_cpm['Pressure'], pre_cpm['AttenuationSubSurface'],clip=((-3,3),(-4,0)), shade_lowest=False,shade=True,  ax=ax1)
 sns.kdeplot(pre_cpm['AirExchangeRate'], pre_cpm['AttenuationSubSurface'],clip=((0,1),(-4,0)), shade_lowest=False,shade=True,  ax=ax2)
