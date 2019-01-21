@@ -10,8 +10,8 @@ import seaborn as sns
 # TODO: add indianapolis data and add to present analysis
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/Dropbox/var/'
-#db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
+#db_dir = '/home/jonathan/Dropbox/var/'
+db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
 
 fig_dir = './figures/rate_of_change/'
 db = sqlite3.connect(db_dir + 'HillAFB.db')
@@ -208,7 +208,7 @@ names = (
 )
 
 for dataset, name in zip(datasets,names):
-    for resampling_time in ('1D','1W','3W','1M',):
+    for resampling_time in ('1D','2D','3D','1W','2W','3W','1M','2M','3M','6M','1Y'):
         r = dataset.resample(resampling_time ,on='StopTime', kind='timestamp')
         r = r['Concentration'].agg([np.mean, np.max, np.min, np.std])
         to_be_appended = pd.DataFrame({
