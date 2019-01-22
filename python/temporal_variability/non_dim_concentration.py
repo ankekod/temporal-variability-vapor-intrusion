@@ -72,40 +72,13 @@ phase3 = phases[(phases['CPM'] == 'off') & (phases['LandDrain'] == 'closed')]
 filter1 = (asu['StopTime'] < phase1['StopTime'].values[0])
 filter3 = (asu['StopTime'] > phase3['StartTime'].values[0])
 
-pre_cpm = asu.loc[filter1].copy()
-post_cpm = asu.loc[filter3].copy()
-non_cpm = pd.concat([pre_cpm, post_cpm])
+pp_status = lambda x: 'Open' if x < phase1['StopTime'].values[0] else ('Closed' if x > phase3['StartTime'].values[0] else 'CPM')
+asu['PP'] = asu['StopTime'].apply(pp_status)
 
-
-fig, ax = plt.subplots()
-r, p = stats.pearsonr( non_cpm['Pressure'], non_cpm['AirExchangeRate'],)
-ax.set_title('r = %1.2f, p = %1.2f' % (r, p))
-
-sns.kdeplot(non_cpm['Pressure'], non_cpm['AirExchangeRate'],clip=((-3,3),(0,2)), shade_lowest=False,shade=True,  ax=ax)
-
-
-
-# Attenunation from subsurface concentration correlation with pressure and air exchange plots
-fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2,sharey=True)
-
-r, p = stats.pearsonr( pre_cpm['Pressure'], pre_cpm['AttenuationSubSurface'],)
-ax1.set_title('r = %1.2f, p = %1.2f' % (r, p))
-
-r, p = stats.pearsonr( pre_cpm['AirExchangeRate'], pre_cpm['AttenuationSubSurface'],)
-ax2.set_title('r = %1.2f, p = %1.2f' % (r, p))
-r, p = stats.pearsonr( post_cpm['Pressure'], post_cpm['AttenuationSubSurface'],)
-
-ax3.set_title('r = %1.2f, p = %1.2f' % (r, p))
-r, p = stats.pearsonr( post_cpm['AirExchangeRate'], post_cpm['AttenuationSubSurface'],)
-
-ax4.set_title('r = %1.2f, p = %1.2f' % (r, p))
-
-sns.kdeplot(pre_cpm['Pressure'], pre_cpm['AttenuationSubSurface'],clip=((-3,3),(-4,0)), shade_lowest=False,shade=True,  ax=ax1)
-sns.kdeplot(pre_cpm['AirExchangeRate'], pre_cpm['AttenuationSubSurface'],clip=((0,1),(-4,0)), shade_lowest=False,shade=True,  ax=ax2)
-
-sns.kdeplot(post_cpm['Pressure'], post_cpm['AttenuationSubSurface'],clip=((-3,3),(-4,0)), shade_lowest=False,shade=True,  ax=ax3)
-sns.kdeplot(post_cpm['AirExchangeRate'], post_cpm['AttenuationSubSurface'],clip=((0,1),(-4,0)), shade_lowest=False,shade=True,  ax=ax4)
-
-
-plt.tight_layout()
+g = sns.PairGrid(asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)][['AttenuationSubSurface','Pressure','AirExchangeRate','PP']], hue='PP')
+#g = g.map_lower(sns.kdeplot, shade=True, shade_lowest=False)
+g = g.map_upper(sns.regplot, x_bins=20, truncate=True )
+g = g.map_lower(sns.regplot, x_bins=20, truncate=True )
+g = g.map_diag(sns.kdeplot, shade=True)
+g = g.add_legend()
 plt.show()
