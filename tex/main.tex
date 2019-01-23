@@ -14,8 +14,7 @@
   {./../figures/kde-iacc-pressure/},
   {./../figures/preferential-pathway-sensitivity/},
   {./../figures/transient-response/},
-  {./../figures/multivariate_analysis/},
-  {./../figures/rate_of_change/},
+  {./../figures/multivariate_analysis/}
 }
 \usepackage{lineno}
 \linenumbers
@@ -45,7 +44,15 @@
 
 \section{Introduction}
 
-The significant temporal varibility in indoor air contaminant concentrations 
+The significant temporal varibility in indoor air contaminant concentrations at vapor intrusion (VI) sites pose a major impedent for assertaining the relevant human exposure to vapor contaminant.
+Exactly how significantly the indoor air concentration may vary, and the causes of the variability is poorly understood.
+Improving our understanding of these two factors are crucial to reduce uncertainty in determining indoor air contaminant exposures, and reducing the length of these investigations.
+
+
+Two well-documentated VI sites both showed significant temporal variability in indoor air contaminant concentrations.
+One is a two-story house near Hill AFB in Utah (called the ASU house in this paper), and the other a duplex in Indianapolis, IN.
+
+The discovery of preferential pathways for contaminant entry at VI sites has further
 
 \section{Methods}
 
@@ -58,7 +65,51 @@ Probability distributions of various parameters are constructed using the kernel
 
 \subsection{Temporal Variability of Indoor Air Contaminant Concentration}
 
+\begin{figure}[htb!]
+  \caption{ }
+  \label{fig:temporal_variability}
+  % ASU/North Island plot
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \caption{ }
+    \label{fig:temporal_variability_asu}
+    \includegraphics[width=\textwidth]{temporal_variability/asu.pdf}
+  \end{subfigure}
+  % Indianapolis plot
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \caption{ }
+    \label{fig:temporal_variability_indianapolis}
+    \includegraphics[width=\textwidth]{temporal_variability/indianapolis.pdf}
+  \end{subfigure}
+\end{figure}
 
+\subsection{Maximum Change in Indoor Air Contaminant Concentration}
+
+\begin{figure}[htb!]
+  \caption{ }
+  \label{fig:resampling}
+  \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
+\end{figure}
+
+\subsubsection{Conclusions From Steady-State Modeling}
+
+\begin{figure}[htb!]
+  \caption{Sensitivity analysis of IACC dependence on indoor/outdoor pressure difference for cases featuring a preferential pathway (\ref{fig:ss-sensitivity-analysis-pp}) and without a preferential pathway (\ref{fig:ss-sensitivity-analysis-no-pp}). Results compared with field data from ASU house.}
+  \label{fig:ss-sensitivity-analysis}
+  % "Overview" plot
+  \begin{subfigure}{0.45\textwidth}
+    \caption{preferential pathway present. Sensitivity to the presence of a gravel sub-base and contamination in the preferential pathway considered.}
+    \label{fig:ss-sensitivity-analysis-pp}
+    \includegraphics[width=\textwidth]{yes-pp.pdf}
+  \end{subfigure}
+  % Violinplot figure
+  \begin{subfigure}{0.45\textwidth}
+    \caption{No preferential pathway present. Sensitivitiy to the presence of a gravel sub-base considered.}
+    \label{fig:ss-sensitivity-analysis-no-pp}
+    \includegraphics[width=\textwidth]{no-pp.pdf}
+  \end{subfigure}
+\end{figure}
 
 \begin{acknowledgement}
   This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
