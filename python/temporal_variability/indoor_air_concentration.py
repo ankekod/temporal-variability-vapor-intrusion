@@ -208,7 +208,7 @@ names = (
 )
 
 for dataset, name in zip(datasets,names):
-    for resampling_time in ('1D','2D','3D','1W','2W','3W','1M','2M','3M','6M','1Y'):
+    for resampling_time in ('1D','2D','3D','1W','2W','3W','1M','2M','3M','6M',):
         r = dataset.resample(resampling_time ,on='StopTime', kind='timestamp')
         r = r['Concentration'].agg([np.mean, np.max, np.min, np.std])
         to_be_appended = pd.DataFrame({
