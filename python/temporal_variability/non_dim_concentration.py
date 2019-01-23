@@ -6,7 +6,7 @@ from scipy.interpolate import interp1d
 import sqlite3
 import seaborn as sns
 from scipy import stats
-
+from scipy.optimize import curve_fit
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
@@ -75,10 +75,28 @@ filter3 = (asu['StopTime'] > phase3['StartTime'].values[0])
 pp_status = lambda x: 'Open' if x < phase1['StopTime'].values[0] else ('Closed' if x > phase3['StartTime'].values[0] else 'CPM')
 asu['PP'] = asu['StopTime'].apply(pp_status)
 
-g = sns.PairGrid(asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)][['AttenuationSubSurface','Pressure','AirExchangeRate','PP']], hue='PP')
+g = sns.PairGrid(asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)][['Pressure','AirExchangeRate','AttenuationSubSurface','PP']], hue='PP')
 #g = g.map_lower(sns.kdeplot, shade=True, shade_lowest=False)
-g = g.map_upper(sns.regplot, x_bins=20, truncate=True )
-g = g.map_lower(sns.regplot, x_bins=20, truncate=True )
+g = g.map_upper(plt.scatter)
+g = g.map_lower(sns.regplot, x_bins=20, truncate=True, lowess=True )
 g = g.map_diag(sns.kdeplot, shade=True)
 g = g.add_legend()
+
+
+# non-linear fit
+
+def func(p, a, b):
+    Ae = a*np.exp(b*p)
+    return Ae
+
+xdata = asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)]['Pressure'].values
+ydata = asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)]['AirExchangeRate'].values
+
+popt, pcov = curve_fit(func, xdata, ydata)
+
+
+fig, ax = plt.subplots()
+plt.plot(xdata,ydata,'o',label='Data')
+plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f' % tuple(popt))
+plt.legend()
 plt.show()
