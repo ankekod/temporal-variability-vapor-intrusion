@@ -10,7 +10,7 @@ from scipy.optimize import curve_fit
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
-db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
+#db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
 
 db = sqlite3.connect(db_dir + 'HillAFB.db')
 
@@ -75,18 +75,32 @@ filter3 = (asu['StopTime'] > phase3['StartTime'].values[0])
 pp_status = lambda x: 'Open' if x < phase1['StopTime'].values[0] else ('Closed' if x > phase3['StartTime'].values[0] else 'CPM')
 asu['PP'] = asu['StopTime'].apply(pp_status)
 
-g = sns.PairGrid(asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)][['Pressure','AirExchangeRate','AttenuationSubSurface','PP']], hue='PP')
-#g = g.map_lower(sns.kdeplot, shade=True, shade_lowest=False)
+asu_plot = asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)]
+
+
+
+for cond in asu_plot['PP'].unique():
+    corr = asu_plot.loc[asu_plot['PP']==cond][['Pressure','AirExchangeRate','AttenuationSubSurface']].corr()
+    corr['PP'] = np.repeat(cond, len(corr))
+    corr['Variable'] = list(corr.index)
+    try:
+        corrs = corrs.append(corr, ignore_index=True)
+    except:
+        corrs = corr
+corrs.set_index('Variable', inplace=True)
+corrs.to_csv('./pearson.csv')
+
+
+g = sns.PairGrid(asu_plot[['Pressure','AirExchangeRate','AttenuationSubSurface','PP']], hue='PP')
 g = g.map_upper(plt.scatter)
-g = g.map_lower(sns.regplot, x_bins=20, truncate=True, lowess=True )
+g = g.map_lower(sns.regplot, x_bins=20, truncate=True, )
 g = g.map_diag(sns.kdeplot, shade=True)
 g = g.add_legend()
 
-
 # non-linear fit
 
-def func(p, a, b):
-    Ae = a*np.exp(b*p)
+def func(p, a, b, c):
+    Ae = a/(1+b*np.exp(c*p))
     return Ae
 
 xdata = asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)]['Pressure'].values
@@ -97,6 +111,10 @@ popt, pcov = curve_fit(func, xdata, ydata)
 
 fig, ax = plt.subplots()
 plt.plot(xdata,ydata,'o',label='Data')
-plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f' % tuple(popt))
+#plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
+xdata= np.linspace(-15,15)
+plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
+
+
 plt.legend()
 plt.show()
