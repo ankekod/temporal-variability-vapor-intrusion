@@ -88,7 +88,7 @@ for cond in asu_plot['PP'].unique():
     except:
         corrs = corr
 corrs.set_index('Variable', inplace=True)
-corrs.to_csv('./pearson.csv')
+#corrs.to_csv('./pearson.csv')
 
 
 g = sns.PairGrid(asu_plot[['Pressure','AirExchangeRate','AttenuationSubSurface','PP']], hue='PP')
@@ -99,8 +99,8 @@ g = g.add_legend()
 
 # non-linear fit
 
-def func(p, a, b, c):
-    Ae = a/(1+b*np.exp(c*p))
+def func(p, a, b):
+    Ae = a*p + b
     return Ae
 
 xdata = asu.loc[(asu['PP']!='CPM') & (asu['Pressure'] > -5)]['Pressure'].values
@@ -113,8 +113,48 @@ fig, ax = plt.subplots()
 plt.plot(xdata,ydata,'o',label='Data')
 #plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
 xdata= np.linspace(-15,15)
-plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
+plt.plot(xdata, func(xdata, *popt), 'o', label='fit: a=%5.3f, b=%5.3f' % tuple(popt))
 
 
 plt.legend()
+
+
+dfs = []
+files = (
+    'no_pp_gravel_sub-base',
+    'no_pp_uniform_soil',
+    'pp_gravel_sub-base',
+    'pp_uniform_soil',
+)
+for file in files:
+    sim = pd.read_csv('./data/preferential-pathway-sensitivity/%s.csv' % file, header=4)
+    sim['Simulation'] = np.repeat(file, len(sim))
+    dfs.append(sim)
+
+sim = pd.concat(dfs)
+
+
+sim.rename(columns={
+        '% p_in': 'Pressure',
+        'Attenuation factor, Global Evaluation: Attenuation factor {gev2}': 'AttenuationGroundwater',
+        'Global Evaluation: Relative air entry rate {gev3}': 'RelativeEntryRate',
+        'Average crack Peclet number, Global Evaluation: Crack Peclet number {gev4}': 'Pe',
+        'TCE in indoor air, Global Evaluation: TCE in indoor air {gev5}': 'IndoorConcentration',
+        'Global Evaluation: TCE emission rate {gev6}': 'EmissionRate',
+    },
+    inplace=True,
+)
+
+fig, ax = plt.subplots()
+
+
+data = asu.loc[(asu['PP'] != 'CPM') & (asu['Pressure'] >= -5.5)]
+
+for hue in data['PP'].unique():
+
+    sns.regplot(x='Pressure', y='AttenuationGroundwater', data=data.loc[data['PP']==hue], ax=ax, fit_reg = False, x_estimator=np.mean)
+
+sns.lineplot(x='Pressure',y='AttenuationGroundwater',hue='Simulation',data=sim, ax=ax)
+ax.set_yscale('log')
+
 plt.show()
