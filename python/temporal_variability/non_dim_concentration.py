@@ -7,6 +7,12 @@ import sqlite3
 import seaborn as sns
 from scipy import stats
 from scipy.optimize import curve_fit
+import sys
+print(sys.path)
+
+from ..utils import get_dropbox_path
+
+print(get_dropbox_path())
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
@@ -157,4 +163,4 @@ for hue in data['PP'].unique():
 sns.lineplot(x='Pressure',y='AttenuationGroundwater',hue='Simulation',data=sim, ax=ax)
 ax.set_yscale('log')
 
-plt.show()
+#plt.show()
