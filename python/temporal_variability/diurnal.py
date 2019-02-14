@@ -9,8 +9,8 @@ from scipy import stats
 from scipy.optimize import curve_fit
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/Dropbox/var/'
-#db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
+#db_dir = '/home/jonathan/Dropbox/var/'
+db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
 
 db = sqlite3.connect(db_dir + 'HillAFB.db')
 
