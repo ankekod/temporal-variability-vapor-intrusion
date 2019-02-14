@@ -8,6 +8,7 @@ import seaborn as sns
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
+db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
 
 db = sqlite3.connect(db_dir + 'Indianapolis.db')
 
@@ -25,7 +26,7 @@ groundwater = pd.read_sql_query(
     "SELECT Date(StopDate) AS StopTime, AVG(Value) AS GroundwaterConcentration, Variable AS Specie FROM VOC_Data_Groundwater GROUP BY DATE(StopDate);", db, )
 
 sub_surface = pd.read_sql_query(
-    "SELECT StopDate AS StopTime, AVG(Value) AS SubSurfaceConcentration FROM VOC_Data_SoilGas_and_Air WHERE Depth_ft='Basement' GROUP BY StopDate;", db, )
+    "SELECT StopDate, StopTime, Value AS SubSurfaceConcentration FROM VOC_Data_SoilGas_and_Air WHERE Depth_ft='Basement' AND Variable='Tetrachloroethene';", db, )
 
 weather = pd.read_sql_query(
     "SELECT StopDate AS StopTime, AVG(Value) AS Temperature FROM Meteorological_Data WHERE Variable='Temp.Out' AND Units='F' GROUP BY StopDate;", db, )
@@ -35,6 +36,9 @@ indoor = pd.read_sql_query(
 
 observation['StopTime'] = observation['StopTime'].apply(pd.to_datetime)
 indianapolis = observation.set_index('StopTime')#.reset_index()
+
+
+print(list(sub_surface))
 #print(indianapolis)
 
 #rint(indianapolis['StopTime'])
@@ -53,20 +57,26 @@ for df in (pressure,weather,groundwater,sub_surface,indoor):
             continue
     i += 1
 
-indianapolis = indianapolis.reset_index()
-print(list(indianapolis))
+indianapolis.reset_index(inplace=True)
+indianapolis.interpolate(inplace=True)
+
 #indianapolis['StopTime'] = indianapolis['StopTime'].apply(pd.to_datetime)
 
-indianapolis['IndoorConcentration'] = indianapolis['IndoorConcentration'].apply(np.log10)
+indianapolis['AttenuationGroundwater'] = indianapolis['IndoorConcentration']/indianapolis['GroundwaterConcentration']
+indianapolis['AttenuationSubSurface'] = indianapolis['IndoorConcentration']/indianapolis['SubSurfaceConcentration']
 
-indianapolis.interpolate(inplace=True)
+
+for col in ('IndoorConcentration','AttenuationSubSurface','AttenuationGroundwater',):
+    indianapolis[col] = indianapolis[col].apply(np.log10)
+
+
 #df = df[df['Pressure'] < 35.0]
 #df['Pressure'] *= -1
 indianapolis.replace([np.inf, -np.inf], np.nan, inplace=True)
 
 
-indianapolis = indianapolis[indianapolis['Specie'] == 'Trichloroethene']
-indianapolis = indianapolis.drop(columns=['SSDStatus', 'Specie'])
+#indianapolis = indianapolis[indianapolis['Specie'] == 'Trichloroethene']
+#indianapolis = indianapolis.drop(columns=['SSDStatus', 'Specie'])
 indianapolis['Month'] = indianapolis['StopTime'].map(lambda x: x.month)
 indianapolis['Temperature'] = indianapolis['Temperature'].map(lambda x: (x-32)/1.8)
 
@@ -91,11 +101,9 @@ def get_season(x):
 
 
 indianapolis['Season'] = indianapolis['Month'].apply(lambda x: get_season(x))
-
-indianapolis = indianapolis.drop(columns=['StopTime','Month'])
+#indianapolis = indianapolis.drop(columns=['StopTime','Month'])
 
 # TODO: change axis labels (adding units) and adjust ticks for the indoor concentration
-
-sns.pairplot(indianapolis, hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
-plt.savefig('./figures/multivariate_analysis/indianapolis_season.pdf',dpi=300)
-plt.show()
+sns.pairplot(indianapolis.loc[indianapolis['Specie']=='Chloroform'][['Pressure','AttenuationSubSurface','AttenuationGroundwater','Season']], hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
+#plt.savefig('./figures/multivariate_analysis/indianapolis_season.pdf',dpi=300)
+#plt.show()
