@@ -10,13 +10,13 @@ from scipy.optimize import curve_fit
 import sys
 print(sys.path)
 
-from ..utils import get_dropbox_path
+#from ..utils import get_dropbox_path
 
-print(get_dropbox_path())
+#print(get_dropbox_path())
 
 data_dir = './data/preferential-pathway-sensitivity/'
-db_dir = '/home/jonathan/Dropbox/var/'
-#db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
+#db_dir = '/home/jonathan/Dropbox/var/'
+db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
 
 db = sqlite3.connect(db_dir + 'HillAFB.db')
 
@@ -96,12 +96,21 @@ for cond in asu_plot['PP'].unique():
 corrs.set_index('Variable', inplace=True)
 #corrs.to_csv('./pearson.csv')
 
-
+# effects of PP
 g = sns.PairGrid(asu_plot[['Pressure','AirExchangeRate','AttenuationSubSurface','PP']], hue='PP')
 g = g.map_upper(plt.scatter)
 g = g.map_lower(sns.regplot, x_bins=20, truncate=True, )
 g = g.map_diag(sns.kdeplot, shade=True)
 g = g.add_legend()
+
+# effects of season (PP closed)
+asu_plot = asu.loc[(asu['PP']!='Closed') & (asu['Pressure'] > -5)]
+g = sns.PairGrid(asu_plot[['Pressure','AirExchangeRate','AttenuationSubSurface','Season']], hue='Season')
+g = g.map_upper(plt.scatter)
+g = g.map_lower(sns.regplot, x_bins=20, truncate=True, )
+g = g.map_diag(sns.kdeplot, shade=True)
+g = g.add_legend()
+
 
 # non-linear fit
 
@@ -163,4 +172,4 @@ for hue in data['PP'].unique():
 sns.lineplot(x='Pressure',y='AttenuationGroundwater',hue='Simulation',data=sim, ax=ax)
 ax.set_yscale('log')
 
-#plt.show()
+plt.show()
