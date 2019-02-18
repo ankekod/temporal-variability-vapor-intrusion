@@ -2,20 +2,6 @@ import numpy as np
 import pandas as pd
 import sqlite3
 
-
-
-db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'
-
-"""
-
-indianapolis = pd.read_sql_query(
-"SELECT C.StopDate, C.StopTime AS TimeStamp, C.Value AS Concentration, C.Variable as Specie FROM VOC_Data_SRI_8610_Onsite_GC C, Observation_Status_Data O WHERE DATE(C.StopDate)=DATE(O.StopDate) AND O.Value='not yet installed' AND (C.Location='422BaseS' OR C.Location='422BaseN');", db_indianapolis, )
-
-indianapolis = indianapolis.assign(StopTime=lambda x: x['StopDate']+' '+x['TimeStamp'])
-indianapolis.drop(columns=['StopDate','TimeStamp'],inplace=True)
-indianapolis['StopTime'] = indianapolis['StopTime'].apply(pd.to_datetime)
-indianapolis.sort_values(by=['StopTime','Specie'],inplace=True)
-"""
 import os
 dropbox_folder = None
 
@@ -30,15 +16,90 @@ def get_dropbox_path():
     return dropbox_folder
 
 
+def get_season(x):
+
+    #x = x.index.month
+    seasons = {
+        'Winter': (12, 2),
+        'Spring': (3, 5),
+        'Summer': (6, 8),
+        'Fall': (9, 11),
+    }
+    if (x == 12) or (x == 1) or (x == 2):
+        return 'Winter'
+    elif (x == 3) or (x == 4) or (x == 5):
+        return 'Spring'
+    elif (x == 6) or (x == 7) or (x == 8):
+        return 'Summer'
+    elif (x == 9) or (x == 10) or (x == 11):
+        return 'Fall'
+    else:
+        return 'Error'
+
 class Indianapolis:
 
     def __init__(self):
 
         self.db = sqlite3.connect(get_dropbox_path() + '/var/Indianapolis.db')
-        indoor = self.get_indoor_air()
-        print(indoor)
+
+
+        df = self.get_data()
+        df.to_csv('./data/indianapolis.csv')
         return
 
+
+    def get_data(self):
+        subslab = self.get_subslab()
+        indoor = self.get_indoor_air()
+        ssd = self.get_ssd_status()
+
+        df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True, by='Specie')
+        df = df.loc[(df.index.date>=ssd.index.date.min()) & (df.index.date<=ssd.index.date.max())]
+
+
+        df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
+
+        pressure = self.get_pressure()
+
+        df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
+        #df['Month'] = df.index.map(lambda x: x.month)
+
+        #df['Season'] = df['Month'].apply(lambda x: get_season(x))
+        df['Season'] = df.index.month.map(get_season)
+
+        return df
+
+    def combine_data(self,dfs):
+        x=0
+        #for df in dfs:
+        return
+
+    def get_pressure(self):
+        pressure = pd.read_sql_query(
+            "SELECT StopDate, StopTime, Variable, Value, Location FROM Differential_Pressure_Data;",
+            self.db,
+        )
+        pressure = self.process_time(pressure)
+        pressure = pressure.loc[(pressure['Location']=='422') & (pressure['Variable']=='Basement.Vs.Exterior')]
+        pressure.rename(
+            columns={
+                'Value': 'IndoorOutdoorPressure',
+            },
+            inplace=True,
+        )
+        pressure.drop(columns=['Variable','Location'],inplace=True)
+        return pressure
+
+    def get_ssd_status(self):
+
+        ssd = pd.read_sql_query(
+            "SELECT StopDate, StopTime, Variable, Value FROM Observation_Status_Data;",
+            self.db,
+        )
+
+        ssd = self.process_time(ssd)
+        ssd = ssd.loc[(ssd['Variable']=='Mitigation') & (ssd['Value']=='not yet installed')]
+        return ssd
 
     def process_time(self,df):
         df = df.assign(Time=lambda x: x['StopDate']+' '+x['StopTime'])
@@ -46,30 +107,45 @@ class Indianapolis:
 
         df['Time'] = df['Time'].apply(pd.to_datetime)
         df.sort_values(by=['Time'],inplace=True)
+        df.set_index('Time',inplace=True)
+
         return df
 
-    # retrieves the indoor air concentration in 422BaseS or ...N 
+    # retrieves the indoor air concentration in 422BaseS or ...N
     def get_indoor_air(self):
         indoor = pd.read_sql_query(
             "SELECT StopDate, StopTime, Variable, Value, Location, Depth_ft FROM VOC_Data_SRI_8610_Onsite_GC;",
             self.db,
         )
         indoor = self.process_time(indoor)
-
-
         indoor = indoor.loc[(indoor['Location']=='422BaseN') | (indoor['Location']=='422BaseS')]
-
         indoor.rename(
             columns={
+                #'Variable': 'IndoorSpecie',
                 'Variable': 'Specie',
                 'Value': 'IndoorConcentration',
             },
             inplace=True,
         )
-
         indoor.drop(columns=['Depth_ft','Location'],inplace=True)
-        indoor.set_index('Time',inplace=True)
         return indoor
 
+    def get_subslab(self):
+        subslab = pd.read_sql_query(
+            "SELECT StopDate, StopTime, Variable, Value, Location, Depth_ft FROM VOC_Data_SRI_8610_Onsite_GC;",
+            self.db,
+        )
+        subslab = self.process_time(subslab)
+        subslab = subslab.loc[(subslab['Location']=='SSP-4')]
+        subslab.rename(
+            columns={
+                #'Variable': 'SubslabSpecie',
+                'Variable': 'Specie',
+                'Value': 'SubslabConcentration',
+            },
+            inplace=True,
+        )
+        subslab.drop(columns=['Depth_ft','Location'],inplace=True)
+        return subslab
 
 ind = Indianapolis()
