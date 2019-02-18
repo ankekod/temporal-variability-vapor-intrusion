@@ -167,9 +167,11 @@ data = asu.loc[(asu['PP'] != 'CPM') & (asu['Pressure'] >= -5.5)]
 
 for hue in data['PP'].unique():
 
-    sns.regplot(x='Pressure', y='AttenuationGroundwater', data=data.loc[data['PP']==hue], ax=ax, fit_reg = False, x_bins=np.linspace(-6,6,40))
+    sns.regplot(x='Pressure', y='AttenuationGroundwater', data=data.loc[data['PP']==hue], ax=ax, fit_reg = False, x_bins=np.linspace(-10,10,40))
 
 sns.lineplot(x='Pressure',y='AttenuationGroundwater',hue='Simulation',data=sim, ax=ax)
 ax.set_yscale('log')
+ax.set_xlim([-4,4])
+
 
 plt.show()
