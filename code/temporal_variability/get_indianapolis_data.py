@@ -17,8 +17,6 @@ def get_dropbox_path():
 
 
 def get_season(x):
-
-    #x = x.index.month
     seasons = {
         'Winter': (12, 2),
         'Spring': (3, 5),
@@ -37,16 +35,12 @@ def get_season(x):
         return 'Error'
 
 class Indianapolis:
-
     def __init__(self):
 
         self.db = sqlite3.connect(get_dropbox_path() + '/var/Indianapolis.db')
-
-
         df = self.get_data()
         df.to_csv('./data/indianapolis.csv')
         return
-
 
     def get_data(self):
         subslab = self.get_subslab()
@@ -56,23 +50,15 @@ class Indianapolis:
         df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True, by='Specie')
         df = df.loc[(df.index.date>=ssd.index.date.min()) & (df.index.date<=ssd.index.date.max())]
 
-
         df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
 
         pressure = self.get_pressure()
 
         df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
-        #df['Month'] = df.index.map(lambda x: x.month)
 
-        #df['Season'] = df['Month'].apply(lambda x: get_season(x))
         df['Season'] = df.index.month.map(get_season)
 
         return df
-
-    def combine_data(self,dfs):
-        x=0
-        #for df in dfs:
-        return
 
     def get_pressure(self):
         pressure = pd.read_sql_query(
@@ -148,4 +134,85 @@ class Indianapolis:
         subslab.drop(columns=['Depth_ft','Location'],inplace=True)
         return subslab
 
-ind = Indianapolis()
+class ASUHouse:
+    def __init__(self):
+
+        self.db = sqlite3.connect(get_dropbox_path() + '/var/HillAFB.db')
+        df = self.get_data()
+        df.to_csv('./data/asu_house.csv')
+        return
+
+    def get_data(self):
+        subslab = self.get_subslab()
+        indoor = self.get_indoor_air()
+        pp = self.get_pp_status()
+
+        df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True, by='Specie')
+        df = df.loc[(df.index.date>=ssd.index.date.min()) & (df.index.date<=ssd.index.date.max())]
+
+        df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
+
+        pressure = self.get_pressure()
+
+        df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
+
+        df['Season'] = df.index.month.map(get_season)
+
+        return df
+
+    def get_pressure(self):
+        pressure = pd.read_sql_query(
+            "SELECT StopTime, Pressure FROM PressureDifference;",
+            self.db,
+        )
+        pressure = self.process_time(pressure)
+        pressure.rename(
+            columns={
+                'Pressure': 'IndoorOutdoorPressure',
+            },
+            inplace=True,
+        )
+        return pressure
+
+    def get_pp_status(self):
+
+        pp = pd.read_sql_query(
+            "SELECT StartTime, StopTime, Variable, Value FROM Observation_Status_Data;",
+            self.db,
+        )
+
+        ssd = self.process_time(ssd)
+        ssd = ssd.loc[(ssd['Variable']=='Mitigation') & (ssd['Value']=='not yet installed')]
+        return ssd
+
+    def process_time(self,df):
+        df.rename(columns={'StopTime': 'Time'},inplace=True)
+
+        df['Time'] = df['Time'].apply(pd.to_datetime)
+        df.sort_values(by=['Time'],inplace=True)
+        df.set_index('Time',inplace=True)
+
+        return df
+
+    # retrieves the indoor air concentration in 422BaseS or ...N
+    def get_indoor_air(self):
+        indoor = pd.read_sql_query(
+            "SELECT StopTime, Concentration AS IndoorConcentration FROM TDBasement;",
+            self.db,
+        )
+        indoor = self.process_time(indoor)
+
+        return indoor
+
+    def get_subslab(self):
+        subslab = pd.read_sql_query(
+            "SELECT StopTime, Concentration AS SubslabConcentration, Location, Depth FROM SoilGasConcentration;",
+            self.db,
+        )
+        subslab = self.process_time(subslab)
+        subslab = subslab.loc[(subslab['Depth']=='0.0') & (subslab['Location']=='6')]
+        subslab.drop(columns=['Depth','Location'],inplace=True)
+        return subslab
+
+#ind = Indianapolis()
+ash = ASUHouse()
