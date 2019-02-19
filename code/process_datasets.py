@@ -56,6 +56,13 @@ class Indianapolis:
 
         df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
 
+
+        df['AttenuationSubslab'] = df['AttenuationSubslab'].replace([-np.inf,np.inf], np.nan)
+        df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
+        df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
+
+
+
         pressure = self.get_pressure()
 
         df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
@@ -157,7 +164,15 @@ class ASUHouse:
         df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True)
 
         df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
-        df['AttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
+        df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
+        df['logAttenuationSubslab'] = df['IndoorConcentration'].apply(np.log10)
+
+
+        df['AttenuationSubslab'] = df['AttenuationSubslab'].replace([-np.inf,np.inf], np.nan)
+        df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
+        df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
+
+
 
         df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
         df = pd.merge_asof(df, ae, left_index=True, right_index=True,)
@@ -230,5 +245,5 @@ class ASUHouse:
         subslab.drop(columns=['Depth','Location'],inplace=True)
         return subslab
 
-#ind = Indianapolis()
-ash = ASUHouse()
+ind = Indianapolis()
+#asu = ASUHouse()
