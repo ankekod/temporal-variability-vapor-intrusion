@@ -15,6 +15,10 @@ def get_dropbox_path():
             break
     return dropbox_folder
 
+# TODO: create this function to intelligently find infs
+def replace_inf(x):
+    x = 1
+    return
 
 def get_season(x):
     seasons = {
@@ -139,26 +143,40 @@ class ASUHouse:
 
         self.db = sqlite3.connect(get_dropbox_path() + '/var/HillAFB.db')
         df = self.get_data()
+        print(df)
         df.to_csv('./data/asu_house.csv')
         return
 
     def get_data(self):
         subslab = self.get_subslab()
         indoor = self.get_indoor_air()
-        pp = self.get_pp_status()
+        phases = self.get_phases()
+        pressure = self.get_pressure()
+        ae = self.get_air_exchange()
 
-        df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True, by='Specie')
-        df = df.loc[(df.index.date>=ssd.index.date.min()) & (df.index.date<=ssd.index.date.max())]
+        df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True)
 
         df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
-
-        pressure = self.get_pressure()
+        df['AttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
 
         df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
+        df = pd.merge_asof(df, ae, left_index=True, right_index=True,)
 
+        pp_status = lambda x: 'Open' if x <= phases.index.values[0] else ('Closed' if x >= phases.index.values[-2] else 'CPM')
+        df['Phase'] = df.index.map(pp_status)
         df['Season'] = df.index.month.map(get_season)
+        df['IndoorOutdoorPressure'] *= -1
 
         return df
+
+    def get_air_exchange(self):
+        ae = pd.read_sql_query(
+            "SELECT StopTime, AirExchangeRate FROM Tracer;",
+            self.db,
+        )
+
+        ae = self.process_time(ae)
+        return ae
 
     def get_pressure(self):
         pressure = pd.read_sql_query(
@@ -174,16 +192,14 @@ class ASUHouse:
         )
         return pressure
 
-    def get_pp_status(self):
+    def get_phases(self):
 
-        pp = pd.read_sql_query(
-            "SELECT StartTime, StopTime, Variable, Value FROM Observation_Status_Data;",
+        phases = pd.read_sql_query(
+            "SELECT StopTime AS Time FROM Phases;",
             self.db,
         )
-
-        ssd = self.process_time(ssd)
-        ssd = ssd.loc[(ssd['Variable']=='Mitigation') & (ssd['Value']=='not yet installed')]
-        return ssd
+        phases = self.process_time(phases)
+        return phases
 
     def process_time(self,df):
         df.rename(columns={'StopTime': 'Time'},inplace=True)
@@ -210,7 +226,7 @@ class ASUHouse:
             self.db,
         )
         subslab = self.process_time(subslab)
-        subslab = subslab.loc[(subslab['Depth']=='0.0') & (subslab['Location']=='6')]
+        subslab = subslab.loc[(subslab['Depth']==0.0) & (subslab['Location']=='6')]
         subslab.drop(columns=['Depth','Location'],inplace=True)
         return subslab
 
