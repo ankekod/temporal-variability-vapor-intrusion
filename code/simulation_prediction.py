@@ -34,12 +34,24 @@ df.rename(
 
 df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
 df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
+
+M = 131.4e-3
+#df['SubslabConcentration'] /= M
+#df['SubslabConcentration'] /= 1e-9
+
+
+#df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
+df['AttenuationSubslab'] *= 2e3 # this seems to fix the problem... any way to get it? TODO: Looking into this more
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
+
+df = df.loc[df['Simulation']=='No Pp']
 
 p_in = df['IndoorOutdoorPressure']
 Ae = df['AirExchangeRate']
 alpha = df['logAttenuationSubslab']
 
+
+# TODO: increase pressurization limits in simulation
 # 2d interpolation function
 interp_func = interp2d(
     p_in,
@@ -49,16 +61,16 @@ interp_func = interp2d(
 )
 
 fig, ax = plt.subplots()
-asu['logAttenuationSubslab'].plot(kind='kde',ax=ax)
+#asu['logAttenuationSubslab'].plot(kind='kde',ax=ax)
 
 
-samp_ae = asu['AirExchangeRate'].sample(10).values
-samp_p = asu['IndoorOutdoorPressure'].sample(10).values
+asu = asu.loc[asu['Phase']=='Closed']
+
+samp_ae = asu['AirExchangeRate'].sample(20).values
+samp_p = asu['IndoorOutdoorPressure'].sample(20).values
 
 
 sim_alpha = interp_func(samp_p, samp_ae)
-
-
 prediction = pd.DataFrame(
     {
         #'Sampled Ae': samp_ae,
