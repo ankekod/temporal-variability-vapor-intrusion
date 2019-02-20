@@ -38,7 +38,7 @@ df.rename(
 def get_interp_func(df):
     p_in = df['IndoorOutdoorPressure']
     Ae = df['AirExchangeRate']
-    alpha = df['logAttenuationSubslab']
+    alpha = df['logAttenuationGroundwater']
 
     # TODO: increase pressurization limits in simulation
     # 2d interpolation function
@@ -89,9 +89,9 @@ def make_plots(asu):
     ax2.plot(samp_ae, np.repeat(0, len(samp_ae)),'o',label='Sampled data')
     # prediction plot
     ax3 = plt.subplot(gs[1, :]) # row 1, span all columns
-    asu['logAttenuationSubslab'].plot(kind='kde',ax=ax3, label='Data')
+    asu['logAttenuationAvgGroundwater'].plot(kind='kde',ax=ax3, label='Data')
     prediction.plot(kind='kde',ax=ax3, label='Prediction')
-    ax3.set_xlim(-4,2)
+    ax3.set_xlim([-8,-2])
 
     plt.suptitle(sim_case)
     plt.legend()
@@ -104,8 +104,10 @@ def make_plots(asu):
 
 df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
 df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
-df['AttenuationSubslab'] *= 2e3 # this seems to fix the problem... any way to get it? TODO: Looking into this more
+#df['AttenuationSubslab'] *= 2e3 # this seems to fix the problem... any way to get it? TODO: Looking into this more
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
+df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
+
 
 sim_cases = ('Pp','No Pp',)
 phases = ('Open','Closed',)

@@ -160,18 +160,20 @@ class ASUHouse:
         phases = self.get_phases()
         pressure = self.get_pressure()
         ae = self.get_air_exchange()
+        avg_gw = self.get_avg_groundwater()
 
         df = pd.merge_asof(indoor, subslab, left_index=True, right_index=True)
+        df = pd.merge_asof(df, avg_gw, left_index=True, right_index=True,)
 
         df['AttenuationSubslab'] = df['IndoorConcentration']/df['SubslabConcentration']
-        df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
-        df['logAttenuationSubslab'] = df['IndoorConcentration'].apply(np.log10)
+        df['AttenuationAvgGroundwater'] = df['IndoorConcentration']/df['AvgGroundwaterConcentration']
+
 
 
         df['AttenuationSubslab'] = df['AttenuationSubslab'].replace([-np.inf,np.inf], np.nan)
         df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
         df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
-
+        df['logAttenuationAvgGroundwater'] = df['AttenuationAvgGroundwater'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
 
 
         df = pd.merge_asof(df, pressure, left_index=True, right_index=True,)
@@ -183,6 +185,15 @@ class ASUHouse:
         df['IndoorOutdoorPressure'] *= -1
 
         return df
+
+    def get_avg_groundwater(self):
+        avg_gw = pd.read_sql_query(
+            "SELECT StopTime, Concentration AS AvgGroundwaterConcentration FROM AverageGroundwaterConcentration;",
+            self.db,
+        )
+        avg_gw['AvgGroundwaterConcentration'] *= 1e3 # converts from ug/L to ug/m^3
+        avg_gw = self.process_time(avg_gw)
+        return avg_gw
 
     def get_air_exchange(self):
         ae = pd.read_sql_query(
@@ -245,5 +256,5 @@ class ASUHouse:
         subslab.drop(columns=['Depth','Location'],inplace=True)
         return subslab
 
-ind = Indianapolis()
-#asu = ASUHouse()
+#ind = Indianapolis()
+asu = ASUHouse()
