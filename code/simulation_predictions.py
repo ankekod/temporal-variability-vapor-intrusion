@@ -33,7 +33,6 @@ df.rename(
     inplace=True,
 )
 
-
 # input data for interpolation
 def get_interp_func(df):
     p_in = df['IndoorOutdoorPressure']
@@ -50,7 +49,6 @@ def get_interp_func(df):
     )
 
     return interp_func
-
 
 def get_prediction(asu):
     # selects p_in and Ae from data distribution and gets predicted indoor air concentration from simulation
@@ -69,7 +67,6 @@ def get_prediction(asu):
 
     return samp_p, samp_ae, prediction
 
-
 def make_plots(asu):
     # plotting
     # Create 2x2 sub plots
@@ -78,13 +75,13 @@ def make_plots(asu):
     # indoor/outdoor pressure plot
     plt.figure()
     ax1 = plt.subplot(gs[0, 0]) # row 0, col 0
-    ax1.set_title('Indoor/outdoor pressure')
+    ax1.set_xlabel('$\\Delta p_\\mathrm{in/out}$ (Pa)')
     asu['IndoorOutdoorPressure'].plot(kind='kde',ax=ax1, label='Data')
     ax1.plot(samp_p, np.repeat(0, len(samp_p)),'o',label='Sampled data')
     ax1.set_xlim([-15,15])
     # air exchange rate plot
     ax2 = plt.subplot(gs[0, 1]) # row 0, col 1
-    ax2.set_title('Air exchange rate')
+    ax2.set_xlabel('$A_e$ (1/h)')
     asu['AirExchangeRate'].plot(kind='kde',ax=ax2, label='Data')
     ax2.plot(samp_ae, np.repeat(0, len(samp_ae)),'o',label='Sampled data')
     # prediction plot
@@ -92,16 +89,20 @@ def make_plots(asu):
     asu['logAttenuationAvgGroundwater'].plot(kind='kde',ax=ax3, label='Data')
     prediction.plot(kind='kde',ax=ax3, label='Prediction')
     ax3.set_xlim([-8,-2])
+    my_xtick_labels = ["%1.0e" % x_tick for x_tick in 10.0**ax3.get_xticks()]
+    ax3.set_xticklabels(my_xtick_labels)
+    titles = {
+        'Pp': 'Preferential pathway open',
+        'No Pp': 'Preferential pathway closed',
+    }
 
-    plt.suptitle(sim_case)
+    plt.suptitle(titles[sim_case])
     plt.legend()
     return
 
 
 
 # data choosing
-
-
 df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
 df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
 #df['AttenuationSubslab'] *= 2e3 # this seems to fix the problem... any way to get it? TODO: Looking into this more
@@ -111,12 +112,10 @@ df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
 sim_cases = ('Pp','No Pp',)
 phases = ('Open','Closed',)
-print(df['Simulation'].unique())
-num_samples = 20
+num_samples = 15
 for sim_case, phase in zip(sim_cases, phases):
     df_sort = df.loc[df['Simulation']==sim_case] # sorts simulation types
     asu_sort = asu.loc[asu['Phase']==phase]
-
 
     interp_func = get_interp_func(df_sort)
     samp_p, samp_ae, prediction = get_prediction(asu_sort)
