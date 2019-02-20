@@ -78,26 +78,31 @@ def make_plots(asu):
     ax1.set_xlabel('$\\Delta p_\\mathrm{in/out}$ (Pa)')
     asu['IndoorOutdoorPressure'].plot(kind='kde',ax=ax1, label='Data')
     ax1.plot(samp_p, np.repeat(0, len(samp_p)),'o',label='Sampled data')
-    ax1.set_xlim([-15,15])
+    ax1.set_xlim([-8,8])
     # air exchange rate plot
     ax2 = plt.subplot(gs[0, 1]) # row 0, col 1
     ax2.set_xlabel('$A_e$ (1/h)')
     asu['AirExchangeRate'].plot(kind='kde',ax=ax2, label='Data')
     ax2.plot(samp_ae, np.repeat(0, len(samp_ae)),'o',label='Sampled data')
+    ax2.legend()
     # prediction plot
     ax3 = plt.subplot(gs[1, :]) # row 1, span all columns
     asu['logAttenuationAvgGroundwater'].plot(kind='kde',ax=ax3, label='Data')
-    prediction.plot(kind='kde',ax=ax3, label='Prediction')
-    ax3.set_xlim([-8,-2])
+    prediction['Predicted alpha'].plot(kind='kde',ax=ax3, label='Prediction')
+    ax3.set_xlim([-7,-3])
     my_xtick_labels = ["%1.0e" % x_tick for x_tick in 10.0**ax3.get_xticks()]
     ax3.set_xticklabels(my_xtick_labels)
+    ax3.set_xlabel('$\\alpha_\\mathrm{gw}$')
+    ax3.legend()
+
     titles = {
         'Pp': 'Preferential pathway open',
         'No Pp': 'Preferential pathway closed',
     }
 
-    plt.suptitle(titles[sim_case])
-    plt.legend()
+    plt.suptitle(titles[sim_case],y=1.0)
+    plt.tight_layout()
+
     return
 
 
@@ -109,6 +114,10 @@ df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
 df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
+# figure saving settings
+fig_dir = './figures/simulation_predictions/'
+ext = '.png'
+dpi = 300
 
 sim_cases = ('Pp','No Pp',)
 phases = ('Open','Closed',)
@@ -120,5 +129,6 @@ for sim_case, phase in zip(sim_cases, phases):
     interp_func = get_interp_func(df_sort)
     samp_p, samp_ae, prediction = get_prediction(asu_sort)
     make_plots(asu_sort)
+    plt.savefig(fig_dir+'sampling_simulation_pp_'+phase.lower()+ext,dpi=dpi)
 
-plt.show()
+#plt.show()
