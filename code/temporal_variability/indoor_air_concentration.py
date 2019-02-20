@@ -180,13 +180,15 @@ asu['Category'] = 'PP ' + asu['PP'] + ', ' + asu['Season']
 sns.set_palette(('Blue','Green','Red','Orange','Orange','Blue','Green','Red',))
 g = plot_facetgrid(asu)
 g.axes[-1][0].set_xlabel('TCE in Indoor Air $\\mathrm{(\\mu g/m^3)}$')
-plt.savefig('./figures/temporal_variability/asu.pdf',dpi=300)
+g.fig.suptitle('Seasonal distributions of TCE in indoor air, before and after closing of \nthe \"land drain\"/preferential pathway (PP), at the \"ASU house\"')
+plt.savefig('./figures/temporal_variability/asu.png',dpi=300)
 
 indianapolis = process_indianapolis()
 indianapolis['Category'] = indianapolis['Specie'] + ', ' + indianapolis['Season']
 sns.set_palette(('Red','Red','Red','Orange','Orange','Orange','Blue','Blue','Blue',))
 g = plot_facetgrid(indianapolis)
-plt.savefig('./figures/temporal_variability/indianapolis.pdf',dpi=300)
+g.fig.suptitle('Seasonal distributions of contaminants in indoor air at the \"Indianapolis house\"')
+plt.savefig('./figures/temporal_variability/indianapolis.png',dpi=300)
 
 #plt.show()
 
@@ -228,6 +230,7 @@ g = sns.catplot(x="Resampling", y="Delta", hue='Dataset', kind="point", data=res
 
 my_ytick_labels = ["%1.1f" % y_tick for y_tick in 10.0**g.ax.get_yticks()]
 g.ax.set_yticklabels(my_ytick_labels)
-g.ax.set_xlabel('Resampling Period')
+g.ax.set_xlabel('Period')
 g.ax.set_ylabel('$c_\\mathrm{max}/c_\\mathrm{min}$')
-plt.savefig('./figures/temporal_variability/resampling.pdf',dpi=300)
+g.ax.set_title('Maximum variability within a given period')
+plt.savefig('./figures/temporal_variability/resampling.png',dpi=300)
