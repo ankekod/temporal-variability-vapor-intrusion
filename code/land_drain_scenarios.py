@@ -53,7 +53,7 @@ g = sns.lmplot(
     fit_reg=False,
     legend_out=False,
     legend=False,
-    aspect=2,
+    aspect=1.5,
 )
 
 ax = g.axes[0][0]
@@ -97,5 +97,5 @@ ax.set_title('Modeling PP scenarios, assuming constant $A_e$, and comparing to \
 
 plt.tight_layout()
 
-plt.savefig('./figures/simulation_predictions/land_drain_scenarios.png',dpi=300)
+plt.savefig('./figures/simulation_predictions/land_drain_scenarios.pdf',dpi=300)
 #plt.show()

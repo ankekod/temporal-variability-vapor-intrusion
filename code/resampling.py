@@ -62,6 +62,6 @@ g.ax.set_yticklabels(my_ytick_labels)
 g.ax.set_xlabel('Period')
 g.ax.set_ylabel('$c_\\mathrm{max}/c_\\mathrm{min}$')
 g.ax.set_title('Maximum variability within a given period')
-
+plt.tight_layout()
 #plt.show()
-plt.savefig('./figures/temporal_variability/resampling.png',dpi=300)
+plt.savefig('./figures/temporal_variability/resampling.pdf',dpi=300)
