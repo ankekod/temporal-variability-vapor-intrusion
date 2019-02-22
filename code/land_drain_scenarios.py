@@ -53,7 +53,7 @@ g = sns.lmplot(
     fit_reg=False,
     legend_out=False,
     legend=False,
-    aspect=1.5,
+    #aspect=1.5,
 )
 
 ax = g.axes[0][0]
@@ -74,7 +74,7 @@ handles = handles[1:]
 labels = (
     'PP present',
     'PP absent',
-    'PP present, gravel sub-base absent',
+    'PP present, \ngravel sub-base\nabsent',
     'Data, PP open',
     'Data, PP closed',
 )
@@ -82,7 +82,8 @@ labels = (
 ax.legend(
     handles,
     labels,
-    ncol=2,
+    #ncol=2,
+    loc='best',
 )
 
 ax.set_xlim([-6,6])
@@ -92,7 +93,7 @@ ax.set_xlabel('$\\Delta p_\\mathrm{in/out}$ (Pa)')
 ax.set_ylabel('$\\alpha_\\mathrm{gw}$')
 my_ytick_labels = ["%1.0e" % y_tick for y_tick in 10.0**ax.get_yticks()]
 ax.set_yticklabels(my_ytick_labels)
-ax.set_title('Modeling PP scenarios, assuming constant $A_e$, and comparing to \"ASU house\" field data')
+ax.set_title('Modeling PP scenarios, assuming constant $A_e$,\nand comparing to \"ASU house\" field data')
 
 
 plt.tight_layout()

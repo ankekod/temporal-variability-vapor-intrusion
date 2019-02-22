@@ -22,11 +22,11 @@ indianapolis = pd.read_csv('./data/indianapolis.csv')
 resampled = pd.DataFrame({'Resampling': [], 'MaxDelta': [], 'Dataset': []})
 
 datasets = (
-    asu[asu['Phase']=='Open'],
-    asu[asu['Phase']=='Closed'],
-    indianapolis[indianapolis['Specie']=='Trichloroethene'],
-    indianapolis[indianapolis['Specie']=='Tetrachloroethene'],
-    indianapolis[indianapolis['Specie']=='Chloroform'],
+    asu[asu['Phase'] == 'Open'],
+    asu[asu['Phase'] == 'Closed'],
+    indianapolis[indianapolis['Specie'] == 'Trichloroethene'],
+    indianapolis[indianapolis['Specie'] == 'Tetrachloroethene'],
+    indianapolis[indianapolis['Specie'] == 'Chloroform'],
 )
 names = (
     'ASU House, PP Open',
@@ -36,26 +36,34 @@ names = (
     'Indianapolis, Chloroform',
 )
 
-for dataset, name in zip(datasets,names):
+for dataset, name in zip(datasets, names):
     dataset['Time'] = dataset['Time'].apply(pd.to_datetime)
     print('Using dataset: %s' % name)
-    for resampling_time in ('1D','2D','3D','1W','2W','3W','1M','2M','3M','6M',):
-        r = dataset.resample(resampling_time ,on='Time', kind='timestamp')
+    for resampling_time in ('1D', '2D', '3D', '1W', '2W', '3W', '1M', '2M', '3M', '6M',):
+        r = dataset.resample(resampling_time, on='Time', kind='timestamp')
         r = r['logIndoorConcentration'].agg([np.mean, np.max, np.min, np.std])
         to_be_appended = pd.DataFrame({
-            'Resampling': np.repeat(resampling_time,len(r)),
-            'MaxDelta': r['amax'].values-r['amin'].values,
-            'Dataset': np.repeat(name,len(r)),
+            'Resampling': np.repeat(resampling_time, len(r)),
+            'MaxDelta': r['amax'].values - r['amin'].values,
+            'Dataset': np.repeat(name, len(r)),
         })
-        resampled = resampled.append(to_be_appended,ignore_index=True)
+        resampled = resampled.append(to_be_appended, ignore_index=True)
 
 resampled.dropna(inplace=True)
 
-#print(resampled)
+# print(resampled)
 sns.set_palette(sns.color_palette("muted"))
 
 
-g = sns.catplot(x="Resampling", y="MaxDelta", hue='Dataset', kind="point", data=resampled, legend_out=False, aspect=1.5)
+g = sns.catplot(
+    x="Resampling",
+    y="MaxDelta",
+    hue='Dataset',
+    kind="point",
+    data=resampled,
+    legend_out=False,
+    # aspect=1.5,
+)
 
 my_ytick_labels = ["%1.1f" % y_tick for y_tick in 10.0**g.ax.get_yticks()]
 g.ax.set_yticklabels(my_ytick_labels)
@@ -63,5 +71,5 @@ g.ax.set_xlabel('Period')
 g.ax.set_ylabel('$c_\\mathrm{max}/c_\\mathrm{min}$')
 g.ax.set_title('Maximum variability within a given period')
 plt.tight_layout()
-#plt.show()
-plt.savefig('./figures/temporal_variability/resampling.pdf',dpi=300)
+# plt.show()
+plt.savefig('./figures/temporal_variability/resampling.pdf', dpi=300)

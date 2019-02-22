@@ -12,8 +12,8 @@
   {./../figures/},
   {./../figures/air-exchange-rate/},
   {./../figures/kde-iacc-pressure/},
-  {./../figures/preferential-pathway-sensitivity/},
-  {./../figures/transient-response/},
+  {./../figures/simulation_predictions/},
+  {./../figures/pair_grids/},
   {./../figures/multivariate_analysis/}
 }
 \usepackage{lineno}
@@ -56,60 +56,111 @@ The discovery of preferential pathways for contaminant entry at VI sites has fur
 
 \section{Methods}
 
-\subsection{Statistical Analysis of Field Data}
+\subsection{Statistical Analysis}
 
 This paper heavily relies on statistical analysis of high resolution datasets from two well-studied VI sites, one near Hill AFB in Utah (called the ASU house) and another in Indianapolis, IN (simply called as such.)
 Analysis is performed using the SciPy, NumPy, Pandas, and Seaborn Python packages.
-
 Probability distributions of various parameters are constructed using the kernel density estimation (KDE) method\cite{altman_introduction_1992}, which is implemented in the SciPy package.
 
-\subsection{Temporal Variability of Indoor Air Contaminant Concentration}
+At the Indianapolis site, we only consider the 422 side of the duplex, which was heated.
+Indoor air concentration in this case, specifically refer to the indoor air contaminant concentration in the 422 basement.
+Soilgas concentration refers only to samples taken from SGP2.
+The indoor/outdoor pressure difference is the 422 basement and exterior pressure difference.  
+
+The indoor/outdoor pressure difference were recorded every two minutes.
+Indoor air samples were taken every four hours.
+
+\subsection{Vapor Intrusion Model}
+
+
+
+\section{Results & Discussion}
+
+\subsection{Statistical Analysis of Field Data}
+
+
+
+\begin{figure}[!h]
+	\centering
+	\begin{minipage}[c]{0.49\textwidth}
+		\centering
+    \caption{ }
+    \label{fig:asu_phase}
+    \includegraphics[width=\textwidth]{asu_phase.pdf}
+	\end{minipage}
+	%\hspace{3cm}
+	\begin{minipage}[c]{0.49\textwidth}
+		\centering
+    \caption{ }
+    \label{fig:indianapolis_species}
+    \includegraphics[width=\textwidth]{indianapolis_species.pdf}
+	\end{minipage}
+\end{figure}
+
+
+\subsection{Seasonal Variability}
 
 \begin{figure}[htb!]
   \caption{ }
-  \label{fig:temporal_variability}
+  \label{fig:seasonal_analysis}
   % ASU/North Island plot
   \begin{subfigure}{0.49\textwidth}
     \centering
     \caption{ }
-    \label{fig:temporal_variability_asu}
-    \includegraphics[width=\textwidth]{temporal_variability/asu.pdf}
+    \label{fig:seasonal_analysis_asu}
+    \includegraphics[width=\textwidth]{asu_closed_season.pdf}
   \end{subfigure}
   % Indianapolis plot
   \begin{subfigure}{0.49\textwidth}
     \centering
     \caption{ }
-    \label{fig:temporal_variability_indianapolis}
-    \includegraphics[width=\textwidth]{temporal_variability/indianapolis.pdf}
+    \label{fig:seasonal_analysis_indianapolis}
+    \includegraphics[width=\textwidth]{indianapolis_pce_season.pdf}
   \end{subfigure}
 \end{figure}
 
 \subsection{Maximum Change in Indoor Air Contaminant Concentration}
 
+\begin{figure}[!h]
+	\centering
+	\begin{minipage}[c]{0.49\textwidth}
+		\centering
+    \caption{ }
+    \label{fig:resampling}
+    \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
+	\end{minipage}
+	%\hspace{3cm}
+	\begin{minipage}[c]{0.49\textwidth}
+		\centering
+    \caption{Simulated cases}
+    \label{fig:land_drain_scenarios}
+    \includegraphics[width=\textwidth]{land_drain_scenarios.pdf}
+	\end{minipage}
+\end{figure}
+
+
+
+\subsubsection{Modeling Indoor Air Variability}
+
 \begin{figure}[htb!]
   \caption{ }
-  \label{fig:resampling}
-  \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
-\end{figure}
-
-\subsubsection{Conclusions From Steady-State Modeling}
-
-\begin{figure}[htb!]
-  \caption{Sensitivity analysis of IACC dependence on indoor/outdoor pressure difference for cases featuring a preferential pathway (\ref{fig:ss-sensitivity-analysis-pp}) and without a preferential pathway (\ref{fig:ss-sensitivity-analysis-no-pp}). Results compared with field data from ASU house.}
-  \label{fig:ss-sensitivity-analysis}
-  % "Overview" plot
-  \begin{subfigure}{0.45\textwidth}
-    \caption{preferential pathway present. Sensitivity to the presence of a gravel sub-base and contamination in the preferential pathway considered.}
-    \label{fig:ss-sensitivity-analysis-pp}
-    \includegraphics[width=\textwidth]{yes-pp.pdf}
+  \label{fig:simulation_sampling}
+  % ASU/North Island plot
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \caption{ }
+    \label{fig:simulation_sampling_pp_open}
+    \includegraphics[width=\textwidth]{sampling_simulation_pp_open.pdf}
   \end{subfigure}
-  % Violinplot figure
-  \begin{subfigure}{0.45\textwidth}
-    \caption{No preferential pathway present. Sensitivitiy to the presence of a gravel sub-base considered.}
-    \label{fig:ss-sensitivity-analysis-no-pp}
-    \includegraphics[width=\textwidth]{no-pp.pdf}
+  % Indianapolis plot
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \caption{ }
+    \label{fig:simulation_sampling_pp_closed}
+    \includegraphics[width=\textwidth]{sampling_simulation_pp_closed.pdf}
   \end{subfigure}
 \end{figure}
+
 
 \begin{acknowledgement}
   This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).

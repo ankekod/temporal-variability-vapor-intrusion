@@ -131,4 +131,8 @@ for sim_case, phase in zip(sim_cases, phases):
     make_plots(asu_sort)
     plt.savefig(fig_dir+'sampling_simulation_pp_'+phase.lower()+ext,dpi=dpi)
 
+
+
+
+# TODO: how many samples are needed to capture like 99% of the distribution?
 #plt.show()
