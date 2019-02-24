@@ -116,7 +116,7 @@ df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
 # figure saving settings
 fig_dir = './figures/simulation_predictions/'
-ext = '.png'
+ext = '.pdf'
 dpi = 300
 
 sim_cases = ('Pp','No Pp',)
@@ -133,6 +133,22 @@ for sim_case, phase in zip(sim_cases, phases):
 
 
 
+# seasonal analysis
+seasons = asu['Season'].unique()
+sim_cases = ('Pp','No Pp',)
+phases = ('Open','Closed',)
+num_samples = 20
+for season in seasons:
+    for sim_case, phase in zip(sim_cases, phases):
+        try:
+            df_sort = df.loc[df['Simulation']==sim_case] # sorts simulation types
+            asu_sort = asu.loc[(asu['Phase']==phase) & (asu['Season']==season)]
 
-# TODO: how many samples are needed to capture like 99% of the distribution?
+            interp_func = get_interp_func(df_sort)
+            samp_p, samp_ae, prediction = get_prediction(asu_sort)
+            make_plots(asu_sort)
+            plt.savefig(fig_dir+'sampling_simulation_pp_'+phase.lower()+'_'+season.lower()+ext,dpi=dpi)
+        except:
+            continue
+
 #plt.show()
