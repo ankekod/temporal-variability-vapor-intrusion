@@ -116,7 +116,7 @@ df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
 # figure saving settings
 fig_dir = './figures/simulation_predictions/'
-ext = '.pdf'
+ext = '.png'
 dpi = 300
 
 sim_cases = ('Pp','No Pp',)
@@ -147,6 +147,12 @@ for season in seasons:
             interp_func = get_interp_func(df_sort)
             samp_p, samp_ae, prediction = get_prediction(asu_sort)
             make_plots(asu_sort)
+            titles = {
+                'Pp': 'Preferential pathway open',
+                'No Pp': 'Preferential pathway closed',
+            }
+
+            plt.suptitle(titles[sim_case]+' - '+season.lower(),y=1.0)
             plt.savefig(fig_dir+'sampling_simulation_pp_'+phase.lower()+'_'+season.lower()+ext,dpi=dpi)
         except:
             continue
