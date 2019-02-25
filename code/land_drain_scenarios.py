@@ -90,7 +90,7 @@ ax.set_xlim([-6,6])
 ax.set_ylim([-7,-3.7])
 
 ax.set_xlabel('$\\Delta p_\\mathrm{in/out}$ (Pa)')
-ax.set_ylabel('$\\alpha_\\mathrm{gw}$')
+ax.set_ylabel('$\\log{(\\alpha_\\mathrm{gw})}$')
 my_ytick_labels = ["%1.0e" % y_tick for y_tick in 10.0**ax.get_yticks()]
 ax.set_yticklabels(my_ytick_labels)
 ax.set_title('Modeling PP scenarios, assuming constant $A_e$,\nand comparing to \"ASU house\" field data')
@@ -98,5 +98,5 @@ ax.set_title('Modeling PP scenarios, assuming constant $A_e$,\nand comparing to 
 
 plt.tight_layout()
 
-plt.savefig('./figures/simulation_predictions/land_drain_scenarios.pdf',dpi=300)
+plt.savefig('./figures/simulation_predictions/land_drain_scenarios.png',dpi=300)
 #plt.show()

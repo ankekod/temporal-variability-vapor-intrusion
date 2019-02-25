@@ -92,7 +92,7 @@ def make_plots(asu):
     ax3.set_xlim([-7,-3])
     my_xtick_labels = ["%1.0e" % x_tick for x_tick in 10.0**ax3.get_xticks()]
     ax3.set_xticklabels(my_xtick_labels)
-    ax3.set_xlabel('$\\alpha_\\mathrm{gw}$')
+    ax3.set_xlabel('$\\log{(\\alpha_\\mathrm{gw})}$')
     ax3.legend()
 
     titles = {
@@ -116,7 +116,7 @@ df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
 # figure saving settings
 fig_dir = './figures/simulation_predictions/'
-ext = '.png'
+ext = '.pdf'
 dpi = 300
 
 sim_cases = ('Pp','No Pp',)
