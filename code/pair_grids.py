@@ -55,17 +55,22 @@ g = custom_axis(g)
 plt.savefig(fig_path+'asu_phase'+ext,dpi=dpi)
 
 # season hue
-g = sns.PairGrid(
-    asu.loc[asu['Phase']=='Closed'][['IndoorOutdoorPressure','AirExchangeRate','logIndoorConcentration','logAttenuationSubslab','Season']],
-    hue='Season',
-    hue_order=['Winter', 'Fall', 'Spring', 'Summer'],
-)
-g = g.map_upper(plt.scatter)
-g = g.map_lower(sns.regplot, x_bins=num_bins, truncate=True, )
-g = g.map_diag(sns.kdeplot, shade=True)
-g = g.add_legend()
-g = custom_axis(g)
-plt.savefig(fig_path+'asu_closed_season'+ext,dpi=dpi)
+for phase in asu['Phase'].unique():
+    try:
+        g = sns.PairGrid(
+            asu.loc[asu['Phase']==phase][['IndoorOutdoorPressure','AirExchangeRate','logIndoorConcentration','logAttenuationSubslab','Season']],
+            hue='Season',
+            hue_order=['Winter', 'Fall', 'Spring', 'Summer'],
+        )
+        g = g.map_upper(plt.scatter)
+        g = g.map_lower(sns.regplot, x_bins=num_bins, truncate=True, )
+        g = g.map_diag(sns.kdeplot, shade=True)
+        g = g.add_legend()
+        g = custom_axis(g)
+        g.fig.suptitle('Land drain ' + phase.lower())
+        plt.savefig(fig_path+'asu_season_'+phase.lower()+ext,dpi=dpi)
+    except:
+        continue
 
 # indianapolis
 # specie hue
@@ -81,16 +86,18 @@ g = custom_axis(g)
 plt.savefig(fig_path+'indianapolis_species'+ext,dpi=dpi)
 
 # season hue
-g = sns.PairGrid(
-    indianapolis.loc[indianapolis['Specie']=='Tetrachloroethene'][['IndoorOutdoorPressure','logIndoorConcentration','logAttenuationSubslab','Season']],
-    hue='Season',
-    hue_order=['Winter', 'Fall', 'Summer'],
-)
-g = g.map_upper(plt.scatter)
-g = g.map_lower(sns.regplot, x_bins=num_bins, truncate=True, )
-g = g.map_diag(sns.kdeplot, shade=True)
-g = g.add_legend()
-g = custom_axis(g)
-plt.savefig(fig_path+'indianapolis_pce_season'+ext,dpi=dpi)
+for specie in indianapolis['Specie'].unique():
+    g = sns.PairGrid(
+        indianapolis.loc[indianapolis['Specie']==specie][['IndoorOutdoorPressure','logIndoorConcentration','logAttenuationSubslab','Season']],
+        hue='Season',
+        hue_order=['Winter', 'Fall', 'Summer'],
+    )
+    g = g.map_upper(plt.scatter)
+    g = g.map_lower(sns.regplot, x_bins=num_bins, truncate=True, )
+    g = g.map_diag(sns.kdeplot, shade=True)
+    g = g.add_legend()
+    g = custom_axis(g)
+    g.fig.suptitle(specie)
+    plt.savefig(fig_path+'indianapolis_season_'+specie.lower()+ext,dpi=dpi)
 
 #plt.show()
