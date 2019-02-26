@@ -84,6 +84,7 @@ class Indianapolis:
             },
             inplace=True,
         )
+        pressure['IndoorOutdoorPressure'] *= -1 # changing sign to my convention
         pressure.drop(columns=['Variable','Location'],inplace=True)
         return pressure
 
@@ -256,5 +257,5 @@ class ASUHouse:
         subslab.drop(columns=['Depth','Location'],inplace=True)
         return subslab
 
-#ind = Indianapolis()
+ind = Indianapolis()
 asu = ASUHouse()
