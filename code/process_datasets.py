@@ -84,7 +84,7 @@ class Indianapolis:
             },
             inplace=True,
         )
-        pressure['IndoorOutdoorPressure'] *= -1 # changing sign to my convention
+        #pressure['IndoorOutdoorPressure'] *= -1 # changing sign to my convention (wasn't it needed?)
         pressure.drop(columns=['Variable','Location'],inplace=True)
         return pressure
 
@@ -257,5 +257,40 @@ class ASUHouse:
         subslab.drop(columns=['Depth','Location'],inplace=True)
         return subslab
 
-ind = Indianapolis()
-asu = ASUHouse()
+
+class NorthIsland:
+    def __init__(self):
+
+        self.db = sqlite3.connect(get_dropbox_path() + '/var/NorthIslandNAS.db')
+        df = self.get_data()
+        df.to_csv('./data/north_island.csv')
+        return
+
+    def get_data(self):
+        indoor = self.get_indoor_air()
+        pressure = self.get_pressure()
+
+        df = pd.merge_asof(indoor, pressure, on='Time')
+
+        return df
+
+    def get_indoor_air(self):
+        indoor = pd.read_sql_query(
+            "SELECT Time, Concentration AS IndoorConcentration FROM IndoorAirConcentration;",
+            self.db,
+        ).sort_values(by='Time')
+
+        indoor['logIndoorConcentration'] = indoor['IndoorConcentration'].apply(np.log10).replace([-np.inf,np.inf], np.nan)
+        return indoor
+
+    def get_pressure(self):
+        pressure = pd.read_sql_query(
+            "SELECT Time, Pressure AS IndoorOutdoorPressure FROM IndoorOutdoorPressureDifference;",
+            self.db,
+        ).sort_values(by='Time')
+        pressure['IndoorOutdoorPressure'] *= -1 
+        return pressure
+
+#ind = Indianapolis()
+#asu = ASUHouse()
+nas = NorthIsland()
