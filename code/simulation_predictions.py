@@ -119,6 +119,7 @@ fig_dir = './figures/simulation_predictions/'
 ext = '.pdf'
 dpi = 300
 
+"""
 sim_cases = ('Pp','No Pp',)
 phases = ('Open','Closed',)
 num_samples = 15
@@ -157,4 +158,80 @@ for season in seasons:
         except:
             continue
 
-#plt.show()
+"""
+# "Ae-span" figure
+
+
+class SimPrediction:
+    def __init__(self):
+        asu_span = asu.loc[(asu['Phase']=='Closed') & ( (asu['IndoorOutdoorPressure']>=-5) & (asu['IndoorOutdoorPressure']<=5) )]
+        sim_span = df[df['Simulation']=='No Pp']
+
+        grp = asu_span[['IndoorOutdoorPressure','AirExchangeRate']].groupby(pd.cut(asu_span['IndoorOutdoorPressure'], np.arange(-5, 5.5, 0.5))).describe()
+
+        p_in = grp['IndoorOutdoorPressure'].index
+        p_in = np.arange(-5, 5, 0.5)
+        #print(p_in.categories.astype('float'))
+
+        Ae_min = grp[('AirExchangeRate','min')].values
+        Ae_max = grp[('AirExchangeRate','max')].values
+
+        alpha_min = []
+        alpha_max = []
+
+        func = self.get_interp_func(sim_span)
+        for p, min, max in zip(p_in, Ae_min, Ae_max):
+
+            alpha_min.append(func(p,max)[0])
+            alpha_max.append(func(p,min)[0])
+
+
+
+        fig, ax = plt.subplots()
+        ax.plot(p_in, alpha_min, label='min')
+        ax.plot(p_in, alpha_max, label='max')
+
+        sns.scatterplot(
+            data=asu_span,#TODO: find nicer way, looks like shit
+            x='IndoorOutdoorPressure',
+            y='logAttenuationAvgGroundwater',
+            ax=ax,
+            x_bins=p_in,
+            #legend=False,
+            label='Data',
+        )
+        sns.regplot(
+            data=asu_span,#TODO: find nicer way, looks like shit
+            x='IndoorOutdoorPressure',
+            y='logAttenuationAvgGroundwater',
+            ax=ax,
+            x_bins=p_in,
+            #legend=False,
+            label='Data',
+        )
+
+        plt.legend()
+        plt.show()
+        #print(grp[('AirExchangeRate','min')].values)
+
+        return
+
+    def get_interp_func(self, df):
+
+        p_in = df['IndoorOutdoorPressure']
+        Ae = df['AirExchangeRate']
+        alpha = df['logAttenuationGroundwater']
+        func = interp2d(
+            p_in,
+            Ae,
+            alpha,
+            kind='linear',
+        )
+
+        return func
+
+
+
+gs = gridspec.GridSpec(2, 2)
+
+sim_pred = SimPrediction()
