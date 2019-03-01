@@ -11,6 +11,11 @@ from scipy.interpolate import interp2d
 asu = pd.read_csv('./data/asu_house.csv')
 #simulation = pd.read_csv('./data/asu_house.csv')
 
+# figure saving settings
+fig_dir = './figures/simulation_predictions/'
+ext = '.png'
+dpi = 300
+
 dfs = []
 for file in ('pp','pp_uniform','no_pp',):
     df = pd.read_csv('./data/simulation/sweep_'+file+'.csv',header=4)
@@ -114,10 +119,7 @@ df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
 df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
-# figure saving settings
-fig_dir = './figures/simulation_predictions/'
-ext = '.pdf'
-dpi = 300
+
 
 """
 sim_cases = ('Pp','No Pp',)
@@ -173,7 +175,6 @@ class SimPrediction:
         sim_span = df[df['Simulation']==options[status][1]]
 
         grp = asu_span[['IndoorOutdoorPressure','AirExchangeRate']].groupby(pd.cut(asu_span['IndoorOutdoorPressure'], np.arange(-5, 5.5, 0.5))).describe(percentiles=[0.05, 0.95])
-        print(grp['IndoorOutdoorPressure'])
         p_in = grp['IndoorOutdoorPressure'].index
         p_in = np.arange(-5, 5, 0.5)
         #print(p_in.categories.astype('float'))
@@ -217,7 +218,7 @@ class SimPrediction:
         )
 
         sns.scatterplot(
-            data=asu_span.loc[asu_span['IndoorConcentration']>=0.001],
+            data=asu_span.loc[asu_span['IndoorConcentration']>=0.05],
             x='IndoorOutdoorPressure',
             y='logAttenuationAvgGroundwater',
             ax=ax,
@@ -228,6 +229,7 @@ class SimPrediction:
 
 
         plt.legend()
+        plt.savefig(fig_dir+'simulation_prediction_span_'+status.lower()+ext,dpi=300)
         plt.show()
         #print(grp[('AirExchangeRate','min')].values)
 
@@ -251,4 +253,5 @@ class SimPrediction:
 
 gs = gridspec.GridSpec(2, 2)
 
-sim_pred = SimPrediction(status='Closed')
+SimPrediction(status='Open')
+SimPrediction(status='Closed')

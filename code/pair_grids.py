@@ -16,7 +16,7 @@ asu = asu.loc[(asu['IndoorOutdoorPressure'] >= -5) & (asu['IndoorOutdoorPressure
 # global settings
 num_bins = 10
 fig_path = './figures/pair_grids/'
-ext = '.png'
+ext = '.pdf'
 dpi = 300
 
 # method to set custom axis labels
@@ -216,7 +216,7 @@ class SimpleGrid:
         # TODO: fix the plot colors in the ASU column
         # TODO: increase resolution of ASU KDE
         ax1.legend()
-
+        plt.savefig(fig_path+'simple_grid'+ext,dpi=300)
         plt.tight_layout()
         return
 
