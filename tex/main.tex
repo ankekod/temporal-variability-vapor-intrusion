@@ -111,22 +111,56 @@ This means that it is presumed that the variables of interest (i.e., indoor air 
 In this instance, the scipy statistical package was used to construct the KDEs, assuming a bandwidth parameter determined by Scott's rule.
 The distributions of the individual parameters and the relationship between them will be examined using the KDE method.
 
+
+\section{Methods}
+
 \subsection{Vapor Intrusion Model}
 
-
+\begin{equation}
+  V \frac{\partial c_\mathrm{in}}{\partial t} = n - c_\mathrm{in} A_e V \label{eq:indoor_air}
+\end{equation}
 
 \section{Results \& Discussion}
 
 \subsection{Statistical Analysis of Field Data}
 
-
-
 \begin{figure}[!h]
 		\centering
-    \caption{ }
+    \caption{Distributions of indoor/outdoor pressure differences (top row), and its correlation with indoor air contaminant concentrations (middle rows), and air exchange rate (bottom row), at three different VI sites - ASU house, Indianapolis site, and North Island NAS.}
     \label{fig:pair_grid}
     \includegraphics[width=\textwidth]{simple_grid.pdf}
 \end{figure}
+
+Our discussion of examining the temporal variability of indoor air contaminant concentration begins by considering one of the most dynamic factors that influence VI - the indoor/outdoor pressure difference ($p_\mathrm{in/out}$).
+In the top row of Figure \ref{fig:pair_grid}, the distribution of $p_\mathrm{in/out}$ at three difference VI sites, the ASU house, Indianapolis site, and North Island NAS, are plotted.
+The distributions of $p_\mathrm{in/out}$ at these three site resemble normal-like distribution, with a mean of a few negativa Pa, indicating that the most probable state is that these sites are slightly depressized.
+At the ASU house and the Indianapolis site, the range of $p_\mathrm{in/out}$ values are relatively similar, whereas the North Island NAS site has significalty larger span of values.
+This is most likely due to the poor structural condition of the North Island site, making it much more suspectible to barometric pressure fluctations; the ASU house and Indianapolis site regular residential structure in good condition.
+The periods when the preferential pathway at the ASU house was open and closed are considered separately.
+% TODO: Add some sort of interesting conclusion
+
+Now we move on to look at $p_\mathrm{in/out}$ is correlated with the indoor air contaminant concentration ($c_\mathrm{in}$).
+The middle row of Figure \ref{fig:pair_grid} shows the log-10 values of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$, placed into evenly spaced bins, are plotted.
+Each bin represents the mean $c_\mathrm{in}$ and the errorbars show the 95\% confidence interval. % TODO: Change this description once you've fixed the figure.
+A linear regression curve is also fitted to the data, with the shaded part of the regression again indicating the 95\% confidence interval. % TODO: Make sure this is right.
+At the ASU house, it is readibly apparent that the preferential pathway has a profound effect on how sensitive $c_\mathrm{in}$ is to $p_\mathrm{in/out}$, showing that the closing of the preferential pathway fundamentally changes the site.
+Perhaps surprsingly, when the preferential pathway is closed $p_\mathrm{in/out}$ is not strongly correlated with $c_\mathrm{in}$.
+
+
+It is clear that $p_\mathrm{in/out}$ sets a trend, i.e. increased depressurziation is associated with higher $c_\mathrm{in}$, but there is still considerable variability for a given $p_\mathrm{in/out}$.
+
+
+$p_\mathrm{in/out}$ is important in determining the contaminant entry rate into a structure, but it also will partly determine the air exchange rate.
+How significantly $p_\mathrm{in/out}$ determines $A_e$ varies significantly with site specific conditions, e.g. HVAC operation, if windows are open/closed, how well insulted the structure is etc.
+$A_e$ is thus highly variate for a given $p_\mathrm{in/out}$ hypothesize that most of this variability may be explained by variation in air exchange rate ($A_e$).
+
+Air exchange
+
+This leads us to examine how $A_e$ is associated with
+
+
+The difference in correlation of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$ for the "open" and "closed" periods, as well as the $p_\mathrm{in/out}$ is more evenly distributed around 0 Pa support with our choice of model, where we assume that the preferential pathway acts by enhancing the "advective potential" of a VI site through improving communication between the indoor and outdoor.
+
 
 % ASU:
 % Pressure distributions similar
@@ -193,7 +227,7 @@ The distributions of the individual parameters and the relationship between them
 % Much larger spatial variability in subbase with PP present than without
 % (Show plot with 2-4 panes)
 % 1./2. show ASU/Indianapolis alpha_sb
-% 3./4. model alpha_sb distributions with and without PP 
+% 3./4. model alpha_sb distributions with and without PP
 
 
 
