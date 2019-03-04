@@ -179,8 +179,8 @@ class SimPrediction:
         p_in = np.arange(-5, 5, 0.5)
         #print(p_in.categories.astype('float'))
 
-        Ae_min = grp[('AirExchangeRate','5%')].values
-        Ae_max = grp[('AirExchangeRate','95%')].values
+        Ae_min = grp[('AirExchangeRate','min')].values
+        Ae_max = grp[('AirExchangeRate','max')].values
         Ae_mean = grp[('AirExchangeRate','mean')].values
 
         alpha_min = []

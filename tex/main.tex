@@ -128,6 +128,76 @@ The distributions of the individual parameters and the relationship between them
     \includegraphics[width=\textwidth]{simple_grid.pdf}
 \end{figure}
 
+% ASU:
+% Pressure distributions similar
+% Yet drastically different c
+% => clearly driven by PP
+% Pressure relationship better when open than close
+% => Enhanced advection, motivating our choice of model
+% Poor relationship for closed,
+% => Diffusion dominated transport
+% Yet significant uncertainty and variance in indoor air?
+% Look at the influence of Ae on this
+% Pressure is related to Ae, but not determinant
+% => still large variability in Ae for a given p, what effect does this have?
+
+% Indianapolis & North Island
+% Unforunately no Ae data here like ASU, cannot look at that influence
+% Stronger correlation between p and c here
+% Indianapolis had some type of PP, though less significant than at ASU
+% North Island had very large pressure changes, may explain the stronger relationship
+
+
+% Constant Ae simulations
+% First consider only pressure influence (constant Ae)
+% PP Open
+% Clearly we can capture the trend when p < 0, but not well when p > 0
+% When p > 0, diffusion limit, but still variability, why?
+% => Indicate fluctuating Ae
+% Uniform soil
+% Removing gravel sub-base removes the "upswing"
+% Permeable subbase region necessary to realize "advective potential"
+% PP closed
+% Kind of capture a "trend", but not variability
+% Pressure not significant and/or advective transport too inhibited to be signifncant
+% => Indicate fluctating Ae driver for variability here
+% Main point:
+% Pressure controls Ae and entry rate, but in closed and uniform cases, it is insufficnet to dramatically increase entry rate
+% When open, this is no longer true
+% Pressure also help control Ae, but there is great uncertainty
+% This leads to the difficult to predict variability
+% => Need to incorporate Ae fluctuations to understand variability
+
+% New PP simulations with extreme Ae values for each pressure considered
+% Now we capture most of the variability for open and closed
+% Strong indicator that fluctating Ae is responsible for a significant portion of the variability
+% Needs to be controlled better (hard)
+% Or the span of values considered to give upper and lower limits on variability
+% Use EPA handbook to estimate variability (pretty much can always be one OOM)
+
+% This says nothing about at what speed or timescale change may occur
+% We look at the difference between max/min across various timespans
+% See that on daily to a week, absent a PP, little variability is expected
+% => 24 hr average samples adequate
+% => no need to sample more than a few days apart
+% Across time, more of the extreme values of Ae and pressure have occured, kind of ergodically, giving rise to this increase in variability
+% Remember p and Ae are more or less normally distributed, (Ae more skewed)
+% => extreme values unlikely but do happen across time
+
+% Problem with attenuation to subslab
+% Spatial variability in subslab may be greater than temporal indoor variability
+% ASU perfect example, here there is greater alpha_sb variability than c
+% => May be more uncertain
+% => False positive for indoor sources
+% => But could also indicate presence of PP in subbase
+% Much larger spatial variability in subbase with PP present than without
+% (Show plot with 2-4 panes)
+% 1./2. show ASU/Indianapolis alpha_sb
+% 3./4. model alpha_sb distributions with and without PP 
+
+
+
+
 \begin{figure}[!h]
 	\centering
 	\begin{minipage}[c]{0.49\textwidth}
