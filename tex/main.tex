@@ -131,14 +131,16 @@ The distributions of the individual parameters and the relationship between them
     \includegraphics[width=\textwidth]{simple_grid.pdf}
 \end{figure}
 
+% PRESSURE DISTRIBUTION DISCUSSION
 Our discussion of examining the temporal variability of indoor air contaminant concentration begins by considering one of the most dynamic factors that influence VI - the indoor/outdoor pressure difference ($p_\mathrm{in/out}$).
 In the top row of Figure \ref{fig:pair_grid}, the distribution of $p_\mathrm{in/out}$ at three difference VI sites, the ASU house, Indianapolis site, and North Island NAS, are plotted.
 The distributions of $p_\mathrm{in/out}$ at these three site resemble normal-like distribution, with a mean of a few negativa Pa, indicating that the most probable state is that these sites are slightly depressized.
 At the ASU house and the Indianapolis site, the range of $p_\mathrm{in/out}$ values are relatively similar, whereas the North Island NAS site has significalty larger span of values.
-This is most likely due to the poor structural condition of the North Island site, making it much more suspectible to barometric pressure fluctations; the ASU house and Indianapolis site regular residential structure in good condition.
+This is most likely due to the poor structural condition of the North Island site, making it much more suspectible to barometric pressure fluctations; the ASU house and Indianapolis site are regular residential structure in good condition.
 The periods when the preferential pathway at the ASU house was open and closed are considered separately.
 % TODO: Add some sort of interesting conclusion
 
+% P_IN/OUT VS. C_IN - ASU HOUSE
 Now we move on to look at $p_\mathrm{in/out}$ is correlated with the indoor air contaminant concentration ($c_\mathrm{in}$).
 The middle row of Figure \ref{fig:pair_grid} shows the log-10 values of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$, placed into evenly spaced bins, are plotted.
 Each bin represents the mean $c_\mathrm{in}$ and the errorbars show the 95\% confidence interval. % TODO: Change this description once you've fixed the figure.
@@ -146,21 +148,18 @@ A linear regression curve is also fitted to the data, with the shaded part of th
 At the ASU house, it is readibly apparent that the preferential pathway has a profound effect on how sensitive $c_\mathrm{in}$ is to $p_\mathrm{in/out}$, showing that the closing of the preferential pathway fundamentally changes the site.
 Perhaps surprsingly, when the preferential pathway is closed $p_\mathrm{in/out}$ is not strongly correlated with $c_\mathrm{in}$.
 
+% - " - - INDIANAPOLIS AND NORTH ISLAND NAS
+At the Indianapolis and North Island NAS sites, we again see the association of higher $c_\mathrm{in}$ when the structures are depressurized, but with still significant variability for a given $p_\mathrm{in/out}$.
 
+% MODEL CHOICE DISCUSSION
+The difference in correlation of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$ for the "open" and "closed" periods, as well as the $p_\mathrm{in/out}$ is more evenly distributed around 0 Pa support our choice of model, where we assume that the preferential pathway acts by enhancing the "advective potential" of a VI site through improving communication between the indoor and outdoor.
+
+% AE DISCUSSION
 It is clear that $p_\mathrm{in/out}$ sets a trend, i.e. increased depressurziation is associated with higher $c_\mathrm{in}$, but there is still considerable variability for a given $p_\mathrm{in/out}$.
-
-
 $p_\mathrm{in/out}$ is important in determining the contaminant entry rate into a structure, but it also will partly determine the air exchange rate.
-How significantly $p_\mathrm{in/out}$ determines $A_e$ varies significantly with site specific conditions, e.g. HVAC operation, if windows are open/closed, how well insulted the structure is etc.
-$A_e$ is thus highly variate for a given $p_\mathrm{in/out}$ hypothesize that most of this variability may be explained by variation in air exchange rate ($A_e$).
-
-Air exchange
-
-This leads us to examine how $A_e$ is associated with
-
-
-The difference in correlation of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$ for the "open" and "closed" periods, as well as the $p_\mathrm{in/out}$ is more evenly distributed around 0 Pa support with our choice of model, where we assume that the preferential pathway acts by enhancing the "advective potential" of a VI site through improving communication between the indoor and outdoor.
-
+How significantly $p_\mathrm{in/out}$ determines $A_e$ varies with site specific conditions, e.g. HVAC operation, if windows are open/closed, how well insulted the structure is etc.
+$A_e$ is thus highly variate for a given $p_\mathrm{in/out}$, and we hypothesize that most of the variability in $c_\mathrm{in}$ at a specific $p_\mathrm{in/out}$ may be explained by variation in air exchange rate ($A_e$).
+In the bottom left of Figure \ref{fig:pair_grid} we can see that larger depressurziation is associated with higher $A_e$, while overpressurazation is associated with lower $A_e$, but with still significant uncertainty.
 
 % ASU:
 % Pressure distributions similar
@@ -181,6 +180,36 @@ The difference in correlation of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$ for the
 % Indianapolis had some type of PP, though less significant than at ASU
 % North Island had very large pressure changes, may explain the stronger relationship
 
+\subsubsection{Influence Of Pressure On Indoor Air Variability}
+
+\begin{figure}[!h] % TODO: Adjust aspect ratio
+	\centering
+  \caption{Simulated cases}
+  \label{fig:land_drain_scenarios}
+  \includegraphics[width=0.5\textwidth]{land_drain_scenarios.pdf}
+\end{figure}
+
+To examine the role that $p_\mathrm{in/out}$ and $A_e$ play in determining $c_\mathrm{in}$ variability (given as attenuation from groundwater vapor source $\alpha_\mathrm{gw}$ here), we first consider modeling VI scenarios with a constant $A_e = 0.5 \; \mathrm{(1/hr)}$, and varying $p_\mathrm{in/out}$ from 5 to -5 Pa.
+The first of these scenarios is aimed to be similar to the period when the preferential pathway is open at the ASU house, and thus the modeled preferential pathway is active.
+In the second scenario, this preferential pathway feature is deactivated, akin to the period when the preferential pathway was closed at the ASU site.
+And in the third, the preferential pathway is again modeled, but the permeable gravel sub-base is instead assumed consist of the sandy loam, just like the surrounding soil, giving an "uniform soil" scenario. % TODO: Make sure that the soil type is correct
+The results of these modeled scearios are then compared to the preferential pathways "open" and "closed" periods from the ASU data, and may be seen in Figure \ref{fig:land_drain_scenarios}.
+The data is here binned into evenly spaced bins, with each dot representing the mean $\alpha_\mathrm{gw}$ and the error bars denote the 95\% confidence intervals.
+
+By examining the first scenario (blue) it is readily apparent that the model is able to capture the behavior of the preferential pathway when the structure is depressized ($p_\mathrm{in/out} < 0$) but not very well when the house is overpressurized ($p_\mathrm{in/out} > 0$).
+This shows that the preferential pathways acts by increasing advective potential, allowing even relatively small increases in depressurziation dramatically increases the contaminant entry rate into the house.
+Conversely, when the structure is overpressurized, contaminant entry is more effectively inhibited, leading to diffusion being the more important transport mechanism from the sub-base to the indoor air space, leading to the decrease in $\alpha_\mathrm{gw}$.
+Yet, when $p_\mathrm{in/out} > 0$ there is a slight increase in $\alpha_\mathrm{gw}$ which can be explained by the fact that lower $A_e$ are associated with overpressurazation, leading to an increase in $\alpha_\mathrm{gw}$,
+
+An interesting contrast to this scenario is third, when the preferential pathway is still present but the permeable gravel sub-base is not.
+Under these conditions, there is almost increase in advective transport as the impermeable sub-base effectively inhibits this.
+This leads to the conclusion that a unless there is some way for a preferential pathway to effectively communicate between the sub-base region (or wherever the preferential pathway is), then it is unlikely to find the dramatic effect observed at the ASU house.
+
+Lastly, we consider the second scenario, where there is no preferential pathway present (but there is a permeable gravel sub-base).
+Here the general (weak) trend of increased $\alpha_\mathrm{gw}$ with increase depressurziation is captured, but none of the variability is captured.
+There is inadequate potential for advective transport and thus $p_\mathrm{in/out}$ does not significantly increase the contaminant entry rate.
+Furthermore, the seemingly random variability is not captured.
+Clearly, the $A_e$ fluctations must be incorporated into the modeling methodoly to more accurately predict the variability in $\alpha_\mathrm{gw}$.
 
 % Constant Ae simulations
 % First consider only pressure influence (constant Ae)
@@ -202,58 +231,9 @@ The difference in correlation of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$ for the
 % This leads to the difficult to predict variability
 % => Need to incorporate Ae fluctuations to understand variability
 
-% New PP simulations with extreme Ae values for each pressure considered
-% Now we capture most of the variability for open and closed
-% Strong indicator that fluctating Ae is responsible for a significant portion of the variability
-% Needs to be controlled better (hard)
-% Or the span of values considered to give upper and lower limits on variability
-% Use EPA handbook to estimate variability (pretty much can always be one OOM)
+\subsubsection{Combined Influence Of Pressure And Air Exchange Rate On Indoor Air Variability}
 
-% This says nothing about at what speed or timescale change may occur
-% We look at the difference between max/min across various timespans
-% See that on daily to a week, absent a PP, little variability is expected
-% => 24 hr average samples adequate
-% => no need to sample more than a few days apart
-% Across time, more of the extreme values of Ae and pressure have occured, kind of ergodically, giving rise to this increase in variability
-% Remember p and Ae are more or less normally distributed, (Ae more skewed)
-% => extreme values unlikely but do happen across time
-
-% Problem with attenuation to subslab
-% Spatial variability in subslab may be greater than temporal indoor variability
-% ASU perfect example, here there is greater alpha_sb variability than c
-% => May be more uncertain
-% => False positive for indoor sources
-% => But could also indicate presence of PP in subbase
-% Much larger spatial variability in subbase with PP present than without
-% (Show plot with 2-4 panes)
-% 1./2. show ASU/Indianapolis alpha_sb
-% 3./4. model alpha_sb distributions with and without PP
-
-
-
-
-\begin{figure}[!h]
-	\centering
-	\begin{minipage}[c]{0.49\textwidth}
-		\centering
-    \caption{ }
-    \label{fig:resampling}
-    \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
-	\end{minipage}
-	%\hspace{3cm}
-	\begin{minipage}[c]{0.49\textwidth}
-		\centering
-    \caption{Simulated cases}
-    \label{fig:land_drain_scenarios}
-    \includegraphics[width=\textwidth]{land_drain_scenarios.pdf}
-	\end{minipage}
-\end{figure}
-
-
-
-\subsubsection{Modeling Indoor Air Variability}
-
-\begin{figure}[htb!]
+\begin{figure}[htb!] % TODO: Only plot 5th and 95th percentile
   \caption{ }
   \label{fig:simulation_sampling}
   % ASU/North Island plot
@@ -271,6 +251,69 @@ The difference in correlation of $c_\mathrm{in}$ vs. $p_\mathrm{in/out}$ for the
     \includegraphics[width=\textwidth]{simulation_prediction_span_closed.pdf}
   \end{subfigure}
 \end{figure}
+
+To model how much variability that may be expected for a given indoor/outdoor pressyre difference, $p_\mathrm{in/out}$ is binned from 5 to -5 Pa in 0.5 Pa intervals, and the maximum and minimum $A_e$ in that interval are used as additional inputs to the model. % TODO: Update this description if different interval is used
+
+
+An analysis similar to that in Figure \ref{fig:land_drain_scenarios}
+
+% New PP simulations with extreme Ae values for each pressure considered
+% Now we capture most of the variability for open and closed
+% Strong indicator that fluctating Ae is responsible for a significant portion of the variability
+% Needs to be controlled better (hard)
+% Or the span of values considered to give upper and lower limits on variability
+% Use EPA handbook to estimate variability (pretty much can always be one OOM)
+
+
+\subsection{Variation Timeperiod} % TODO: Improve title
+
+\begin{figure}[htb!] % TODO: Adjust aspect ratio
+  \centering
+  \caption{ (1D is 1 day, 2W is 2 weeks, and 3M is 3 months).}
+  \label{fig:resampling}
+  \includegraphics[width=0.5\textwidth]{temporal_variability/resampling.pdf}
+\end{figure}
+
+% RESAMPLING TIME ANALYSIS
+So far our discussion has focused on how much variability in $c_\mathrm{in}$ can be expected, and some drivers for this, at the three different sites.
+However, this tells just little about how much $c_\mathrm{in}$ may vary over a given timeperiod.
+To examine this, the data is resampled over a chosen timeperiod, and the quotient of the maximum and minimum $c_\mathrm{in}$ (denoted as $c_\mathrm{max}/c_\mathrm{min}$) are plotted for this period.
+I.e. if $c_\mathrm{in}$ samples were collected every four hours over a period of a year, and the data is resampled on a daily basis, then $c_\mathrm{max}/c_\mathrm{min}$ is returned for within each day, giving 365 data points.
+For this analysis, we consider the period when the preferential pathway was open/closed at the ASU house, and the three indoor air contaminant found at the Indianapolis site (TCE, PCE, and Chloroform).
+The North Island NAS dataset is excluded here, as the data that we have available only spans a few days versus year(s) for the ASU house and Indianapolis sites.
+
+Figure \ref{fig:resampling} shows the the expected maximum variability over different resampling periods (from 1 day to 6 months).
+As one might expect, the longer the resampling period, the larger the maximum variability is, spanning from less than a threefold difference, to two to three orders of magnitude.
+That such a large variability is observed when the resampling time approaches the length of the entire datasets is hardly surprising, nor is it surprising that the variability is much more significant when the preferential pathway was open than closed.
+What may be surprising is that absent a preferential pathway such as the one at the ASU house, it may may take a few weeks before an order of magnitude maximum variability is reached.
+The most significant result of this analysis is that the maximum variability is quite small across a few days, suggesting that e.g. 24-hour passive samplers will resolve the daily temporal variabilty in $c_\mathrm{in}$ well ($c_\mathrm{max}/c_\mathrm{min} \approx 1.5$) and that a sampling frequency greater than a few days may yield little extra information.
+
+% Ergodicity argument here
+
+% This says nothing about at what speed or timescale change may occur
+% We look at the difference between max/min across various timespans
+% See that on daily to a week, absent a PP, little variability is expected
+% => 24 hr average samples adequate
+% => no need to sample more than a few days apart
+% Across time, more of the extreme values of Ae and pressure have occured, kind of ergodically, giving rise to this increase in variability
+% Remember p and Ae are more or less normally distributed, (Ae more skewed)
+% => extreme values unlikely but do happen across time
+
+
+\subsection{Attenuation To Subslab} % TODO: Improve title
+
+
+% Problem with attenuation to subslab
+% Spatial variability in subslab may be greater than temporal indoor variability
+% ASU perfect example, here there is greater alpha_sb variability than c
+% => May be more uncertain
+% => False positive for indoor sources
+% => But could also indicate presence of PP in subbase
+% Much larger spatial variability in subbase with PP present than without
+% (Show plot with 2-4 panes)
+% 1./2. show ASU/Indianapolis alpha_sb
+% 3./4. model alpha_sb distributions with and without PP
+
 
 
 \begin{acknowledgement}
