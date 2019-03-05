@@ -37,7 +37,6 @@ df.rename(
 # data choosing
 df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
 df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
-#df['AttenuationSubslab'] *= 2e3 # this seems to fix the problem... any way to get it? TODO: Looking into this more
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
 df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 
@@ -58,7 +57,7 @@ g = sns.lmplot(
 
 ax = g.axes[0][0]
 sns.lineplot(
-    data=df.loc[(df['AirExchangeRate'] >= 0.4) & (df['AirExchangeRate'] <= 0.6)][['IndoorOutdoorPressure','logAttenuationGroundwater','Simulation']],#TODO: find nicer way, looks like shit
+    data=df.loc[(df['AirExchangeRate'] >= 0.4) & (df['AirExchangeRate'] <= 0.6)][['IndoorOutdoorPressure','logAttenuationGroundwater','Simulation']],
     x='IndoorOutdoorPressure',
     y='logAttenuationGroundwater',
     hue='Simulation',

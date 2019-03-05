@@ -176,7 +176,6 @@ custom_x_ticks(ax)
 ax.set_title('PP Closed')
 
 # resampling plots
-# TODO: repeat this analysis but within each season
 time_scales = ('h', 'D', 'W', 'M')
 
 fig, ax = plt.subplots()

@@ -76,7 +76,6 @@ pre_cpm.drop(columns=cols_to_drop,inplace=True)
 post_cpm.drop(columns=cols_to_drop,inplace=True)
 sns.pairplot(post_cpm, hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
 
-# TODO: change axis labels (adding units) and adjust ticks for the indoor concentration
 plt.savefig('./figures/multivariate_analysis/asu_season.pdf',dpi=300)
 
 plt.show()

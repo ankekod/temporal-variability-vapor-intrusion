@@ -115,7 +115,6 @@ def make_plots(asu):
 # data choosing
 df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
 df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
-#df['AttenuationSubslab'] *= 2e3 # this seems to fix the problem... any way to get it? TODO: Looking into this more
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
 df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
 

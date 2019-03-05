@@ -92,7 +92,6 @@ for dataset in (pre_cpm,post_cpm,):
         #dataset = dataset.name
         df = dataset[dataset['Season']==season]
         print("Dataset: %s, Season: %s" % (dataset.name,season))
-        # TODO: use dataset mean instead of seasonal mean
         df['IndoorConcentration'] -= dataset['IndoorConcentration'].mean()
 
         if dp is True:
@@ -157,7 +156,6 @@ for dataset in (pre_cpm,post_cpm,):
     g.ax_joint.legend(handles=label_patches, loc='upper left')
     plt.tight_layout()
     plt.savefig('./figures/kde-iacc-pressure/%s_seasons.pdf' % dataset.name.replace(',','').replace(' ','_').lower(), dpi=300)
-    # TODO: dynamically change axis limits?
     #plt.show()
     plt.clf()
     plt.cla()

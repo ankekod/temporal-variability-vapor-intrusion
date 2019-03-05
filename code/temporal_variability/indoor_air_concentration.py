@@ -7,8 +7,6 @@ from scipy.stats import gaussian_kde
 import sqlite3
 import seaborn as sns
 
-# TODO: add indianapolis data and add to present analysis
-
 data_dir = './data/preferential-pathway-sensitivity/'
 #db_dir = '/home/jonathan/Dropbox/var/'
 db_dir = 'C:\\Users\\jstroem\\Dropbox\\var\\'

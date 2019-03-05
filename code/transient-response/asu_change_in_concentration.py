@@ -7,7 +7,6 @@ from scipy.stats import gaussian_kde
 import sqlite3
 import seaborn as sns
 
-# TODO: add indianapolis data and add to present analysis
 
 data_dir = './data/preferential-pathway-sensitivity/'
 db_dir = '/home/jonathan/Dropbox/var/'
@@ -158,8 +157,6 @@ indianapolis = process_indianapolis()
 
 # figure 1: differences in rate of change for pre and post CPM periods
 # and simulated comparison
-# TODO: add same simulation data but for with a land drain
-# TODO: figure out how to show how well or poorly your simulation fits the data
 fig, ax = plt.subplots()
 sns.kdeplot(pre_cpm['RateOfChange'], gridsize=5e3, ax=ax, label='ASU, PP open')
 sns.kdeplot(post_cpm['RateOfChange'], gridsize=5e3, ax=ax, label='ASU, PP closed')
@@ -182,7 +179,6 @@ custom_x_ticks(ax, my_xticks=np.log10([0.5, 0.75, 1.0, 1.5, 2.0]))
 ax.legend(loc='best')
 plt.savefig(fig_dir+'rate_of_change_simulations.pdf',dpi=300)
 # table 1: simulated rates of change for various Ae and soils
-# TODO: print out all the data you wish to tabulate here
 
 
 # figure 2: rate of change over the seasons

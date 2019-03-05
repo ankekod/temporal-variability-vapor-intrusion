@@ -103,7 +103,6 @@ def get_season(x):
 indianapolis['Season'] = indianapolis['Month'].apply(lambda x: get_season(x))
 #indianapolis = indianapolis.drop(columns=['StopTime','Month'])
 
-# TODO: change axis labels (adding units) and adjust ticks for the indoor concentration
 sns.pairplot(indianapolis.loc[indianapolis['Specie']=='Chloroform'][['Pressure','AttenuationSubSurface','AttenuationGroundwater','Season']], hue="Season", hue_order=['Winter','Fall','Spring','Summer'])
 #plt.savefig('./figures/multivariate_analysis/indianapolis_season.pdf',dpi=300)
 #plt.show()
