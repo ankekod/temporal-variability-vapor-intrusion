@@ -51,11 +51,11 @@ class ConstantAe:
             x='IndoorOutdoorPressure',
             y='logAttenuationAvgGroundwater',
             hue='Phase',
-            x_bins=np.linspace(-5,5,20),
+            x_bins=np.linspace(-5,5,40),
             fit_reg=False,
             legend_out=False,
             legend=False,
-            #aspect=1.5,
+            aspect=1.5,
         )
 
         ax = g.axes[0][0]
@@ -101,13 +101,16 @@ class ConstantAe:
         plt.tight_layout()
 
         plt.savefig('./figures/simulation_predictions/land_drain_scenarios_constant_ae.png',dpi=300)
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_constant_ae.pdf',dpi=300)
+
         plt.show()
         return
 
 
 class FluctuatingAe:
     def __init__(self):
-        ae_describe = asu['AirExchangeRate'].describe(percentiles=[0.05, 0.95])
+        ae_describe = asu.loc[asu['Phase']!='CPM']['AirExchangeRate'].describe(percentiles=[0.05, 0.95])
+        print(ae_describe)
         data = asu.loc[
             ((asu['IndoorOutdoorPressure']>=-5) & (asu['IndoorOutdoorPressure']<=5)) &
             (asu['Phase']!='CPM')
@@ -120,8 +123,8 @@ class FluctuatingAe:
 
         sim = df.loc[
             (
-                (df['AirExchangeRate'] >= ae_describe['5%']) &
-                (df['AirExchangeRate'] <= ae_describe['95%'])
+                (df['AirExchangeRate'] >= ae_describe['min']) &
+                (df['AirExchangeRate'] <= ae_describe['max'])
             )
         ]
         g = sns.lmplot(
@@ -129,23 +132,36 @@ class FluctuatingAe:
             x='IndoorOutdoorPressure',
             y='logAttenuationAvgGroundwater',
             hue='Phase',
-            x_bins=np.linspace(-5,5,20),
+            x_bins=np.linspace(-5,5,40),
+            #x_bins=20,
             fit_reg=False,
             legend_out=False,
             legend=False,
-            #aspect=1.5,
+            aspect=1.5,
         )
 
         ax = g.axes[0][0]
-        sns.lineplot(
+        ax = sns.lineplot(
             data=sim,
             x='IndoorOutdoorPressure',
             y='logAttenuationGroundwater',
             hue='Simulation',
-            hue_order=['Pp', 'No Pp',],
+            hue_order=['Pp', 'No Pp'],
             ax=ax,
             #legend=False,
         )
+        """
+        ax = sns.lineplot(
+            data=sim,
+            x='IndoorOutdoorPressure',
+            y='logAttenuationGroundwater',
+            hue='Simulation',
+            hue_order=['Pp Uniform',],
+            ax=ax,
+            ci=None,
+            #legend=False,
+        )
+        """
 
 
         handles, labels = ax.get_legend_handles_labels()
@@ -154,6 +170,7 @@ class FluctuatingAe:
         labels = (
             'PP present',
             'PP absent',
+            #'PP present, gravel sub-base absent',
             'Data, PP open',
             'Data, PP closed',
         )
@@ -172,12 +189,14 @@ class FluctuatingAe:
         ax.set_ylabel('$\\log{(\\alpha_\\mathrm{gw})}$')
         my_ytick_labels = ["%1.0e" % y_tick for y_tick in 10.0**ax.get_yticks()]
         ax.set_yticklabels(my_ytick_labels)
-        ax.set_title('Modeling PP scenarios, assuming constant $A_e$,\nand comparing to \"ASU house\" field data')
+        ax.set_title('Modeling PP scenarios, with minimum and maximum $A_e$\nvalues, and comparing to \"ASU house\" field data')
 
 
         plt.tight_layout()
 
-        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_flucating_ae.png',dpi=300)
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_fluctuating_ae.png',dpi=300)
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_fluctuating_ae.pdf',dpi=300)
+
         plt.show()
         return
 ConstantAe()

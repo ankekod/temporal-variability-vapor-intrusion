@@ -78,11 +78,8 @@ The conditions required for preferential pathways to become significant contribu
 
 \section{Methods}
 
-\subsection{Statistical Analysis}
 
-This paper heavily relies on statistical analysis of high resolution datasets from two well-studied VI sites, one near Hill AFB in Utah (called the ASU house) and another in Indianapolis, IN (simply called as such.)
-Analysis is performed using the SciPy, NumPy, Pandas, and Seaborn Python packages.
-Probability distributions of various parameters are constructed using the kernel density estimation (KDE) method\cite{altman_introduction_1992}, which is implemented in the SciPy package.
+\subsection{Statistical Analysis Of Field Data}
 
 To begin to characterize transient behavior in indoor air contaminant concentrations, actual datasets are analyzed to establish common levels of variability at VI sites.
 For this purpose, the datasets from the ASU house in Utah, the EPA Indianapolis site and North Island NAS were chosen for analysis.
@@ -111,14 +108,120 @@ This means that it is presumed that the variables of interest (i.e., indoor air 
 In this instance, the scipy statistical package was used to construct the KDEs, assuming a bandwidth parameter determined by Scott's rule.
 The distributions of the individual parameters and the relationship between them will be examined using the KDE method.
 
+\subsection{Modeling Work}
+In addition to examining the actual field data, a previously described three -dimensional computational fluid dynamics model of a generic VI impacted house was used to elucidate certain aspects of  the processes.
+This model was implemented in a finite element solver package, COMSOL Multiphysics.
+In the present work, there has been an addition of a preferential pathway to the ”standard” model that has been described before in publications by this group\cite{shen_influence_2013,yao_investigating_2017,yao_three-dimensional_2017}.
+As in the earlier studies, only the vadose zone soil domain is directly modeled.
 
-\section{Methods}
+The modeled structure is assumed to have a 10x10 m foundation footprint, with the bottom of the foundation slab lying 1 m below ground surface (bgs), simulating a house with a basement.
+The indoor air space is modeled as a continuously stirred tank (CST)\cite{u.s._environmental_protection_agency_oswer_2015} and all of the contaminant entering the house is assumed to enter with soil gas through a 1 cm wide crack located between the foundation walls and the foundation slab around the perimeter of the house.
+All of the contaminant leaving the indoor air space is assumed to do so via air exchange with the ambient.
+The indoor control volume is assumed to consist of only of the basement, assumed as having a total volume of $300 \; \mathrm{m^3}$.
+Clearly different assumptions could be made regarding the structural features and the size of the crack entry route, but for present purposes, this is unimportant as the intent is only to show for “typical” values what the influence of certain other features can be. \par
 
-\subsection{Vapor Intrusion Model}
+The modeled surrounding soil domain extends 5 meters from the perimeter of the house, and is assumed to consist of sandy clay (except as noted).
+Directly beneath the foundation slab, there is assumed to be a 30 cm (one foot) thick gravel layer, except in certain cases where this sub-base material is assumed to be the same as the surrounding soil (termed  a ”uniform” soil scenario). \par
 
-\begin{equation}
-  V \frac{\partial c_\mathrm{in}}{\partial t} = n - c_\mathrm{in} A_e V \label{eq:indoor_air}
-\end{equation}
+Where relevant The preferential pathway is modeled as a 10 cm (4”) pipe that exits into the gravel sub-base beneath the structure.
+The air in the pipe is assumed to be contaminated with TCE at a vapor concentration equal to the vapor in equilibrium with the groundwater contaminant concentration below the structure, modified by a scaling factor $\chi$, allowing the contaminant concentration in the pipe to be parameterized. \par
+
+The groundwater beneath the structure is assumed to be homogeneously contaminated with trichloroethylene (TCE) as a prototypical contaminant.
+The groundwater itself is not modeled, as the bottom of the model domain is defined by the top of the water table.
+The ground surface and the pipe are both assumed to be sources of air to the soil domain.
+Both are assumed to be at reference atmospheric pressure. \par
+
+Vapor transport in the soil is governed by Richard’s equation, a modified version  of Darcy’s Law, taking the variability of soil moisture in the vadose zone into account\cite{richards_capillary_1931}.
+The van Genuchten equations are used to predict the soil moisture content and thus the effective permeability of the soil\cite{van_genuchten_closed-form_1980}.
+The effective diffusivity of contaminant in soil is calculated using the Millington-Quirk model\cite{millington_permeability_1961}.
+The transport of vapor contaminant in the soil is assumed to be governed by the advection-diffusion equation, in which either advection or diffusion may dominate depending upon position and particular circumstances.
+The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-parameters}.
+
+\begin{table}[htb!]
+  \centering
+  \caption{Governing equations, boundary conditions \& model input parameters. (See below for table of nomenclature).}
+  \label{tbl:eqns-bc-parameters}
+  \bigskip
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Governing equations
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subcaption{Governing equations}
+  \begin{tabular}{l l}
+    \toprule
+    % Indoor air space equation
+    Unsteady-CSTR                 & $V\frac{d u}{d t} = \int_{A_\mathrm{ck}} j_\mathrm{ck} dA - u A_e V$ \\
+    % Richard's equation
+    Richard's equation            & $\nabla \cdot \rho \Big( - \frac{\kappa_s}{\mu} k_r \nabla p \Big) = 0$ \\
+    % Millington-Quirk equation
+    Millington-Quirk              & $D_\mathrm{eff} = D_\mathrm{air}\frac{\theta_g^{10/3}}{\theta_t^2} + \frac{D_\mathrm{water}}{K_H} \frac{\theta_w^{10/3}}{\theta_t^2}$ \\
+    % Advection-diffusion equation
+    Advection-diffusion equation  & $\frac{\partial}{\partial t} \Big( \theta_w c_w + \theta_g c \Big) = \nabla (D_\mathrm{eff} \cdot \nabla c) - \vec{u} \cdot \nabla c$ \\
+    % van Genuchten's equations
+    \multirow{3}{*}{van Genuchten equations}     & $\mathrm{Se} = \frac{\theta_w - \theta_r}{\theta_t - \theta_r} = [1 + |\alpha z|^n]^{-m}$ \\
+                                  & $\theta_g = \theta_t - \theta_w$ \\
+                                  & $k_r = (1 - \mathrm{Se})^{l} [1 - (\mathrm{Se}^{-m})^m]^2$ \\
+                                  & $m = 1 - 1/n$ \\
+    \bottomrule
+  \end{tabular}
+  \bigskip
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Boundary conditions
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subcaption{Boundary conditions}
+  \begin{tabular}{l l l}
+    \toprule
+    \textbf{Boundary}          & \textbf{Richard's equation}      &   \textbf{Advection-diffusion equation} \\
+    % Foundation crack
+    At foundation crack  & $p = p_\mathrm{in/out} \; \mathrm{(Pa)}$                            & $j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$ \\
+    % Groundwater source
+    At groundwater source &  N/A & $c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$ \\
+    % Ground surface
+    At ground surface      & $p = 0 \; \mathrm{(Pa)}$  & $c = 0 \; \mathrm{(\mu g/m^3)}$ \\
+    % Preferential pathway
+    Exit of preferential pathway  & $p = 0 \; \mathrm{(Pa)}$  & $c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$ \\
+    \bottomrule
+  \end{tabular}
+  \bigskip
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Soil input parameters
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subcaption{Soil \& gravel properties\cite{dan_capillary_2012,abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}}
+  \begin{tabular}{l l l l l l l}
+    \toprule
+    % Descriptions
+    Soil & $\text{Permeability} \; \mathrm{(m^2)}$  & $\mathrm{Density} \; \mathrm{(kg/m^3)}$  & $\theta_s$  & $\theta_r$  & $\alpha \; \mathrm{(1/m)}$  & $n$ \\
+    % Gravel
+    Gravel     & $1.3 \cdot 10^{-9}$   & 1680    & 0.42        & 0.005       & 100       & 3.1 \\
+    % Sand
+    Sand     & $9.9 \cdot 10^{-12}$  & 1430    & 0.38        & 0.053        & 3.5       & 3.2 \\
+    % Sandy clay
+    Sandy Clay    & $1.7 \cdot 10^{-14}$  & 1470    & 0.39        & 0.12        & 3.3       & 1.2 \\
+    \bottomrule
+  \end{tabular}
+  \bigskip
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % TCE input parameters
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subcaption{Trichloroethylene (diluted in air) properties\cite{abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}}
+  \begin{tabular}{l l l l l l}
+    \toprule
+    $D_\mathrm{air} \; \mathrm{(m^2/h)}$  & $D_\mathrm{water} \; \mathrm{(m^2/h)}$  & $\mathrm{Density} \; \mathrm{(kg/m^3)}$ & $\mathrm{Viscosity} \; \mathrm{(Pa \cdot s)}$  & $K_H$ & $M \; \mathrm{(g/mol)}$ \\
+    $2.47 \cdot 10^{-2}$  & $3.67 \cdot 10^{-6}$  & 1.614 & $1.86 \cdot 10^{-5}$  & 0.403 & 131.39 \\
+    \bottomrule
+  \end{tabular}
+  \bigskip
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Building input parameters
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subcaption{Building properties}
+  \begin{tabular}{l l l}
+    \toprule
+    $V_\mathrm{base} \; \mathrm{(m^3)}$  & $L_\mathrm{slab} \; \mathrm{(cm)}$  & $A_e \; \mathrm{(1/hr)}$ \\
+    %
+    300  &  15  & 0.5 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Results \& Discussion}
 
@@ -185,16 +288,16 @@ In the bottom left of Figure \ref{fig:pair_grid} we can see that larger depressu
 \begin{figure}[!h] % TODO: Adjust aspect ratio
 	\centering
   \caption{Simulated cases}
-  \label{fig:land_drain_scenarios}
-  \includegraphics[width=0.5\textwidth]{land_drain_scenarios.pdf}
+  \label{fig:land_drain_scenarios_constant_ae}
+  \includegraphics[width=0.5\textwidth]{land_drain_scenarios_constant_ae.pdf}
 \end{figure}
 
-To examine the role that $p_\mathrm{in/out}$ and $A_e$ play in determining $c_\mathrm{in}$ variability (given as attenuation from groundwater vapor source $\alpha_\mathrm{gw}$ here), we first consider modeling VI scenarios with a constant $A_e = 0.5 \; \mathrm{(1/hr)}$, and varying $p_\mathrm{in/out}$ from 5 to -5 Pa.
+To examine the role that $p_\mathrm{in/out}$ and $A_e$ play in determining $c_\mathrm{in}$ variability (given as attenuation from groundwater vapor source $\alpha_\mathrm{gw}$ here), we first consider modeling VI scenarios with a constant $A_e = 0.5 \; \mathrm{(1/hr)}$ (the mean $A_e$ at the ASU house), and varying $p_\mathrm{in/out}$ from 5 to -5 Pa.
 The first of these scenarios is aimed to be similar to the period when the preferential pathway is open at the ASU house, and thus the modeled preferential pathway is active.
 In the second scenario, this preferential pathway feature is deactivated, akin to the period when the preferential pathway was closed at the ASU site.
 And in the third, the preferential pathway is again modeled, but the permeable gravel sub-base is instead assumed consist of the sandy loam, just like the surrounding soil, giving an "uniform soil" scenario. % TODO: Make sure that the soil type is correct
-The results of these modeled scearios are then compared to the preferential pathways "open" and "closed" periods from the ASU data, and may be seen in Figure \ref{fig:land_drain_scenarios}.
-The data is here binned into evenly spaced bins, with each dot representing the mean $\alpha_\mathrm{gw}$ and the error bars denote the 95\% confidence intervals.
+The results of these modeled scearios are then compared to the preferential pathways "open" and "closed" periods from the ASU data, and may be seen in Figure \ref{fig:land_drain_scenarios_constant_ae}.
+The data is here binned into evenly spaced bins, with each dot representing the mean $\alpha_\mathrm{gw}$ and the error bars denote the one standard deviation.
 
 By examining the first scenario (blue) it is readily apparent that the model is able to capture the behavior of the preferential pathway when the structure is depressized ($p_\mathrm{in/out} < 0$) but not very well when the house is overpressurized ($p_\mathrm{in/out} > 0$).
 This shows that the preferential pathways acts by increasing advective potential, allowing even relatively small increases in depressurziation dramatically increases the contaminant entry rate into the house.
@@ -233,29 +336,23 @@ Clearly, the $A_e$ fluctations must be incorporated into the modeling methodoly 
 
 \subsubsection{Combined Influence Of Pressure And Air Exchange Rate On Indoor Air Variability}
 
-\begin{figure}[htb!] % TODO: Only plot 5th and 95th percentile
-  \caption{ }
-  \label{fig:simulation_sampling}
-  % ASU/North Island plot
-  \begin{subfigure}{0.49\textwidth}
-    \centering
-    \caption{ }
-    \label{fig:simulation_sampling_pp_open}
-    \includegraphics[width=\textwidth]{simulation_prediction_span_open.pdf}
-  \end{subfigure}
-  % Indianapolis plot
-  \begin{subfigure}{0.49\textwidth}
-    \centering
-    \caption{ }
-    \label{fig:simulation_sampling_pp_closed}
-    \includegraphics[width=\textwidth]{simulation_prediction_span_closed.pdf}
-  \end{subfigure}
+\begin{figure}[!h] % TODO: Adjust aspect ratio
+	\centering
+  \caption{Simulated cases}
+  \label{fig:land_drain_scenarios_fluctuating_ae}
+  \includegraphics[width=0.5\textwidth]{land_drain_scenarios_fluctuating_ae.pdf}
 \end{figure}
 
-To model how much variability that may be expected for a given indoor/outdoor pressyre difference, $p_\mathrm{in/out}$ is binned from 5 to -5 Pa in 0.5 Pa intervals, and the maximum and minimum $A_e$ in that interval are used as additional inputs to the model. % TODO: Update this description if different interval is used
+% INTRODUCE THE FIGURE
+To predict the variability of $\alpha_\mathrm{gw}$ for a given pressure, we use the minimum and maximum $A_e$ values observed at the ASU site (0.06 and 3.38 per hour respectively), and calculate $\alpha_\mathrm{gw}$ over the same range of $p_\mathrm{in/out}$ values.
+This gives the range of values that $\alpha_\mathrm{gw}$ may fluctuate over for a given $p_\mathrm{in/out}$.
+Using this method, the analysis in Figure \ref{fig:land_drain_scenarios_constant_ae} is repeated, i.e. that the cases when the preferential pathways is open and closed respectively are considered.
+The result of this analysis can be seen in Figure \ref{fig:land_drain_scenarios_fluctuating_ae}, where this range of $\alpha_\mathrm{gw}$ is represented by the shaded areas, and the solid line is the predicted $\alpha_\mathrm{gw}$ when $A_e$ assumes the mean value of 0.50 per hour.
+Data from ASU is binned in 40 evenly spaced bins, where the dot represents the mean value, and the error bars represent one standard deviation.
 
+The trends in Figure \ref{fig:land_drain_scenarios_fluctuating_ae} are the same as in Figure \ref{fig:land_drain_scenarios_constant_ae}, but it is clear that much more variability is accounted for, especially considering the majority of datapoints were recorded between -3 and 3 Pa (the bins are evenly spaced, not evenly sized).
+More e
 
-An analysis similar to that in Figure \ref{fig:land_drain_scenarios}
 
 % New PP simulations with extreme Ae values for each pressure considered
 % Now we capture most of the variability for open and closed
