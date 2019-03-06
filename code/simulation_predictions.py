@@ -170,59 +170,47 @@ class SimPrediction:
             'Open': ['Open', 'Pp'],
             'Closed': ['Closed', 'No Pp'],
         }
-        asu_span = asu.loc[(asu['Phase']==options[status][0]) & ( (asu['IndoorOutdoorPressure']>=-5) & (asu['IndoorOutdoorPressure']<=5) )]
-        sim_span = df[df['Simulation']==options[status][1]]
+        quantiles = list(asu.loc[asu['Phase']==options[status][0]]['logAttenuationAvgGroundwater'].quantile([0.05,0.95]))
+        ae_describe = asu['AirExchangeRate'].describe(percentiles=[0.05, 0.95])
 
-        grp = asu_span[['IndoorOutdoorPressure','AirExchangeRate']].groupby(pd.cut(asu_span['IndoorOutdoorPressure'], np.arange(-5, 5.5, 0.5))).describe(percentiles=[0.05, 0.95])
-        p_in = grp['IndoorOutdoorPressure'].index
-        p_in = np.arange(-5, 5, 0.5)
-        #print(p_in.categories.astype('float'))
 
-        Ae_min = grp[('AirExchangeRate','min')].values
-        Ae_max = grp[('AirExchangeRate','max')].values
-        Ae_mean = grp[('AirExchangeRate','mean')].values
+        data = asu.loc[
+            (asu['Phase']==options[status][0]) &
+            ((asu['IndoorOutdoorPressure']>=-5) & (asu['IndoorOutdoorPressure']<=5)) #&
+            #(
+            #    (asu['logAttenuationAvgGroundwater']>=quantiles[0]) &
+            #    (asu['logAttenuationAvgGroundwater']<=quantiles[1])
+            #)
+        ]
 
-        alpha_min = []
-        alpha_max = []
-        alpha_mean = []
 
-        func = self.get_interp_func(sim_span)
-        for p, min, max, mean in zip(p_in, Ae_min, Ae_max, Ae_mean):
-
-            alpha_min.append(func(p,max)[0])
-            alpha_max.append(func(p,min)[0])
-            alpha_mean.append(func(p,mean)[0])
-
-        alpha_min = np.array(alpha_min)
-        alpha_max = np.array(alpha_max)
-        alpha_mean = np.array(alpha_mean)
+        sim = df.loc[
+            (df['Simulation']==options[status][1]) &
+            (
+                (df['AirExchangeRate'] >= ae_describe['5%']) &
+                (df['AirExchangeRate'] <= ae_describe['95%'])
+            )
+        ]
 
         fig, ax = plt.subplots()
-        #ax.plot(p_in, alpha_min, label='min')
-        #ax.plot(p_in, alpha_max, label='max')
-        """
-        ax.errorbar(
-            p_in,
-            alpha_mean,
-            yerr=(alpha_mean-alpha_min, alpha_max-alpha_mean),
-            #xerr=None,
-        )
-        """
 
-        ax.plot(p_in, alpha_mean, 'k-')
-        ax.fill_between(
-            p_in,
-            alpha_mean-(alpha_mean-alpha_min),
-            alpha_mean+(alpha_max-alpha_mean),
+
+        ax = sns.lineplot(
+            data=sim,
+            x='IndoorOutdoorPressure',
+            y='logAttenuationGroundwater',
+            ci='sd',
+            ax=ax,
+            label='Predicted range'
         )
 
-        sns.scatterplot(
-            data=asu_span.loc[asu_span['IndoorConcentration']>=0.05],
+        ax = sns.regplot(
+            data=data,
             x='IndoorOutdoorPressure',
             y='logAttenuationAvgGroundwater',
             ax=ax,
-            x_bins=p_in,
-            #legend=False,
+            x_bins=np.linspace(-5, 5, 20),
+            fit_reg=False,
             label='Data',
         )
 
@@ -230,7 +218,6 @@ class SimPrediction:
         plt.legend()
         plt.savefig(fig_dir+'simulation_prediction_span_'+status.lower()+ext,dpi=300)
         plt.show()
-        #print(grp[('AirExchangeRate','min')].values)
 
         return
 
@@ -249,8 +236,6 @@ class SimPrediction:
         return func
 
 
-
-gs = gridspec.GridSpec(2, 2)
 
 SimPrediction(status='Open')
 SimPrediction(status='Closed')
