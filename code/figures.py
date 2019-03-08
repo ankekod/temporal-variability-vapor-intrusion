@@ -14,7 +14,6 @@ class Figure1:
         sim = Soil().data
         sim = sim.loc[(sim['SoilType']=='Sand')]
 
-        print(sim)
 
         ax = sns.kdeplot(
             data=data['IndoorOutdoorPressure'],
@@ -22,10 +21,8 @@ class Figure1:
             shade_lowest=False,
             shade=True,
         )
-
-
-
-        sim['logAttenuationGroundwaterFromMean'] = sim['logAttenuationGroundwater'] - sim['logAttenuationGroundwater'].median()
+        # TODO: Normalise to when Pa = 0
+        sim['logAttenuationGroundwaterFromMean'] = sim['logAttenuationGroundwater'] - sim.loc[sim['IndoorOutdoorPressure']==-1]['logAttenuationGroundwater'].values
         ax = sns.lineplot(
             data=sim,
             x='IndoorOutdoorPressure',
