@@ -62,7 +62,7 @@ g = sns.catplot(
     kind="point",
     data=resampled,
     legend_out=False,
-    # aspect=1.5,
+    aspect=1.5,
 )
 
 my_ytick_labels = ["%1.1f" % y_tick for y_tick in 10.0**g.ax.get_yticks()]
@@ -71,5 +71,7 @@ g.ax.set_xlabel('Period')
 g.ax.set_ylabel('$c_\\mathrm{max}/c_\\mathrm{min}$')
 g.ax.set_title('Maximum variability within a given period')
 plt.tight_layout()
-# plt.show()
+
 plt.savefig('./figures/temporal_variability/resampling.pdf', dpi=300)
+plt.savefig('./figures/temporal_variability/resampling.png', dpi=300)
+plt.show()

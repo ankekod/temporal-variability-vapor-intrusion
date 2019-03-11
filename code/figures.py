@@ -64,7 +64,7 @@ class Figure1:
             ylim=[-1,1.5],
             xlabel='$p_\\mathrm{in/out} \\; \\mathrm{(Pa)}$',
             ylabel='$c_\\mathrm{in}/c_\\mathrm{in,mean}$',
-            title='Relationship between indoor/outdoor pressure difference and\nTCE in indoor air (normalized to mean concentration)',
+            title='Relationship between indoor/outdoor pressure difference and\nTCE in indoor air (normalized to dataset mean concentration)',
             #yscale='log',
             yticks=yticks,
             yticklabels=yticklabels,
@@ -90,5 +90,20 @@ def get_log_ticks(start, stop):
 
     return ticks, labels
 
+
+class AttenuationSubslab:
+    def __init__(self):
+        asu = pd.read_csv('./data/asu_house.csv')
+
+
+        fig, (ax1, ax2) = plt.subplots()
+
+
+        for phase in asu['Phase'].unique()
+        sns.kdeplot(
+            data=asu.loc[asu['Phase']==phase]
+        )
+
+        return
 
 Figure1(y_data_log=True,norm_conc=True)
