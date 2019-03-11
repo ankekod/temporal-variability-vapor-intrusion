@@ -10,11 +10,10 @@
 \usepackage{comment}
 \graphicspath{
   {./../figures/},
-  {./../figures/air-exchange-rate/},
-  {./../figures/kde-iacc-pressure/},
+  {./../figures/2d_kde/},
   {./../figures/simulation_predictions/},
   {./../figures/pair_grids/},
-  {./../figures/multivariate_analysis/}
+  {./../figures/temporal_variability/},
 }
 \usepackage{lineno}
 \linenumbers
@@ -230,8 +229,8 @@ The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-pa
 \begin{figure}[!h]
 		\centering
     \caption{Distributions of indoor/outdoor pressure differences (top row), and its correlation with indoor air contaminant concentrations (middle rows), and air exchange rate (bottom row), at three different VI sites - ASU house, Indianapolis site, and North Island NAS.}
-    \label{fig:pair_grid}
-    \includegraphics[width=\textwidth]{simple_grid.pdf}
+    \label{fig:kde}
+    \includegraphics[width=\textwidth]{nas_asu_pp.pdf}
 \end{figure}
 
 % PRESSURE DISTRIBUTION DISCUSSION
@@ -264,6 +263,30 @@ How significantly $p_\mathrm{in/out}$ determines $A_e$ varies with site specific
 $A_e$ is thus highly variate for a given $p_\mathrm{in/out}$, and we hypothesize that most of the variability in $c_\mathrm{in}$ at a specific $p_\mathrm{in/out}$ may be explained by variation in air exchange rate ($A_e$).
 In the bottom left of Figure \ref{fig:pair_grid} we can see that larger depressurziation is associated with higher $A_e$, while overpressurazation is associated with lower $A_e$, but with still significant uncertainty.
 
+
+\subsection{Variation Timeperiod} % TODO: Improve title
+
+\begin{figure}[htb!] % TODO: Adjust aspect ratio
+  \centering
+  \caption{ (1D is 1 day, 2W is 2 weeks, and 3M is 3 months).}
+  \label{fig:resampling}
+  \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
+\end{figure}
+
+% RESAMPLING TIME ANALYSIS
+So far our discussion has focused on how much variability in $c_\mathrm{in}$ can be expected, and some drivers for this, at the three different sites.
+However, this tells just little about how much $c_\mathrm{in}$ may vary over a given timeperiod.
+To examine this, the data is resampled over a chosen timeperiod, and the quotient of the maximum and minimum $c_\mathrm{in}$ (denoted as $c_\mathrm{max}/c_\mathrm{min}$) are plotted for this period.
+I.e. if $c_\mathrm{in}$ samples were collected every four hours over a period of a year, and the data is resampled on a daily basis, then $c_\mathrm{max}/c_\mathrm{min}$ is returned for within each day, giving 365 data points.
+For this analysis, we consider the period when the preferential pathway was open/closed at the ASU house, and the three indoor air contaminant found at the Indianapolis site (TCE, PCE, and Chloroform).
+The North Island NAS dataset is excluded here, as the data that we have available only spans a few days versus year(s) for the ASU house and Indianapolis sites.
+
+Figure \ref{fig:resampling} shows the the expected maximum variability over different resampling periods (from 1 day to 6 months).
+As one might expect, the longer the resampling period, the larger the maximum variability is, spanning from less than a threefold difference, to two to three orders of magnitude.
+That such a large variability is observed when the resampling time approaches the length of the entire datasets is hardly surprising, nor is it surprising that the variability is much more significant when the preferential pathway was open than closed.
+What may be surprising is that absent a preferential pathway such as the one at the ASU house, it may may take a few weeks before an order of magnitude maximum variability is reached.
+The most significant result of this analysis is that the maximum variability is quite small across a few days, suggesting that e.g. 24-hour passive samplers will resolve the daily temporal variabilty in $c_\mathrm{in}$ well ($c_\mathrm{max}/c_\mathrm{min} \approx 1.5$) and that a sampling frequency greater than a few days may yield little extra information.
+
 % ASU:
 % Pressure distributions similar
 % Yet drastically different c
@@ -285,6 +308,16 @@ In the bottom left of Figure \ref{fig:pair_grid} we can see that larger depressu
 
 \subsubsection{Influence Of Pressure On Indoor Air Variability}
 
+
+\begin{figure}[!h] % TODO: Adjust aspect ratio
+	\centering
+  \caption{Simulated cases}
+  \label{fig:land_drain_scenarios_fluctuating_ae}
+  \includegraphics[width=\textwidth]{land_drain_scenarios_fluctuating_ae.pdf}
+\end{figure}
+
+
+\begin{comment}
 \begin{figure}[!h] % TODO: Adjust aspect ratio
 	\centering
   \caption{Simulated cases}
@@ -340,7 +373,7 @@ Clearly, the $A_e$ fluctations must be incorporated into the modeling methodoly 
 	\centering
   \caption{Simulated cases}
   \label{fig:land_drain_scenarios_fluctuating_ae}
-  \includegraphics[width=0.5\textwidth]{land_drain_scenarios_fluctuating_ae.pdf}
+  \includegraphics[width=\textwidth]{land_drain_scenarios_fluctuating_ae.pdf}
 \end{figure}
 
 % INTRODUCE THE FIGURE
@@ -360,30 +393,11 @@ More e
 % Needs to be controlled better (hard)
 % Or the span of values considered to give upper and lower limits on variability
 % Use EPA handbook to estimate variability (pretty much can always be one OOM)
+\end{comment}
 
 
-\subsection{Variation Timeperiod} % TODO: Improve title
 
-\begin{figure}[htb!] % TODO: Adjust aspect ratio
-  \centering
-  \caption{ (1D is 1 day, 2W is 2 weeks, and 3M is 3 months).}
-  \label{fig:resampling}
-  \includegraphics[width=0.5\textwidth]{temporal_variability/resampling.pdf}
-\end{figure}
 
-% RESAMPLING TIME ANALYSIS
-So far our discussion has focused on how much variability in $c_\mathrm{in}$ can be expected, and some drivers for this, at the three different sites.
-However, this tells just little about how much $c_\mathrm{in}$ may vary over a given timeperiod.
-To examine this, the data is resampled over a chosen timeperiod, and the quotient of the maximum and minimum $c_\mathrm{in}$ (denoted as $c_\mathrm{max}/c_\mathrm{min}$) are plotted for this period.
-I.e. if $c_\mathrm{in}$ samples were collected every four hours over a period of a year, and the data is resampled on a daily basis, then $c_\mathrm{max}/c_\mathrm{min}$ is returned for within each day, giving 365 data points.
-For this analysis, we consider the period when the preferential pathway was open/closed at the ASU house, and the three indoor air contaminant found at the Indianapolis site (TCE, PCE, and Chloroform).
-The North Island NAS dataset is excluded here, as the data that we have available only spans a few days versus year(s) for the ASU house and Indianapolis sites.
-
-Figure \ref{fig:resampling} shows the the expected maximum variability over different resampling periods (from 1 day to 6 months).
-As one might expect, the longer the resampling period, the larger the maximum variability is, spanning from less than a threefold difference, to two to three orders of magnitude.
-That such a large variability is observed when the resampling time approaches the length of the entire datasets is hardly surprising, nor is it surprising that the variability is much more significant when the preferential pathway was open than closed.
-What may be surprising is that absent a preferential pathway such as the one at the ASU house, it may may take a few weeks before an order of magnitude maximum variability is reached.
-The most significant result of this analysis is that the maximum variability is quite small across a few days, suggesting that e.g. 24-hour passive samplers will resolve the daily temporal variabilty in $c_\mathrm{in}$ well ($c_\mathrm{max}/c_\mathrm{min} \approx 1.5$) and that a sampling frequency greater than a few days may yield little extra information.
 
 % Ergodicity argument here
 
