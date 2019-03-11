@@ -29,7 +29,7 @@ class Figure1:
 
 
         datasets = (nas, asu_open, asu_closed,)
-        labels = ('North Island NAS', 'ASU house, land drain open', 'ASU house, land drain closed',)
+        labels = ('North Island NAS', 'ASU house, PP open', 'ASU house, PP closed',)
 
         fig, ax = plt.subplots()
 
@@ -63,13 +63,16 @@ class Figure1:
             xlim=[-30,15],
             ylim=[-1,1.5],
             xlabel='$p_\\mathrm{in/out} \\; \\mathrm{(Pa)}$',
-            ylabel='$\\log{(c_\\mathrm{in})} \\; \\mathrm{(\\mu g/m^3)}$',
+            ylabel='$c_\\mathrm{in}/c_\\mathrm{in,mean}$',
             title='Relationship between indoor/outdoor pressure difference and\nTCE in indoor air (normalized to mean concentration)',
             #yscale='log',
             yticks=yticks,
             yticklabels=yticklabels,
         )
         plt.legend(loc='upper left')
+        plt.savefig('./figures/2d_kde/nas_asu_pp.pdf', dpi=300)
+        plt.savefig('./figures/2d_kde/nas_asu_pp.png', dpi=300)
+
         plt.show()
 
         return
@@ -86,4 +89,6 @@ def get_log_ticks(start, stop):
 
 
     return ticks, labels
+
+
 Figure1(y_data_log=True,norm_conc=True)
