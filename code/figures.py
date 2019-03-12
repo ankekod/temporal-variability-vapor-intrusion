@@ -45,6 +45,9 @@ class Figure1:
 
 
             r, p = stats.pearsonr(data[x], data2)
+
+            print(label)
+            print(data[x].describe(percentiles=[0.05,0.95]), data['IndoorConcentration'].describe(percentiles=[0.05,0.95]), data2.describe(percentiles=[0.05,0.95]))
             sns.kdeplot(
                 data=data[x],
                 data2=data2,
@@ -70,8 +73,8 @@ class Figure1:
             yticklabels=yticklabels,
         )
         plt.legend(loc='upper left')
-        plt.savefig('./figures/2d_kde/nas_asu_pp.pdf', dpi=300)
-        plt.savefig('./figures/2d_kde/nas_asu_pp.png', dpi=300)
+        #plt.savefig('./figures/2d_kde/nas_asu_pp.pdf', dpi=300)
+        #plt.savefig('./figures/2d_kde/nas_asu_pp.png', dpi=300)
 
         plt.show()
 
@@ -99,10 +102,10 @@ class AttenuationSubslab:
         fig, (ax1, ax2) = plt.subplots()
 
 
-        for phase in asu['Phase'].unique()
-        sns.kdeplot(
-            data=asu.loc[asu['Phase']==phase]
-        )
+        for phase in asu['Phase'].unique():
+            sns.kdeplot(
+                data=asu.loc[asu['Phase']==phase]
+            )
 
         return
 
