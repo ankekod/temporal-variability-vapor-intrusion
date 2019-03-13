@@ -119,7 +119,7 @@ All of the contaminant leaving the indoor air space is assumed to do so via air 
 The indoor control volume is assumed to consist of only of the basement, assumed as having a total volume of $300 \; \mathrm{m^3}$.
 Clearly different assumptions could be made regarding the structural features and the size of the crack entry route, but for present purposes, this is unimportant as the intent is only to show for “typical” values what the influence of certain other features can be. \par
 
-The modeled surrounding soil domain extends 5 meters from the perimeter of the house, and is assumed to consist of sandy clay (except as noted).
+The modeled surrounding soil domain extends 5 meters from the perimeter of the house, and is assumed to consist of sandy loam (except as noted).
 Directly beneath the foundation slab, there is assumed to be a 30 cm (one foot) thick gravel layer, except in certain cases where this sub-base material is assumed to be the same as the surrounding soil (termed  a ”uniform” soil scenario). \par
 
 Where relevant The preferential pathway is modeled as a 10 cm (4”) pipe that exits into the gravel sub-base beneath the structure.
@@ -191,10 +191,8 @@ The equations and the boundary conditions are given in Table \ref{tbl:eqns-bc-pa
     Soil & $\text{Permeability} \; \mathrm{(m^2)}$  & $\mathrm{Density} \; \mathrm{(kg/m^3)}$  & $\theta_s$  & $\theta_r$  & $\alpha \; \mathrm{(1/m)}$  & $n$ \\
     % Gravel
     Gravel     & $1.3 \cdot 10^{-9}$   & 1680    & 0.42        & 0.005       & 100       & 3.1 \\
-    % Sand
-    Sand     & $9.9 \cdot 10^{-12}$  & 1430    & 0.38        & 0.053        & 3.5       & 3.2 \\
-    % Sandy clay
-    Sandy Clay    & $1.7 \cdot 10^{-14}$  & 1470    & 0.39        & 0.12        & 3.3       & 1.2 \\
+    % sandy loam
+    Sandy Loam    & $5.9 \cdot 10^{-13}$  & 1460    & 0.39        & 0.039        & 2.7       & 1.4 \\
     \bottomrule
   \end{tabular}
   \bigskip
@@ -322,26 +320,42 @@ There is also little difference between maximum variability of $c_\mathrm{in}$ t
 % Indianapolis had some type of PP, though less significant than at ASU
 % North Island had very large pressure changes, may explain the stronger relationship
 
+\subsection{Variability Of Attenuation From Subslab}
+
+\begin{figure}[htb!]
+  \caption{Boxplot of attenuation from subslab at the ASU house site. The box shows the quartiles of the distribution, the whiskers the extent of the distribution, and diamonds are points that are considered outlier.}\label{fig:attenuation_subslab}
+  \includegraphics[width=0.7\textwidth]{asu_attenuation_subslab.pdf}
+\end{figure}
+
+To examine how $p_\mathrm{in/out}$ affects the contaminant entry rate it would be most convenient to analyze how $p_\mathrm{in/out}$ is correlated with the attenuation from subslab ($\alpha_\mathrm{subslab} = c_\mathrm{in}/c_\mathrm{subslab}$) at a site - in particularly for understanding how the PP at the ASU house affected the site dynamics.
+By normalizing the $c_\mathrm{in}$ to $c_\mathrm{subslab}$ the $p_\mathrm{in/out}$ influence on the contaminant availability in the subslab area is mitigated.
+The $c_\mathrm{subslab}$ are taken from the soilgas probe labeled as "6" at the ASU house, which is the probe located closest to the preferential pathway, and to a reported breach in the foundation\cite{guo_identification_2015}.
+However, as Figure \ref{fig:attenuation_subslab} shows, there are some issues with doing so.
+
+First, we can state that during the period when the preferential pathway was closed, $\alpha_\mathrm{subslab}$ does not vary that significantly, and is mostly around the EPA recommended $\alpha_\mathrm{subslab}$ value of 0.03. % TODO: Reference the EPA report that recommends this
+During the period when the preferential pathway was open, there is considerably more variability, and it is not uncommon for the $\alpha_\mathrm{subslab}$ to exceed unity.
+
+Even though probe "6" is located in such close proximity to the preferential pathway, and the breach in the foundation, the contaminant concentration 'hotspot' is still missed.
+This suggests that a preferential pathway may have an extremely localized influence in the subslab region, causing significant spatial variability in $c_\mathrm{subslab}$.
+This shows how difficult it may be to locate a preferential pathway through subslab soilgas sampling.
+
+The large $\alpha_\mathrm{subslab}$ values (compared to the recommended EPA value of 0.03) can often indicate that there may be indoor sources present a site, which there were none of at the ASU house.
+Thus, in addition to potentially indicating indoor contaminant sources, large $\alpha_\mathrm{subslab}$ may also indicate the presence of a preferential pathway.
+
+
 \subsubsection{Influence Of Pressure On Indoor Air Variability}
 
-
-\begin{figure}[!h] % TODO: Adjust aspect ratio
+\begin{figure}[htb!]
 	\centering
   \caption{Simulated cases}
-  \label{fig:land_drain_scenarios_fluctuating_ae}
-  \includegraphics[width=\textwidth]{land_drain_scenarios_fluctuating_ae.pdf}
+  \label{fig:land_drain_scenarios}
+  \includegraphics[width=\textwidth]{land_drain_scenarios_combo.pdf}
 \end{figure}
 
 
-\begin{comment}
-\begin{figure}[!h] % TODO: Adjust aspect ratio
-	\centering
-  \caption{Simulated cases}
-  \label{fig:land_drain_scenarios_constant_ae}
-  \includegraphics[width=0.5\textwidth]{land_drain_scenarios_constant_ae.pdf}
-\end{figure}
 
-To examine the role that $p_\mathrm{in/out}$ and $A_e$ play in determining $c_\mathrm{in}$ variability (given as attenuation from groundwater vapor source $\alpha_\mathrm{gw}$ here), we first consider modeling VI scenarios with a constant $A_e = 0.5 \; \mathrm{(1/hr)}$ (the mean $A_e$ at the ASU house), and varying $p_\mathrm{in/out}$ from 5 to -5 Pa.
+
+To examine the role that $p_\mathrm{in/out}$ play in determining $c_\mathrm{in}$ variability (given as attenuation from groundwater vapor source $\alpha_\mathrm{gw}$ here), we first consider modeling VI scenarios with a constant $A_e = 0.5 \; \mathrm{(1/hr)}$ (the mean $A_e$ at the ASU house), and varying $p_\mathrm{in/out}$ from 5 to -5 Pa.
 The first of these scenarios is aimed to be similar to the period when the preferential pathway is open at the ASU house, and thus the modeled preferential pathway is active.
 In the second scenario, this preferential pathway feature is deactivated, akin to the period when the preferential pathway was closed at the ASU site.
 And in the third, the preferential pathway is again modeled, but the permeable gravel sub-base is instead assumed consist of the sandy loam, just like the surrounding soil, giving an "uniform soil" scenario. % TODO: Make sure that the soil type is correct
@@ -362,6 +376,15 @@ Here the general (weak) trend of increased $\alpha_\mathrm{gw}$ with increase de
 There is inadequate potential for advective transport and thus $p_\mathrm{in/out}$ does not significantly increase the contaminant entry rate.
 Furthermore, the seemingly random variability is not captured.
 Clearly, the $A_e$ fluctations must be incorporated into the modeling methodoly to more accurately predict the variability in $\alpha_\mathrm{gw}$.
+
+\begin{comment}
+\begin{figure}[!h] % TODO: Adjust aspect ratio
+	\centering
+  \caption{Simulated cases}
+  \label{fig:land_drain_scenarios_constant_ae}
+  \includegraphics[width=0.5\textwidth]{land_drain_scenarios_constant_ae.pdf}
+\end{figure}
+
 
 % Constant Ae simulations
 % First consider only pressure influence (constant Ae)
