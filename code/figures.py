@@ -120,5 +120,92 @@ class AttenuationSubslab:
         plt.show()
         return
 
+
+class Modeling:
+    # TODO: Add log ticks
+    # TODO: Fix plot colors
+    # TODO: Remove fill for PP uniform case
+    # TODO: Fix legend labels
+    def __init__(self):
+        sim = PreferentialPathway().data
+        asu = pd.read_csv('./data/asu_house.csv')
+        asu = asu.loc[
+            (asu['Phase']!='CPM') &
+            (
+                (asu['IndoorOutdoorPressure'] >=-5) &
+                (asu['IndoorOutdoorPressure'] <= 5)
+            ) &
+            (
+                (asu['AirExchangeRate'] <= 1.5) &
+                (asu['AirExchangeRate'] >= 0.1)
+            )
+        ]
+
+        print(list(sim.loc[sim['Simulation']=='Pp Uncontaminated']))
+        fig, (ax1,ax2) = plt.subplots(2,1, sharex=True, sharey=True)
+
+        # ax1
+        sns.regplot(
+            data=asu.loc[asu['Phase']=='Open'],
+            x='IndoorOutdoorPressure',
+            y='logAttenuationAvgGroundwater',
+            ax=ax1,
+            fit_reg=False,
+            x_bins=np.linspace(-5,5,40),
+            ci='sd',
+            label='Data',
+        )
+
+        sns.lineplot(
+            data=sim,
+            x='IndoorOutdoorPressure',
+            y='logAttenuationGroundwater',
+            hue='Simulation',
+            hue_order=['Pp','Pp Uniform','Pp Uncontaminated',],
+            ax=ax1,
+        )
+
+
+        # ax2
+        sns.regplot(
+            data=asu.loc[asu['Phase']=='Closed'],
+            x='IndoorOutdoorPressure',
+            y='logAttenuationAvgGroundwater',
+            ax=ax2,
+            fit_reg=False,
+            x_bins=np.linspace(-5,5,40),
+            ci='sd',
+            label='Data'
+        )
+
+        sns.lineplot(
+            data=sim,
+            x='IndoorOutdoorPressure',
+            y='logAttenuationGroundwater',
+            hue='Simulation',
+            hue_order=['No Pp'],
+            ax=ax2,
+        )
+
+        ax1.set(
+            ylabel='$\\alpha_\\mathrm{gw}$',
+            title='Preferential pathway open',
+        )
+
+        ax2.set(
+            xlabel='$p_\\mathrm{in/out} \; \\mathrm{(Pa)}$',
+            ylabel='$\\alpha_\\mathrm{gw}$',
+            title='Preferential pathway closed',
+        )
+
+        plt.tight_layout()
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.pdf', dpi=300)
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.png', dpi=300)
+        plt.show()
+
+
+        return
+
 #Figure1(y_data_log=True,norm_conc=True)
-AttenuationSubslab()
+#AttenuationSubslab()
+Modeling()
