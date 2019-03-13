@@ -81,13 +81,17 @@ class Figure1:
         return
 
 
-def get_log_ticks(start, stop):
+def get_log_ticks(start, stop, style='f'): # TODO: Remove the unnecessary ticklabels
 
     ticks = np.array([])
     for int_now in np.arange(np.floor(start),np.ceil(stop)+1):
         ticks = np.append(ticks, np.arange(0.1,1.1,0.1)*10.0**int_now)
 
-    labels = ['%1.1f' % tick for tick in ticks]
+
+    if style == 'f':
+        labels = ['%1.1f' % tick for tick in ticks]
+    elif style=='e':
+        labels = ['%1.1e' % tick for tick in ticks]
     ticks = np.log10(ticks)
 
 
@@ -97,16 +101,24 @@ def get_log_ticks(start, stop):
 class AttenuationSubslab:
     def __init__(self):
         asu = pd.read_csv('./data/asu_house.csv')
+        asu = asu.loc[asu['Phase']!='CPM']
 
+        ax = sns.boxplot(x="Phase", y="logAttenuationSubslab", data=asu)
 
-        fig, (ax1, ax2) = plt.subplots()
+        ticks, labels = get_log_ticks(-4,2, style='e')
+        ax.set(
+            xlabel='Preferential pathway status',
+            ylabel='Attenuation from subslab',
+            #yticks=ticks,
+            #yticklabels=labels,
+        )
 
+        plt.tight_layout()
+        plt.savefig('./figures/temporal_variability/asu_attenuation_subslab.pdf', dpi=300)
+        plt.savefig('./figures/temporal_variability/asu_attenuation_subslab.png', dpi=300)
 
-        for phase in asu['Phase'].unique():
-            sns.kdeplot(
-                data=asu.loc[asu['Phase']==phase]
-            )
-
+        plt.show()
         return
 
-Figure1(y_data_log=True,norm_conc=True)
+#Figure1(y_data_log=True,norm_conc=True)
+AttenuationSubslab()
