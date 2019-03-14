@@ -163,6 +163,7 @@ class Modeling:
             hue='Simulation',
             hue_order=['Pp','Pp Uniform','Pp Uncontaminated',],
             ax=ax1,
+            ci='sd',
         )
 
 
@@ -185,6 +186,7 @@ class Modeling:
             hue='Simulation',
             hue_order=['No Pp'],
             ax=ax2,
+            ci='sd'
         )
 
         ax1.set(

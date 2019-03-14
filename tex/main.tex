@@ -23,7 +23,7 @@
 \author{Jonathan G. V. Ström}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 \author{Yijun Yao}
-\affiliation[Zhejiang University]{Zhejiang University, Hangzhou, China}
+\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 \author{Eric M. Suuberg}
 \email{eric_suuberg@brown.edu}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
@@ -343,23 +343,33 @@ The large $\alpha_\mathrm{subslab}$ values (compared to the recommended EPA valu
 Thus, in addition to potentially indicating indoor contaminant sources, large $\alpha_\mathrm{subslab}$ may also indicate the presence of a preferential pathway.
 
 
-\subsubsection{Influence Of Pressure On Indoor Air Variability}
+\subsubsection{Modeling Results} % TODO: Improve title
 
 \begin{figure}[htb!]
 	\centering
-  \caption{Simulated cases}
+  \caption{Simulated preferential pathway scenarios compared to ASU house field data (top panel). No preferential pathway scenarios in bottom panel. Field data is binned in 40 evenly spaced bins, with the dot representing the mean and errors bars one standard deviation.}
   \label{fig:land_drain_scenarios}
   \includegraphics[width=\textwidth]{land_drain_scenarios_combo.pdf}
 \end{figure}
 
+To begin a more thorough discussion regarding the role and impact a preferential pathway may have at a particular site, we turn to our model described in the methods section. % TODO: Add reference to model figure
+Here, $A_e$ is assumed to be a constant 0.5 per hour, and $p_\mathrm{in/out}$ is varied from -5 to 5 Pa.
+The predicted $c_\mathrm{in}$ is then normalized to the groundwater concentration $c_\mathrm{gw}$, giving the attenuation from groundwater $\alpha_\mathrm{gw}$.
 
+The predicted $\alpha_\mathrm{gw}$ as a function of $p_\mathrm{in/out}$ is given by the central blue line in the upper panel of Figure \ref{fig:land_drain_scenarios} (ignore the shaded blue area for now).
+These predicted values are compared to $\alpha_\mathrm{gw}$ from the ASU house data from the period the preferential pathway was open, given by the blue dots.
+
+The model captures the trend 
+
+
+Note that this modeled scenario is
 
 
 To examine the role that $p_\mathrm{in/out}$ play in determining $c_\mathrm{in}$ variability (given as attenuation from groundwater vapor source $\alpha_\mathrm{gw}$ here), we first consider modeling VI scenarios with a constant $A_e = 0.5 \; \mathrm{(1/hr)}$ (the mean $A_e$ at the ASU house), and varying $p_\mathrm{in/out}$ from 5 to -5 Pa.
 The first of these scenarios is aimed to be similar to the period when the preferential pathway is open at the ASU house, and thus the modeled preferential pathway is active.
 In the second scenario, this preferential pathway feature is deactivated, akin to the period when the preferential pathway was closed at the ASU site.
-And in the third, the preferential pathway is again modeled, but the permeable gravel sub-base is instead assumed consist of the sandy loam, just like the surrounding soil, giving an "uniform soil" scenario. % TODO: Make sure that the soil type is correct
-The results of these modeled scearios are then compared to the preferential pathways "open" and "closed" periods from the ASU data, and may be seen in Figure \ref{fig:land_drain_scenarios_constant_ae}.
+And in the third, the preferential pathway is again modeled, but the permeable gravel sub-base is instead assumed consist of the sandy loam, just like the surrounding soil, giving an "uniform soil" scenario.
+The results of these modeled scenarios are then compared to the preferential pathways "open" and "closed" periods from the ASU data, and may be seen in Figure \ref{fig:land_drain_scenarios_constant_ae}.
 The data is here binned into evenly spaced bins, with each dot representing the mean $\alpha_\mathrm{gw}$ and the error bars denote the one standard deviation.
 
 By examining the first scenario (blue) it is readily apparent that the model is able to capture the behavior of the preferential pathway when the structure is depressized ($p_\mathrm{in/out} < 0$) but not very well when the house is overpressurized ($p_\mathrm{in/out} > 0$).
