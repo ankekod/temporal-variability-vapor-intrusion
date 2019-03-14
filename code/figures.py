@@ -129,6 +129,7 @@ class Modeling:
     def __init__(self):
         sim = PreferentialPathway().data
         asu = pd.read_csv('./data/asu_house.csv')
+        #print(asu['AirExchangeRate'].describe(percentiles=[0.1, 0.9]))
         asu = asu.loc[
             (asu['Phase']!='CPM') &
             (
@@ -141,8 +142,33 @@ class Modeling:
             )
         ]
 
-        print(list(sim.loc[sim['Simulation']=='Pp Uncontaminated']))
-        fig, (ax1,ax2) = plt.subplots(2,1, sharex=True, sharey=True)
+
+        # isolates the Ae = 0.5 case for the uniform soil modeling
+        sim_data_to_remove = [
+            (sim['Simulation']=='Pp Uniform') &
+            (
+                (sim['AirExchangeRate'] < 0.45) |
+                (sim['AirExchangeRate'] > 0.55)
+            )
+        ]
+
+        sim_data_to_remove = np.invert(sim_data_to_remove)
+        sim = sim[sim_data_to_remove[0]]
+
+
+        fig, (ax1,ax2) = plt.subplots(2,1, sharex=True, sharey=True, figsize=[6.4, 6.4], dpi=300)
+
+        pp_max = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==0.1)]
+        pp = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==0.5)]
+        pp_min = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==1.5)]
+
+
+        ax1.plot(pp['IndoorOutdoorPressure'], pp['logAttenuationGroundwater'],label='PP')
+        ax1.fill_between(pp['IndoorOutdoorPressure'], pp_min['logAttenuationGroundwater'], pp_max['logAttenuationGroundwater'],alpha=0.5)
+
+
+
+
 
         # ax1
         sns.regplot(
@@ -153,19 +179,31 @@ class Modeling:
             fit_reg=False,
             x_bins=np.linspace(-5,5,40),
             ci='sd',
-            label='Data',
+            label='ASU house',
+            color=sns.color_palette()[0]
         )
-
         sns.lineplot(
-            data=sim,
+            data=sim.loc[sim['Simulation']=='Pp Uniform'],
             x='IndoorOutdoorPressure',
             y='logAttenuationGroundwater',
-            hue='Simulation',
-            hue_order=['Pp','Pp Uniform','Pp Uncontaminated',],
             ax=ax1,
-            ci='sd',
+            label='PP, \"uniform\" soil',
+        )
+        sns.lineplot(
+            data=sim.loc[sim['Simulation']=='Pp Uncontaminated'],
+            x='IndoorOutdoorPressure',
+            y='logAttenuationGroundwater',
+            ax=ax1,
+            label='Uncontaminated PP'
         )
 
+
+        no_pp_max = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==0.1)]
+        no_pp = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==0.5)]
+        no_pp_min = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==1.5)]
+
+        ax2.plot(no_pp['IndoorOutdoorPressure'], no_pp['logAttenuationGroundwater'], label='No PP')
+        ax2.fill_between(no_pp['IndoorOutdoorPressure'], no_pp_min['logAttenuationGroundwater'], no_pp_max['logAttenuationGroundwater'],alpha=0.5)
 
         # ax2
         sns.regplot(
@@ -176,33 +214,30 @@ class Modeling:
             fit_reg=False,
             x_bins=np.linspace(-5,5,40),
             ci='sd',
-            label='Data'
-        )
-
-        sns.lineplot(
-            data=sim,
-            x='IndoorOutdoorPressure',
-            y='logAttenuationGroundwater',
-            hue='Simulation',
-            hue_order=['No Pp'],
-            ax=ax2,
-            ci='sd'
+            label='ASU house',
+            color=sns.color_palette()[0],
         )
 
         ax1.set(
+            xlabel='',
             ylabel='$\\alpha_\\mathrm{gw}$',
             title='Preferential pathway open',
         )
+
 
         ax2.set(
             xlabel='$p_\\mathrm{in/out} \; \\mathrm{(Pa)}$',
             ylabel='$\\alpha_\\mathrm{gw}$',
             title='Preferential pathway closed',
+            yticklabels=['%1.1e' % 10.0**tick for tick in ax1.get_yticks()],
         )
 
+
         plt.tight_layout()
-        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.pdf', dpi=300)
-        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.png', dpi=300)
+        ax1.legend(loc='best')
+        ax2.legend(loc='best')
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.pdf')
+        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.png')
         plt.show()
 
 

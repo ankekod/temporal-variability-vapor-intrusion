@@ -33,10 +33,10 @@ class PreferentialPathway:
 
         # data choosing
         df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
+        df['AirExchangeRate'] = np.around(df['AirExchangeRate'], 1)
         df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
         df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
         df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
-
 
         self.data = df
         return
