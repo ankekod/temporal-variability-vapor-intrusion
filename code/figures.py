@@ -243,6 +243,68 @@ class Modeling:
 
         return
 
+class IndianapolisTime:
+    def __init__(self):
+        data = pd.read_csv('./data/indianapolis.csv')
+        data['Time'] = data['Time'].apply(pd.to_datetime)
+        data.sort_values(by='Time')
+
+        fig, ax = plt.subplots(dpi=300)
+
+        sns.lineplot(
+            data=data,
+            x='Time',
+            y='IndoorConcentration',
+            hue='Specie',
+            ax=ax,
+        )
+
+        ax.set_yscale('log')
+        ax.set(
+            title='Indoor air contaminant concentration at the Indianapolis site',
+            ylabel='$c_\\mathrm{in} \; \\mathrm{(\\mu g/m^3)}$',
+        )
+
+        plt.tight_layout()
+        plt.savefig('./figures/temporal_variability/time_indianapolis.png')
+        plt.savefig('./figures/temporal_variability/time_indianapolis.pdf')
+
+        plt.show()
+        return
+
+class AirExchangeRateKDE:
+    def __init__(self):
+
+        data = pd.read_csv('./data/asu_house.csv').dropna()
+        data = data.loc[data['Phase']!='CPM']
+
+
+        fig, ax = plt.subplots(dpi=300)
+        sns.kdeplot(
+            data=data['IndoorOutdoorPressure'],
+            data2=data['AirExchangeRate'],
+            shade=True,
+            shade_lowest=False,
+            gridsize=200,
+        )
+
+        ax.set(
+            title='2D KDE showing distributions and relationship between\nindoor/outdoor pressure and air exchange rate ',
+            ylabel='$A_e \; \\mathrm{(1/hr)}$',
+            xlabel='$p_\\mathrm{in/out} \; \\mathrm{(Pa)}$',
+            ylim=[0,1.5],
+            xlim=[-5,5],
+        )
+
+        plt.tight_layout()
+        plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.png')
+        plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.pdf')
+
+        plt.show()
+        return
+
 #Figure1(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
-Modeling()
+#Modeling()
+#IndianapolisTime()
+AirExchangeRateKDE()
