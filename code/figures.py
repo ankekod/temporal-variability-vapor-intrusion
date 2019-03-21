@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.gridspec as gridspec
 from scipy import stats
 from get_simulation_data import Soil, PreferentialPathway
-
+import datetime
 
 """
 This figure shows a case (North Island NAS) where indoor/outdoor pressure
@@ -252,19 +252,19 @@ class IndianapolisTime:
         fig, ax = plt.subplots(dpi=300)
 
         sns.lineplot(
-            data=data,
+            data=data[data['Specie']=='Trichloroethene'],
             x='Time',
             y='IndoorConcentration',
-            hue='Specie',
             ax=ax,
         )
 
         ax.set_yscale('log')
         ax.set(
-            title='Indoor air contaminant concentration at the Indianapolis site',
+            title='Indoor TCE concentration at the Indianapolis site',
             ylabel='$c_\\mathrm{in} \; \\mathrm{(\\mu g/m^3)}$',
+            xlim=([datetime.date(2011, 8, 11), datetime.date(2011, 10, 15)]),
         )
-
+        plt.xticks(rotation=45)
         plt.tight_layout()
         plt.savefig('./figures/temporal_variability/time_indianapolis.png')
         plt.savefig('./figures/temporal_variability/time_indianapolis.pdf')
@@ -276,23 +276,21 @@ class AirExchangeRateKDE:
     def __init__(self):
 
         data = pd.read_csv('./data/asu_house.csv').dropna()
-        data = data.loc[data['Phase']!='CPM']
+        data = data.loc[data['Phase']!='Closed']
 
 
         fig, ax = plt.subplots(dpi=300)
-        sns.kdeplot(
-            data=data['IndoorOutdoorPressure'],
-            data2=data['AirExchangeRate'],
-            shade=True,
-            shade_lowest=False,
-            gridsize=200,
+        sns.regplot(
+            data=data,
+            x='IndoorOutdoorPressure',
+            y='AirExchangeRate'
         )
 
         ax.set(
-            title='2D KDE showing distributions and relationship between\nindoor/outdoor pressure and air exchange rate ',
+            title='2D KDE showing distributions and relationship between\nindoor/outdoor pressure and air exchange rate\nafter the land drain was closed',
             ylabel='$A_e \; \\mathrm{(1/hr)}$',
             xlabel='$p_\\mathrm{in/out} \; \\mathrm{(Pa)}$',
-            ylim=[0,1.5],
+            ylim=[0,1.75],
             xlim=[-5,5],
         )
 
@@ -306,5 +304,5 @@ class AirExchangeRateKDE:
 #Figure1(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
 #Modeling()
-#IndianapolisTime()
+IndianapolisTime()
 AirExchangeRateKDE()
