@@ -130,17 +130,7 @@ class Modeling:
         sim = PreferentialPathway().data
         asu = pd.read_csv('./data/asu_house.csv')
         #print(asu['AirExchangeRate'].describe(percentiles=[0.1, 0.9]))
-        asu = asu.loc[
-            (asu['Phase']!='CPM') &
-            (
-                (asu['IndoorOutdoorPressure'] >=-5) &
-                (asu['IndoorOutdoorPressure'] <= 5)
-            ) &
-            (
-                (asu['AirExchangeRate'] <= 1.5) &
-                (asu['AirExchangeRate'] >= 0.1)
-            )
-        ]
+        asu = asu.loc[ (asu['Phase']!='CPM') ]
 
 
         # isolates the Ae = 0.5 case for the uniform soil modeling
@@ -156,19 +146,18 @@ class Modeling:
         sim = sim[sim_data_to_remove[0]]
 
 
+        # options
+        min_Ae, max_Ae = 0.3, 0.9 # the min and max air exchange used for the "fill"
+
         fig, (ax1,ax2) = plt.subplots(2,1, sharex=True, sharey=True, figsize=[6.4, 6.4], dpi=300)
 
-        pp_max = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==0.1)]
+        pp_max = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==min_Ae)]
         pp = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==0.5)]
-        pp_min = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==1.5)]
+        pp_min = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==max_Ae)]
 
 
         ax1.plot(pp['IndoorOutdoorPressure'], pp['logAttenuationGroundwater'],label='PP')
         ax1.fill_between(pp['IndoorOutdoorPressure'], pp_min['logAttenuationGroundwater'], pp_max['logAttenuationGroundwater'],alpha=0.5)
-
-
-
-
 
         # ax1
         sns.regplot(
@@ -198,9 +187,9 @@ class Modeling:
         )
 
 
-        no_pp_max = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==0.1)]
+        no_pp_max = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==min_Ae)]
         no_pp = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==0.5)]
-        no_pp_min = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==1.5)]
+        no_pp_min = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==max_Ae)]
 
         ax2.plot(no_pp['IndoorOutdoorPressure'], no_pp['logAttenuationGroundwater'], label='No PP')
         ax2.fill_between(no_pp['IndoorOutdoorPressure'], no_pp_min['logAttenuationGroundwater'], no_pp_max['logAttenuationGroundwater'],alpha=0.5)
@@ -222,6 +211,7 @@ class Modeling:
             xlabel='',
             ylabel='$\\alpha_\\mathrm{gw}$',
             title='Preferential pathway open',
+            xlim=[-5,5],
         )
 
 
@@ -229,6 +219,7 @@ class Modeling:
             xlabel='$p_\\mathrm{in/out} \; \\mathrm{(Pa)}$',
             ylabel='$\\alpha_\\mathrm{gw}$',
             title='Preferential pathway closed',
+            xlim=[-5,5],
             yticklabels=['%1.1e' % 10.0**tick for tick in ax1.get_yticks()],
         )
 
@@ -276,14 +267,45 @@ class AirExchangeRateKDE:
     def __init__(self):
 
         data = pd.read_csv('./data/asu_house.csv').dropna()
-        data = data.loc[data['Phase']!='Closed']
+        data = data.loc[data['Phase']!='CPM']
 
 
+        seasons = []
+        p_10 = []
+        p_50 = []
+        p_90 = []
+        Ae_10 = []
+        Ae_50 = []
+        Ae_90 = []
+
+        for season in data['Season'].unique():
+            analysis = data.loc[data['Season']==season][['IndoorOutdoorPressure','AirExchangeRate']].describe(percentiles=[0.1,0.9])
+
+            seasons.append(season)
+            p_10.append(analysis['IndoorOutdoorPressure']['10%'])
+            p_50.append(analysis['IndoorOutdoorPressure']['50%'])
+            p_90.append(analysis['IndoorOutdoorPressure']['90%'])
+            Ae_10.append(analysis['AirExchangeRate']['10%'])
+            Ae_50.append(analysis['AirExchangeRate']['50%'])
+            Ae_90.append(analysis['AirExchangeRate']['90%'])
+
+        percentiles = pd.DataFrame({
+            'Season': seasons,
+            'IndoorOutdoorPressure 10%': p_10,
+            'IndoorOutdoorPressure 50%': p_50,
+            'IndoorOutdoorPressure 90%': p_90,
+            'AirExchangeRate 10%': Ae_10,
+            'AirExchangeRate 50%': Ae_50,
+            'AirExchangeRate 90%': Ae_90,
+        })
+
+        #percentiles.to_csv('./air_exchange_rate.csv', index=False)
         fig, ax = plt.subplots(dpi=300)
-        sns.regplot(
-            data=data,
-            x='IndoorOutdoorPressure',
-            y='AirExchangeRate'
+        sns.kdeplot(
+            data=data['IndoorOutdoorPressure'],
+            data2=data['AirExchangeRate'],
+            shade_lowest=False,
+            shade=True,
         )
 
         ax.set(
@@ -298,11 +320,11 @@ class AirExchangeRateKDE:
         plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.png')
         plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.pdf')
 
-        plt.show()
+        #plt.show()
         return
 
 #Figure1(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
-#Modeling()
-IndianapolisTime()
-AirExchangeRateKDE()
+Modeling()
+#IndianapolisTime()
+#AirExchangeRateKDE()
