@@ -323,8 +323,103 @@ class AirExchangeRateKDE:
         #plt.show()
         return
 
+class Diurnal:
+    def __init__(self):
+        from scipy.interpolate import CubicSpline
+        path = './data/diurnal/simulation_results/'
+
+        p_diurnal = pd.read_csv('./data/diurnal/pressure.csv')
+        ae_diurnal = pd.read_csv('./data/diurnal/air_exchange_rate.csv')
+        pp_closed_const_ae = pd.read_csv(path+'pp_closed_const_ae.csv',header=4)
+        pp_closed = pd.read_csv(path+'pp_closed.csv',header=4)
+        pp_open_const_ae = pd.read_csv(path+'pp_open_const_ae.csv',header=4)
+        pp_open = pd.read_csv(path+'pp_open.csv',header=4)
+
+        maxmin = lambda x: x['AttenuationGroundwater (1)'].max()/x['AttenuationGroundwater (1)'].min()
+        print(
+            maxmin(pp_closed_const_ae),
+            maxmin(pp_closed),
+            maxmin(pp_open_const_ae),
+            maxmin(pp_open),
+        )
+        fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2, dpi=150)
+        # TODO: Create interpolate function for PP closed cases to make nicer plots
+        x_smooth = np.linspace(0,23,100)
+        y_smooth = CubicSpline(p_diurnal['Time'], p_diurnal['IndoorOutdoorPressure'])(x_smooth)
+        ax1.plot(x_smooth, y_smooth)
+
+
+
+        x_smooth = np.linspace(0,23,100)
+        y_smooth = CubicSpline(ae_diurnal['Time'], ae_diurnal['AirExchangeRate'])(x_smooth)
+        ax2.plot(x_smooth, y_smooth, label='Diurnal Ae')
+
+
+        ax2.plot([0,23],[0.5,0.5], label='Constant Ae')
+
+        pp_open_const_ae.plot(
+            x='% Time (h)',
+            y='AttenuationGroundwater (1)',
+            ax=ax3,
+            logy=True,
+            label='Max change = %1.2f' % maxmin(pp_open_const_ae),
+        )
+
+        pp_open.plot(
+            x='% Time (h)',
+            y='AttenuationGroundwater (1)',
+            ax=ax3,
+            logy=True,
+            label='Max change = %1.2f' % maxmin(pp_open),
+        )
+
+
+        x_smooth = np.linspace(0,23.6,100)
+        y_smooth = CubicSpline(pp_closed['% Time (h)'], pp_closed['AttenuationGroundwater (1)'])(x_smooth)
+        ax4.semilogy(x_smooth, y_smooth, label='Max change = %1.2f' % maxmin(pp_closed))
+
+        ax4.semilogy(pp_closed_const_ae['% Time (h)'], pp_closed_const_ae['AttenuationGroundwater (1)'], label='Max change = %1.2f' % maxmin(pp_closed_const_ae))
+
+
+        ax2.legend(loc='best')
+        ax4.legend(loc='best')
+
+        ylims = [5e-6, 1e-4]
+
+        ax1.set(
+            ylabel='$p_\\mathrm{in/out} \\; \\mathrm{(Pa)}$',
+            title='Simulation input:\nMedian diurnal $p_\\mathrm{in/out}$',
+        )
+
+        ax2.set(
+            ylabel='$A_e \\; \\mathrm{(1/hour)}$',
+            title='Simulation input:\nMedian diurnal $A_e$',
+        )
+
+        ax3.set(
+            ylim=ylims,
+            ylabel='$\\alpha_\\mathrm{gw}$',
+            xlabel='Time (hour)',
+            title='Simulation result:\nPP closed cases'
+        )
+        ax4.set(
+            ylim=ylims,
+            xlabel='Time (hour)',
+            title='Simulation result:\nPP open cases'
+        )
+
+        plt.tight_layout()
+
+        plt.savefig('./figures/simulation_predictions/diurnal.png')
+        plt.savefig('./figures/simulation_predictions/diurnal.pdf')
+        plt.show()
+
+        return
+
+
+Diurnal()
 #Figure1(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
-Modeling()
+#Modeling()
 #IndianapolisTime()
 #AirExchangeRateKDE()
