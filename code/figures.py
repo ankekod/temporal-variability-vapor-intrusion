@@ -350,7 +350,7 @@ class Diurnal:
 
 
 
-        x_smooth = np.linspace(0,23,100)
+        x_smooth = np.linspace(0,23,200)
         y_smooth = CubicSpline(ae_diurnal['Time'], ae_diurnal['AirExchangeRate'])(x_smooth)
         ax2.plot(x_smooth, y_smooth, label='Diurnal Ae')
 
