@@ -12,7 +12,7 @@ This figure shows a case (North Island NAS) where indoor/outdoor pressure
 difference the key driver at a VI site, and how are are able to model this
 by assuming a permeable soil type (sand).
 """
-class Figure1:
+class PressureKDE:
     def __init__(self,y_data_log=False , norm_conc=True):
         nas = pd.read_csv('./data/north_island.csv').dropna()
         asu = pd.read_csv('./data/asu_house.csv').dropna()
@@ -60,7 +60,6 @@ class Figure1:
 
 
         yticks, yticklabels = get_log_ticks(-1, 1.5)
-        print(yticklabels)
         # formatting options
         ax.set(
             xlim=[-30,15],
@@ -73,28 +72,37 @@ class Figure1:
             yticklabels=yticklabels,
         )
         plt.legend(loc='upper left')
-        #plt.savefig('./figures/2d_kde/nas_asu_pp.pdf', dpi=300)
-        #plt.savefig('./figures/2d_kde/nas_asu_pp.png', dpi=300)
+        plt.savefig('./figures/2d_kde/nas_asu_pp.pdf', dpi=300)
+        plt.savefig('./figures/2d_kde/nas_asu_pp.png', dpi=300)
 
         plt.show()
 
         return
 
 
-def get_log_ticks(start, stop, style='f'): # TODO: Remove the unnecessary ticklabels
+def get_log_ticks(start, stop): # TODO: Remove the unnecessary ticklabels
 
     ticks = np.array([])
     for int_now in np.arange(np.floor(start),np.ceil(stop)+1):
         ticks = np.append(ticks, np.arange(0.1,1.1,0.1)*10.0**int_now)
+        ticks = np.unique(ticks)
 
+    labels = ['%1.1f' % tick for tick in ticks]
 
-    if style == 'f':
-        labels = ['%1.1f' % tick for tick in ticks]
-    elif style=='e':
-        labels = ['%1.1e' % tick for tick in ticks]
     ticks = np.log10(ticks)
 
 
+    for i, label in enumerate(labels):
+
+        if label == '0.1':
+            continue
+        elif label == '1.0':
+            continue
+        elif label == '10.0':
+            continue
+        else:
+            print('Removing label')
+            labels[i] = ' '
     return ticks, labels
 
 
@@ -417,8 +425,8 @@ class Diurnal:
         return
 
 
-Diurnal()
-#Figure1(y_data_log=True,norm_conc=True)
+#Diurnal()
+PressureKDE(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
 #Modeling()
 #IndianapolisTime()
