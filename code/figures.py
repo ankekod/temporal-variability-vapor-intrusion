@@ -80,28 +80,34 @@ class PressureKDE:
         return
 
 
-def get_log_ticks(start, stop): # TODO: Remove the unnecessary ticklabels
+def get_log_ticks(start, stop, style='e'): # TODO: Remove the unnecessary ticklabels
 
     ticks = np.array([])
-    for int_now in np.arange(np.floor(start),np.ceil(stop)+1):
+    ints = np.arange(np.floor(start),np.ceil(stop)+1)
+    for int_now in ints:
         ticks = np.append(ticks, np.arange(0.1,1.1,0.1)*10.0**int_now)
         ticks = np.unique(ticks)
 
-    labels = ['%1.1f' % tick for tick in ticks]
+
+    if style=='e':
+        labels = ['%1.1e' % tick for tick in ticks]
+        ticks_to_keep = ['%1.1e' % 10**int for int in ints]
+    elif style=='f':
+        labels = ['%1.12f' % tick for tick in ticks]
+        ticks_to_keep = ['%1.12f' % 10**int for int in ints]
 
     ticks = np.log10(ticks)
 
+    labels = list(map(lambda x: x.rstrip('0'), labels))
+    ticks_to_keep = list(map(lambda x: x.rstrip('0'), ticks_to_keep))
 
     for i, label in enumerate(labels):
 
-        if label == '0.1':
-            continue
-        elif label == '1.0':
-            continue
-        elif label == '10.0':
+        if label in ticks_to_keep:
+            #print('Not removing label')
             continue
         else:
-            print('Removing label')
+            #print('Removing label')
             labels[i] = ' '
     return ticks, labels
 
@@ -130,10 +136,6 @@ class AttenuationSubslab:
 
 
 class Modeling:
-    # TODO: Add log ticks
-    # TODO: Fix plot colors
-    # TODO: Remove fill for PP uniform case
-    # TODO: Fix legend labels
     def __init__(self):
         sim = PreferentialPathway().data
         asu = pd.read_csv('./data/asu_house.csv')
@@ -153,6 +155,17 @@ class Modeling:
         sim_data_to_remove = np.invert(sim_data_to_remove)
         sim = sim[sim_data_to_remove[0]]
 
+        p_vals = sim['IndoorOutdoorPressure'].unique()
+        ae = asu['AirExchangeRate'].describe(percentiles=[0.1,0.9])
+
+
+        new_sim_vals = pd.DataFrame({
+            'IndoorOutdoorPressure': np.append(p_vals, p_vals),
+            'AirExchangeRate': np.append(),
+        })
+        #Ae_vals =
+        print(new_sim_vals)
+        print(analysis[['10%','90%']].values)
 
         # options
         min_Ae, max_Ae = 0.3, 0.9 # the min and max air exchange used for the "fill"
@@ -175,7 +188,7 @@ class Modeling:
             ax=ax1,
             fit_reg=False,
             x_bins=np.linspace(-5,5,40),
-            ci='sd',
+            ci=95, # 95% confidence interval
             label='ASU house',
             color=sns.color_palette()[0]
         )
@@ -215,11 +228,15 @@ class Modeling:
             color=sns.color_palette()[0],
         )
 
+        ticks, labels = get_log_ticks(-7,-3.5)
+
         ax1.set(
             xlabel='',
             ylabel='$\\alpha_\\mathrm{gw}$',
             title='Preferential pathway open',
             xlim=[-5,5],
+            yticks=ticks,
+            yticklabels=labels,
         )
 
 
@@ -228,7 +245,8 @@ class Modeling:
             ylabel='$\\alpha_\\mathrm{gw}$',
             title='Preferential pathway closed',
             xlim=[-5,5],
-            yticklabels=['%1.1e' % 10.0**tick for tick in ax1.get_yticks()],
+            yticks=ticks,
+            yticklabels=labels,
         )
 
 
@@ -277,37 +295,24 @@ class AirExchangeRateKDE:
         data = pd.read_csv('./data/asu_house.csv').dropna()
         data = data.loc[data['Phase']!='CPM']
 
-
+        # calculates median indoor/outdoor pressure difference and air exchange rate
+        # for each season (for later annotation)
         seasons = []
-        p_10 = []
-        p_50 = []
-        p_90 = []
-        Ae_10 = []
-        Ae_50 = []
-        Ae_90 = []
-
+        ps = []
+        Aes = []
         for season in data['Season'].unique():
             analysis = data.loc[data['Season']==season][['IndoorOutdoorPressure','AirExchangeRate']].describe(percentiles=[0.1,0.9])
-
             seasons.append(season)
-            p_10.append(analysis['IndoorOutdoorPressure']['10%'])
-            p_50.append(analysis['IndoorOutdoorPressure']['50%'])
-            p_90.append(analysis['IndoorOutdoorPressure']['90%'])
-            Ae_10.append(analysis['AirExchangeRate']['10%'])
-            Ae_50.append(analysis['AirExchangeRate']['50%'])
-            Ae_90.append(analysis['AirExchangeRate']['90%'])
+            ps.append(analysis['IndoorOutdoorPressure']['50%'])
+            Aes.append(analysis['AirExchangeRate']['50%'])
 
-        percentiles = pd.DataFrame({
-            'Season': seasons,
-            'IndoorOutdoorPressure 10%': p_10,
-            'IndoorOutdoorPressure 50%': p_50,
-            'IndoorOutdoorPressure 90%': p_90,
-            'AirExchangeRate 10%': Ae_10,
-            'AirExchangeRate 50%': Ae_50,
-            'AirExchangeRate 90%': Ae_90,
-        })
 
-        #percentiles.to_csv('./air_exchange_rate.csv', index=False)
+        seasonal_medians = pd.DataFrame({'Season': seasons, 'IndoorOutdoorPressure': ps, 'AirExchangeRate': Aes})
+
+
+
+
+
         fig, ax = plt.subplots(dpi=300)
         sns.kdeplot(
             data=data['IndoorOutdoorPressure'],
@@ -315,6 +320,15 @@ class AirExchangeRateKDE:
             shade_lowest=False,
             shade=True,
         )
+
+
+        for season, p, Ae in zip(seasons, ps, Aes):
+            ax.annotate(
+                season,
+                xy=(p,Ae),
+                xytext=(p*5,Ae+0.6),
+                arrowprops=dict(facecolor='black', shrink=0.001),
+            )
 
         ax.set(
             title='2D KDE showing distributions and relationship between\nindoor/outdoor pressure and air exchange rate\nafter the land drain was closed',
@@ -324,11 +338,13 @@ class AirExchangeRateKDE:
             xlim=[-5,5],
         )
 
+
+
         plt.tight_layout()
         plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.png')
         plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.pdf')
 
-        #plt.show()
+        plt.show()
         return
 
 class Diurnal:
@@ -425,9 +441,22 @@ class Diurnal:
         return
 
 
-Diurnal()
+#Diurnal()
 #PressureKDE(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
-#Modeling()
+Modeling()
 #IndianapolisTime()
 #AirExchangeRateKDE()
+
+"""
+df = pd.DataFrame({'x': [0,2], 'y': [1,4]})
+df2 = pd.DataFrame({'x':[1,]})
+
+df.append(df2)
+df = df.append(df2)
+
+df.sort_values(by='x',inplace=True)
+
+df.interpolate(inplace=True)
+print(df)
+"""
