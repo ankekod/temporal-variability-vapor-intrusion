@@ -408,12 +408,12 @@ class Diurnal:
             ylim=ylims,
             ylabel='$\\alpha_\\mathrm{gw}$',
             xlabel='Time (hour)',
-            title='Simulation result:\nPP closed cases'
+            title='Simulation result:\nPP open cases'
         )
         ax4.set(
             ylim=ylims,
             xlabel='Time (hour)',
-            title='Simulation result:\nPP open cases'
+            title='Simulation result:\nPP closed cases'
         )
 
         plt.tight_layout()
@@ -425,8 +425,8 @@ class Diurnal:
         return
 
 
-#Diurnal()
-PressureKDE(y_data_log=True,norm_conc=True)
+Diurnal()
+#PressureKDE(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
 #Modeling()
 #IndianapolisTime()
