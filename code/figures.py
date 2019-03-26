@@ -156,25 +156,36 @@ class Modeling:
         sim = sim[sim_data_to_remove[0]]
 
         p_vals = sim['IndoorOutdoorPressure'].unique()
-        ae = asu['AirExchangeRate'].describe(percentiles=[0.1,0.9])
+        Ae = asu['AirExchangeRate'].describe(percentiles=[0.05,0.1,0.9,0.95])
 
 
-        new_sim_vals = pd.DataFrame({
-            'IndoorOutdoorPressure': np.append(p_vals, p_vals),
-            'AirExchangeRate': np.append(),
-        })
-        #Ae_vals =
-        print(new_sim_vals)
-        print(analysis[['10%','90%']].values)
+        Ae_low = Ae['5%']
+        Ae_high = Ae['95%']
 
-        # options
-        min_Ae, max_Ae = 0.3, 0.9 # the min and max air exchange used for the "fill"
+        print(Ae_low, Ae_high)
+
+        from scipy.interpolate import interp2d
+
+        for simulation in ['Pp', 'No Pp']:
+            interp_func = interp2d(
+                sim.loc[sim['Simulation']==simulation]['IndoorOutdoorPressure'],
+                sim.loc[sim['Simulation']==simulation]['AirExchangeRate'],
+                sim.loc[sim['Simulation']==simulation]['logAttenuationGroundwater'],
+            )
+            for Ae_now in [Ae_low, Ae_high]:
+                new_sim_vals = pd.DataFrame({
+                    'IndoorOutdoorPressure': p_vals,
+                    'AirExchangeRate': np.repeat(Ae_now, len(p_vals)),
+                    'Simulation': np.repeat(simulation, len(p_vals)),
+                    'logAttenuationGroundwater': interp_func(p_vals, Ae_now),
+                })
+                sim = sim.append(new_sim_vals, ignore_index=True, sort=False)
 
         fig, (ax1,ax2) = plt.subplots(2,1, sharex=True, sharey=True, figsize=[6.4, 6.4], dpi=300)
 
-        pp_max = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==min_Ae)]
+        pp_max = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==Ae_low)]
         pp = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==0.5)]
-        pp_min = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==max_Ae)]
+        pp_min = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==Ae_high)]
 
 
         ax1.plot(pp['IndoorOutdoorPressure'], pp['logAttenuationGroundwater'],label='PP')
@@ -208,9 +219,9 @@ class Modeling:
         )
 
 
-        no_pp_max = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==min_Ae)]
+        no_pp_max = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==Ae_low)]
         no_pp = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==0.5)]
-        no_pp_min = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==max_Ae)]
+        no_pp_min = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==Ae_high)]
 
         ax2.plot(no_pp['IndoorOutdoorPressure'], no_pp['logAttenuationGroundwater'], label='No PP')
         ax2.fill_between(no_pp['IndoorOutdoorPressure'], no_pp_min['logAttenuationGroundwater'], no_pp_max['logAttenuationGroundwater'],alpha=0.5)
