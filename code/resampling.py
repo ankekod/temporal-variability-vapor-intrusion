@@ -55,6 +55,29 @@ resampled.dropna(inplace=True)
 sns.set_palette(sns.color_palette("muted"))
 
 
+from scipy.optimize import curve_fit
+
+def func(t, a, b):
+    return a*np.log(b*t)
+
+fit_data = resampled.loc[resampled['Dataset']!='ASU House, PP Open']
+
+def convert_to_days(df):
+
+    days = []
+    for resamp in df['Resampling']:
+
+        days.append(pd.Timedelta(int(resamp[0]),resamp[1]).days)
+
+    df['Days'] = pd.Series(days, index=df.index)
+    df.sort_values(by='Days',inplace=True)
+    return df
+
+fit_data = convert_to_days(fit_data)
+
+popt, pcov = curve_fit(func, fit_data['Days'], fit_data['MaxDelta'])
+
+
 g = sns.catplot(
     x="Resampling",
     y="MaxDelta",
@@ -63,6 +86,14 @@ g = sns.catplot(
     data=resampled,
     legend_out=False,
     aspect=1.5,
+)
+
+ax = g.axes[0][0]
+
+ax.plot(
+    fit_data['Resampling'],
+    func(fit_data['Days'], popt[0], popt[1]),
+    'k-'
 )
 
 my_ytick_labels = ["%1.1f" % y_tick for y_tick in 10.0**g.ax.get_yticks()]
