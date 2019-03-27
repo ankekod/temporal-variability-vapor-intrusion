@@ -53,7 +53,7 @@ class PressureKDE:
                 data2=data2,
                 shade_lowest=False,
                 shade=True,
-                label=label + ', r = %1.2f' % r, # TODO: Add Pearson's r analysis
+                label=label + ', r = %1.2f' % r,
                 ax=ax,
             )
 
@@ -80,7 +80,7 @@ class PressureKDE:
         return
 
 
-def get_log_ticks(start, stop, style='e'): # TODO: Remove the unnecessary ticklabels
+def get_log_ticks(start, stop, style='e'):
 
     ticks = np.array([])
     ints = np.arange(np.floor(start),np.ceil(stop)+1)
@@ -378,7 +378,7 @@ class Diurnal:
             maxmin(pp_open),
         )
         fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2, dpi=150)
-        # TODO: Create interpolate function for PP closed cases to make nicer plots
+        
         x_smooth = np.linspace(0,23,100)
         y_smooth = CubicSpline(p_diurnal['Time'], p_diurnal['IndoorOutdoorPressure'])(x_smooth)
         ax1.plot(x_smooth, y_smooth)

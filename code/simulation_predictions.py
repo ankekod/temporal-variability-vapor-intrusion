@@ -44,7 +44,7 @@ def get_interp_func(df):
     Ae = df['AirExchangeRate']
     alpha = df['logAttenuationGroundwater']
 
-    # TODO: increase pressurization limits in simulation
+    
     # 2d interpolation function
     interp_func = interp2d(
         p_in,
