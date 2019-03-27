@@ -6,20 +6,22 @@
 \usepackage{booktabs}
 \usepackage{subcaption}
 \usepackage{array,multirow,graphicx}
-\graphicspath{{../../Figures/}}
+\graphicspath{{../../figures/2d_kde/}}
 % macros
 
 % authors
 \author{Jonathan G. V. Ström}
-\affiliation[Brown University]{Brown University, School of Engineering}
+\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 \author{Yijun Yao}
-\affiliation[Zhejiang University]{Zhejiang University}
+\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
+\author{Yuanming Guo}
+\affiliation[Arizona State University]{Arizona State University}
 \author{Eric M. Suuberg}
 \email{eric_suuberg@brown.edu}
-\affiliation[Brown University]{Brown University, School of Engineering}
+\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 
 % title
-\title{Modeling the Impact of Preferential Contaminant Pathways on Vapor Intrusion}
+\title{Temporal Variations In Vapor Intrusion-Induced Indoor Air Contaminant Concentrations}
 
 % keywords
 \abbreviations{VI}
@@ -27,178 +29,11 @@
 
 \begin{document}
 
-\subsection{Supporting Information Content:}
-
-\begin{itemize}
-  \item x pages: S1 - S6
-  \item 4 figures: Figure S1 - Figure S4
-  \item 0 tables
-\end{itemize}
-
-
-\section{Method}
-The van Genuchten equation\cite{Genuchten1980a}:
-\begin{equation}
-  \mathrm{Se} = \frac{\theta_w - \theta_r}{\theta_t - \theta_r} = [1 + |\alpha z|^n]^{-m} \label{eq:saturation}
-\end{equation}
-Se is the soil saturation, $\theta_w$, $\theta_r$, $\theta_t$ are the water filled, residual and total porosity of the soil.
-The vapor or gas filled porosity may be calculated by $\theta_g = \theta_t - \theta_w$
-The local soil saturation depends on the parameters $\alpha$, $n$, $m= 1 - 1/n$ and the elevation above groundwater $z$.
-
-Convection-diffusion equation in porous media:
-\begin{equation}
-  \frac{\partial}{\partial t} \Big( \theta_w c_w + \theta_g c \Big) = \nabla (D_\mathrm{eff} \cdot \nabla c) - \vec{u} \cdot \nabla c \label{eq:conv-diff}
-\end{equation}
-Where $c_w$ and $c$ are the liquid phase and vapor phase contaminant concentration, $D_\mathrm{eff}$ is
-the effective diffusion coefficient and $\vec{u}$ is the soil gas velocity, as determined by Darcy’s Law.
-It is important to recall that the soil gas flow velocity is not significantly influenced by the contaminant itself, because the contaminant concentrations are normally so low that the soil gas is largely air.
-The above equation is presented in an unsteady form, reflecting the fact that there may be holdup of the contaminant vapor in both the vapor phase as well as in the soil moisture phase. \par
-
-Richards' equation\cite{Richards1931a}:
-\begin{equation}
-  \nabla \cdot \rho \Big( - \frac{\kappa_s}{\mu} k_r \nabla p \Big) = 0 \label{eq:richards-equation}
-\end{equation}
-The soil gas flow is driven by a pressure gradient $\nabla p$ and is proportional to the modified permeability of the soil $k_r \kappa_s$ and inversely proportional to the vapor viscosity $\mu$.
-The modified permeability is the saturated fluid permeability $\kappa_s$ corrected using the relative permeability $k_r$ defined by:
-\begin{equation}
-  k_r = (1 - \mathrm{Se})^{0.5} [1 - (\mathrm{Se}^{-m})^m]^2 \label{eq:k_r}
-\end{equation}
-
-Millington-Quirk equation for effective diffusion coefficient in porous media\cite{Millington1961a}.
-\begin{equation}
-  D_\mathrm{eff} = D_\mathrm{air}\frac{\theta_g^{10/3}}{\theta_t^2} + \frac{D_\mathrm{water}}{K_H} \frac{\theta_w^{10/3}}{\theta_t^2} \label{eq:millington-quirk}
-\end{equation}
-$D_\mathrm{air}$ and $D_\mathrm{water}$ are the diffusion coefficient of the contaminant in air and water respectively and $K_H$ is the dimensionless Henry’s Law constant. \par
-
-The boundary condition for contaminant transport through the foundation crack:
-\begin{align}
-  j_\mathrm{ck} &= u_\mathrm{ck} c_\mathrm{ck} - \frac{u_\mathrm{ck} (c_\mathrm{ck} - c_\mathrm{in})}{1 - \exp{(u_\mathrm{ck}L_\mathrm{slab}/D_\mathrm{air})}} \label{eq:j_ck} \\
-  n_\mathrm{ck} &= \int_{A_\mathrm{ck}} j_\mathrm{ck} dA \label{eq:n_ck}
-\end{align}
-Where $u_\mathrm{ck}$ and $c_\mathrm{ck}$ are the flow velocity and contaminant concentration at the soil side of the crack, respectively, $L_\mathrm{slab}$ is the thickness of the foundation slab (here, 15 cm), $D_\mathrm{air}$ is the diffusion coefficient of the contaminant in air, $j_\mathrm{ck}$ is the flux in the crack and $A$ represents the crack cross-sectional area.
-
-The assumed values for the various parameters mentioned above are shown in Table \ref{tbl:data}.
-\begin{table}[!htb]
-  \centering
-  \caption{Contaminant and soil properties\cite{Abreu2012a,U.S.-Environmental-Protection-Agency2004a}.} \label{tbl:data}
-  \begin{tabular}{l r r r r r r}
-  \toprule
-    Soil & $\text{Permeability} \; [\mathrm{m^2}]$  & $\mathrm{Density} \; [\mathrm{kg/m^3}]$  & $\theta_s$  & $\theta_r$  & $\alpha \; [\mathrm{1/m}]$  & $n$ \\
-    \hline
-    Gravel\cite{Dan2012a}     & $1.3 \cdot 10^{-9}$   & 1680    & 0.42        & 0.005       & 100       & 3.1 \\
-    Sand          & $9.9 \cdot 10^{-12}$  & 1430    & 0.38        & 0.053       & 3.5       & 3.2 \\
-    Loamy Sand    & $1.6 \cdot 10^{-12}$  & 1430    & 0.39        & 0.049       & 3.5       & 1.7 \\
-    Sandy Clay    & $1.7 \cdot 10^{-14}$  & 1470    & 0.39        & 0.12        & 3.3       & 1.2 \\
-                  &                       &         &             &             &           & \\
-    \multicolumn{7}{c}{$D_\mathrm{eff} = D_\mathrm{air}\frac{\theta_g^{10/3}}{\theta_t^2} + \frac{D_\mathrm{water}}{K_H} \frac{\theta_w^{10/3}}{\theta_t^2}$} \\
-                  &                       &         &             &             &           & \\
-    \multicolumn{7}{c}{Contaminant: Trichloroethylene (Diluted in air)} \\
-    \multicolumn{1}{r}{$D_\mathrm{air} \; [\mathrm{m^2/h}]$}  & $D_\mathrm{water} \; [\mathrm{m^2/h}]$  & $\mathrm{Density} \; [\mathrm{kg/m^3}]$ & $\mathrm{Viscosity} \; [\mathrm{Pa \cdot s}]$  & $K_H$ & $M \; [\mathrm{g/mol}]$ &  \\
-    \hline
-    \multicolumn{1}{r}{$2.47 \cdot 10^{-2}$}  & $3.67 \cdot 10^{-6}$  & 1.614 & $1.86 \cdot 10^{-5}$  & 0.403 & 131.39  &  \\
-    \bottomrule
-    \multicolumn{7}{c}{$\theta_t=$ soil total porosity, $\theta_g=$ gas filled porosity, $\theta_w=$ water filled porosity}
-  \end{tabular}
-\end{table}
-
-\subsection{Transient Behavior Under "Normal" VI Scenarios}
-
-If the air exchange rate $A_e$ is varied sinusoidally across a day between the high and low values as are realistic in a residential setting, one may explore the potential impact of this variable on transient changes in $c_\mathrm{in}$ while keeping $n_\mathrm{ck}$ constant.
-The range of air exchange rate values was taken to be roughly the same as was observed at the ASU house, where air exchange rates varied from 5 to 24 per day with the majority of the time value being between 10 to 20 per day\cite{Holton2013a,Holton2015a}, this is relatively representative of normal residential houses\cite{Murray1995a}.
-As may be seen in Figure \ref{fig:cstr_ae}, $c_\mathrm{in}$ responds quickly with a change in $A_e$, but the change is significantly lower than the few orders of magnitude that has been observed to occur at the ASU house on timescales of a day.
-The modest magnitude of the change is consistent with earlier conclusions on this point\cite{Shen2016a}. \par
-
-Now instead $n_\mathrm{ck}$ may be varied and $A_e$ kept constant.
-It may be seen in Figure \ref{fig:cstr_nck} that $c_\mathrm{in}$ quickly responds to changes in $n_\mathrm{ck}$ and the increase in $c_\mathrm{in}$ is proportional to the increase in $n_\mathrm{ck}$, indicating, not surprisingly, that steep changes in this parameter can be the driving force for increases in $c_\mathrm{in}$. \par
-
-\begin{figure}[!htb]
-  \caption[Varying air exchange and contaminant entry rate impact on indoor air concentration]{Varying inputs of the indoor air contaminant concentration calculation. (\subref{fig:cstr_ae}) considers the impact of varying air exchange rate with constant contaminant entry rate. (\subref{fig:cstr_nck}) considers the impact of varying contaminant entry rate with constant air exchange rate.}
-  \begin{subfigure}[b]{0.9\textwidth}
-    \caption{ } \label{fig:cstr_ae}
-    \includegraphics[width=\textwidth]{cstr_ae.png}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.9\textwidth}
-    \caption{ } \label{fig:cstr_nck}
-    \includegraphics[width=\textwidth]{cstr_nck.png}
-  \end{subfigure}
-\end{figure}
-
-In Figure \ref{fig:stack_effect} the effects of building pressurization/depressurization are considered.
-In order to maximize the impact of pressure swings, the building is assumed to have a gravel sub-base and to be surrounded by sand soil.
-For an already depressurized building, further depressurization only moderately increases $c_\mathrm{in}$.
-Overpressurization of a building however leads to significantly lower $c_\mathrm{in}$, as contaminant entry rates are significantly decreased.
-However, the full extent of this decrease is not shown in the figure; the y-axis was purposely truncated in order to highlight the effects of increased depressurization. \par
-
-\begin{figure}[!htb]
-  \centering
-  \caption[Effects of house depressurization]{A side view of steady-state concentration profiles of "normal" VI scenarios featuring a gravel sub-base with sand soil, with different stack effect magnitudes. Color indicate contaminant vapor mole fraction and are logarithmic. The attenuation from groundwater source is given for each figure.} \label{fig:stack_effect}
-  % top figure
-  \begin{subfigure}{0.9\textwidth}
-    \centering
-    \caption{ } \label{fig:stack_effect1}
-    \includegraphics[width=\textwidth]{c_in_p_ck.png}
-  \end{subfigure}
-  % left bottom digure
-  \begin{subfigure}[b]{0.45\textwidth}
-    \centering
-    \caption{-5 Pa, $\alpha = 9.1 \cdot 10^{-6}$} \label{fig:stack_effect2}
-    \includegraphics[width=\textwidth]{soil_concentration_right_side1.png}
-  \end{subfigure}
-  % right bottom figure
-  \begin{subfigure}[b]{0.45\textwidth}
-    \centering
-    \caption{-20 Pa, $\alpha = 1.6 \cdot 10^{-5}$} \label{fig:stack_effect3}
-    \includegraphics[width=\textwidth]{soil_concentration_right_side2.png}
-  \end{subfigure}
-\end{figure}
-
-Figure \ref{fig:diffusion} illustrates the effective diffusion coefficient for the three different soil types used, ranging from soils allowing for faster diffusion (sand) to soils that show slower vapor diffusion (sandy clay).
-Notice that diffusion is the slowest through the water filled soil, such as just above groundwater, in the capillary fringe, providing a significant resistance to contaminant vapor diffusion.
-The characteristic time scale for transport by diffusion is given by $L^2/D$, where $L$ is the characteristic length scale, which in this case is of order meters (based on the source-slab separation).
-Even with only a 1 m separation and a high $D_\mathrm{eff} = 10^{-6} \; \mathrm{m^2/s}$, response times can only be be as short as weeks.
-Therefore, fluctuations in groundwater contaminant concentrations cannot be the underlying cause of the observed rapid transients in indoor air contaminant concentrations. \par
-
-\begin{figure}[!htb]
-  \caption[Soil moisture \& contaminant transport speed through soil]{In (\subref{fig:soil_properties}) the van Genuchten soil moisture content of various soils as a function of elevation above groundwater along with the corresponding effective diffusion of TCE in those soils. The diffusive propagation of TCE through sand soil is shown in (\subref{fig:contaminant_propagation})}\label{fig:diffusion}
-  \centering
-  \begin{subfigure}[t]{0.65\textwidth}
-    \centering
-    \caption{ } \label{fig:soil_properties}
-    \includegraphics[width=\textwidth]{d_eff.png}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \caption{ } \label{fig:contaminant_propagation}
-    \includegraphics[width=\textwidth]{c_soil_transient.png}
-  \end{subfigure}
-\end{figure}
-
-\subsection{The Preferential Pathway as a Source of Contaminant Beneath a Structure}
-
-Air flow from the preferential pathway is important for the distribution of vapor contaminant in the sub-base and the soil, and ultimately for the entry rate of contaminant into a building.
-To highlight this, a scenario of a house with a gravel sub-base, surrounded by loamy sand soil with contaminated preferential pathway that exits into the gravel sub-base is considered.
-This scenario is solved at steady-state twice - first with both advection-diffusion enabled (like all other calculations presented) and the second with advection disabled, i.e. diffusion only. \par
-
-The result of this may be seen in Figure \ref{fig:adv-diff_vs_diff}, where (\subref{fig:advection_diffusion}) shows the advection-diffusion result, i.e. the regular result and (\subref{fig:diffusion_only}) the diffusion only result.
-Just from observation it is clear that there is a massively different soil contaminant vapor concentration profile, showing that existence of a diffusing preferential pathway will have a very modest impact on VI.
-Contaminant needs to be blown in to have a major effect.
-
-\begin{figure}[!htb]
-  \centering
-  \caption[Importance of advection for the impact of a preferential pathway]{The impact of advection for the distribution of contaminant vapor from a preferential pathway. The soil vapor contaminant concentration in the loamy sand soil and gravel sub-base, a short distance away from the preferential pathway shown. (\subref{fig:advection_diffusion}) shows the regular advection and diffusion case and (\subref{fig:diffusion_only}) shows the same scenario but advection disabled.} \label{fig:adv-diff_vs_diff}
-  \begin{subfigure}[b]{0.45\textwidth}
-    \centering
-    \caption{Advection enabled} \label{fig:advection_diffusion}
-    \includegraphics[width=\textwidth]{steady-state_preferential_pathway2.png}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.45\textwidth}
-    \centering
-    \caption{Advection disabled} \label{fig:diffusion_only}
-    \includegraphics[width=\textwidth]{steady-state_preferential_pathway_diff_only2.png}
-  \end{subfigure}
-\end{figure}
-
 \newpage
-\bibliography{../library}
+\subsection{Pressure and Air Exchange Rate}
+\begin{figure}
+  \caption{2D KDE figure showing distributions and relationship between indoor/outdoor pressure difference and air exchange rate. The seasonal median $p_\mathrm{in/out}$ and $A_e$ shown. Only non-CPM period considered.}
+  \includegraphics[width=\textwidth]{pressure_air_exchange_rate.pdf}
+\end{figure}
 
 \end{document}
