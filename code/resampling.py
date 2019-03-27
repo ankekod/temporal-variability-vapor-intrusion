@@ -88,13 +88,6 @@ g = sns.catplot(
     aspect=1.5,
 )
 
-ax = g.axes[0][0]
-
-ax.plot(
-    fit_data['Resampling'],
-    func(fit_data['Days'], popt[0], popt[1]),
-    'k-'
-)
 
 my_ytick_labels = ["%1.1f" % y_tick for y_tick in 10.0**g.ax.get_yticks()]
 g.ax.set_yticklabels(my_ytick_labels)
