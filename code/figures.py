@@ -342,7 +342,7 @@ class AirExchangeRateKDE:
             )
 
         ax.set(
-            title='2D KDE showing distributions and relationship between\nindoor/outdoor pressure and air exchange rate\nafter the land drain was closed',
+            title='2D KDE showing distributions and relationship between\nindoor/outdoor pressure and air exchange rate',
             ylabel='$A_e \; \\mathrm{(1/hr)}$',
             xlabel='$p_\\mathrm{in/out} \; \\mathrm{(Pa)}$',
             ylim=[0,1.75],
@@ -378,7 +378,7 @@ class Diurnal:
             maxmin(pp_open),
         )
         fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2, dpi=150)
-        
+
         x_smooth = np.linspace(0,23,100)
         y_smooth = CubicSpline(p_diurnal['Time'], p_diurnal['IndoorOutdoorPressure'])(x_smooth)
         ax1.plot(x_smooth, y_smooth)
@@ -455,9 +455,9 @@ class Diurnal:
 #Diurnal()
 #PressureKDE(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
-Modeling()
+#Modeling()
 #IndianapolisTime()
-#AirExchangeRateKDE()
+AirExchangeRateKDE()
 
 """
 df = pd.DataFrame({'x': [0,2], 'y': [1,4]})
