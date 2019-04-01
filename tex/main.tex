@@ -26,8 +26,8 @@
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 \author{Yijun Yao}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
-\author{Yuanming Guo}
-\affiliation[Arizona State University]{Arizona State University}
+%\author{Yuanming Guo}
+%\affiliation[Arizona State University]{Arizona State University}
 \author{Eric M. Suuberg}
 \email{eric_suuberg@brown.edu}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
@@ -167,7 +167,7 @@ The key working equations and the boundary conditions are summarized in Table \r
  \begin{tabular}{l l}
   \toprule
   % Indoor air space equation
-  Unsteady-CSTR                            & $V\frac{d u}{d t} = \int_{A_\mathrm{ck}} j_\mathrm{ck} dA - u A_e V$                                                                  \\
+  Unsteady-CST                            & $V\frac{d c_\mathrm{in}}{d t} = \int_{A_\mathrm{ck}} j_\mathrm{ck} dA - c_\mathrm{in} A_e V_\mathrm{slab}$                                                                  \\
   % Richard's equation
   Richard's equation                       & $\nabla \cdot \rho \Big( - \frac{\kappa_s}{\mu} k_r \nabla p \Big) = 0$                                                               \\
   % Millington-Quirk equation
@@ -190,13 +190,13 @@ The key working equations and the boundary conditions are summarized in Table \r
   \toprule
   \textbf{Boundary}            & \textbf{Richard's equation}              & \textbf{Advection-diffusion equation}                                      \\
   % Foundation crack
-  At foundation crack          & $p = p_\mathrm{in/out} \; \mathrm{(Pa)}$ & $j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$ \\
+  Foundation crack          & $p = p_\mathrm{in/out} \; \mathrm{(Pa)}$ & $j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$ \\
   % Groundwater source
-  At groundwater source        & N/A                                      & $c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$                            \\
+  Groundwater source        & \textit{No flow}                                      & $c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$                            \\
   % Ground surface
-  At ground surface            & $p = 0 \; \mathrm{(Pa)}$                 & $c = 0 \; \mathrm{(\mu g/m^3)}$                                            \\
+  Groundsurface            & $p = 0 \; \mathrm{(Pa)}$                 & $c = 0 \; \mathrm{(\mu g/m^3)}$                                            \\
   % Preferential pathway
-  Exit of preferential pathway & $p = 0 \; \mathrm{(Pa)}$                 & $c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$                       \\
+  Preferential pathway & $p = 0 \; \mathrm{(Pa)}$                 & $c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$                       \\
   \bottomrule
  \end{tabular}
  \bigskip
@@ -207,7 +207,7 @@ The key working equations and the boundary conditions are summarized in Table \r
  \begin{tabular}{l l l l l l l}
   \toprule
   % Descriptions
-  Soil       & $\text{Permeability} \; \mathrm{(m^2)}$ & $\mathrm{Density} \; \mathrm{(kg/m^3)}$ & $\theta_s$ & $\theta_r$ & $\alpha \; \mathrm{(1/m)}$ & $n$ \\
+  Soil       & $\kappa_s \; \mathrm{(m^2)}$ & $\rho \; \mathrm{(kg/m^3)}$ & $\theta_s$ & $\theta_r$ & $\alpha \; \mathrm{(1/m)}$ & $n$ \\
   % Gravel
   Gravel     & $1.3 \cdot 10^{-9}$                     & 1680                                    & 0.42       & 0.005      & 100                        & 3.1 \\
   % sandy loam
@@ -221,7 +221,7 @@ The key working equations and the boundary conditions are summarized in Table \r
  \subcaption{Trichloroethylene (diluted in air) properties\cite{abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}}
  \begin{tabular}{l l l l l l}
   \toprule
-  $D_\mathrm{air} \; \mathrm{(m^2/h)}$ & $D_\mathrm{water} \; \mathrm{(m^2/h)}$ & $\mathrm{Density} \; \mathrm{(kg/m^3)}$ & $\mathrm{Viscosity} \; \mathrm{(Pa \cdot s)}$ & $K_H$ & $M \; \mathrm{(g/mol)}$ \\
+  $D_\mathrm{air} \; \mathrm{(m^2/h)}$ & $D_\mathrm{water} \; \mathrm{(m^2/h)}$ & $\rho \; \mathrm{(kg/m^3)}$ & $\mu \; \mathrm{(Pa \cdot s)}$ & $K_H$ & $M \; \mathrm{(g/mol)}$ \\
   $2.47 \cdot 10^{-2}$                 & $3.67 \cdot 10^{-6}$                   & 1.614                                   & $1.86 \cdot 10^{-5}$                          & 0.403 & 131.39                  \\
   \bottomrule
  \end{tabular}
@@ -501,6 +501,63 @@ At sites where advective transport is not as significant much of the (especially
 \begin{acknowledgement}
  This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
 \end{acknowledgement}
+
+\begin{table}[htb!]
+  \caption{List of abbreviations}\label{tbl:abbreviations}
+\begin{tabular}{l l}
+  \toprule
+  % A/ALPHA
+  $A_\mathrm{ck}$ & Crack area \\
+  $A_e$ & Air exchange rate \\
+  $\alpha, \; n, \; m, \; l$ & van Genuchten parameters \\
+  $\alpha_\mathrm{gw}$ & Attenuation from groundwater contaminant vapor source \\
+  % C
+  $c_\mathrm{in}$ & Indoor air contaminant concentration \\
+  $c$ & Soil-gas contaminant concentration \\
+  $c_w$ & Soil-water contaminant concentration \\
+  $c_\mathrm{gw}$ & Contaminant groundwater concentration \\
+  $\chi$ & Preferential pathway contaminant concentration scaling parameter \\
+  % D
+  $D_\mathrm{eff}$ & Effective diffusion coefficient \\
+  $D_\mathrm{air}$ & Diffusion coefficient in air \\
+  $D_\mathrm{water}$ & Diffusion coefficient in water \\
+  % J
+  $j_\mathrm{ck}$ & Contaminant molar flux through the foundation crack \\
+  % K
+  $\kappa_s$ & Saturated soil permeability \\
+  $K_H$ & Dimensionless Henry's law constant \\
+  $k_r$ & Relative permeability \\
+  % L
+  $L_\mathrm{slab}$ & Thickness of the foundation slab \\
+  % M
+  $M$ & Molar mass \\
+  $\mu$ & Contaminant vapor viscosity \\
+  % N
+  NAS & Naval Air Stations \\
+  % P
+  $p$ & Pressure in soil \\
+  $p_\mathrm{in/out}$ & Indoor/outdoor pressure difference \\
+  PP & Preferential pathway \\
+  % R
+  $\rho$ & Density \\
+  % S
+  $\mathrm{Se}$ & Soil water saturation \\
+  % T
+  $t$ & time \\
+  $\theta_g$ & Vapor/gas filled porosity \\
+  $\theta_w$ & Water filled porosity \\
+  $\theta_r$ & Residual water filled porosity \\
+  $\theta_t$ & Total porosity \\
+  % U
+  $\vec{u}$ & Soil-gas velocity (vector quantity) \\
+  % V
+  VI & Vapor intrusion \\
+  $V_\mathrm{base}$ & Basement volume \\
+  % Z
+  $z$ & Elevation above groundwater \\
+  \bottomrule
+\end{tabular}
+\end{table}
 
 \bibliography{library}
 
