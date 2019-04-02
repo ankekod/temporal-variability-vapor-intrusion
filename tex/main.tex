@@ -48,7 +48,7 @@
 \section{Introduction}
 
 Long term vapor intrusion (VI) studies in both residential and larger commercial structures have raised concerns regarding significant observed transient behavior in indoor air contaminant concentrations\cite{u.s._environmental_protection_agency_oswer_2015,folkes_observed_2009,holton_temporal_2013,johnston_spatiotemporal_2014,hosangadi_high-frequency_2017,mchugh_recent_2017,u.s._environmental_protection_agency_assessment_2015}.
-Such variations make it difficult for those charged with protecting human health to formulate a response should evaluation of the risk of exposure be based upon observed peak concentrations, or long-term averages, or something else?
+Such variations make it difficult for those charged with protecting human health to formulate a response - should evaluation of the risk of exposure be based upon observed peak concentrations, or long-term averages, or something else?
 There is even uncertainty within the VI community regarding how to best develop sampling strategies to address this problem\cite{u.s._environmental_protection_agency_oswer_2015,holton_temporal_2013,johnson_integrated_2016}.
 What represents a reasonable sampling strategy for a particular site a single 8 hr sample?
 Repeated 8 hr samples?
@@ -93,7 +93,7 @@ The conditions required for preferential pathways to become significant contribu
 
 \subsection{Statistical Analysis Of Field Data}
 
-To frame the question of just how much variability in indoor air contaminant concentrations is actually seen, field datasets have been analyzed.
+To frame the question of just how much variability in indoor air contaminant concentrations is actually observed, field datasets have been analyzed.
 For this purpose, datasets from the ASU house in Utah, the EPA Indianapolis site and North Island NAS were chosen for analysis.
 Readers are referred to the original published works for details regarding data acquisition\cite{holton_evaluation_2015,guo_vapor_2015,holton_temporal_2013,hosangadi_high-frequency_2017,u.s._environmental_protection_agency_assessment_2015}.\par
 
@@ -348,10 +348,10 @@ This again is entirely consistent with what the investigators of that site have 
 The correlation with indoor-outdoor pressure difference is weak in the ASU house cases, so there are clearly factors other than pressure difference that determine the variability in each.
 These will be explored with the help of a modeling analysis presented below.\par
 
-\subsection{Variability Of Attenuation From Subslab}
+\subsection{Variability Of Attenuation to Subslab Concentrations}
 
 \begin{figure}[htb!]
- \caption{Boxplot of $\log_{10}$ (subslab to indoor air contaminant attenuation) at the ASU house site. The box shows the quartiles of the distribution, the whiskers the extent of the distribution, and diamonds are points that are considered outliers.}\label{fig:attenuation_subslab}
+ \caption{Boxplot of $\log_{10}$ (subslab to indoor air contaminant attenuation) at the ASU house site. The box shows the quartiles of the distribution, the whiskers the extent of the distribution.}\label{fig:attenuation_subslab}
  \includegraphics[width=0.7\textwidth]{asu_attenuation_subslab.pdf}
 \end{figure}
 
@@ -360,10 +360,10 @@ To examine how variability in subslab contaminant concentration might contribute
 The dataset utilized for this was that from the ASU House.
 The $c_\mathrm{subslab}$ values were taken from a soil gas probe labeled as "6" at the ASU house.
 This probe was located closest to both the exit of the preferential pathway pipe, and to a reported breach in the foundation that served as a key entry pathway for contaminant getting into the house\cite{guo_identification_2015}.
-The results are shown in Figure \ref{fig:attenuation_subslab}.\par
+The results are shown in Figure \ref{fig:attenuation_subslab}, which shows the full distributions for both the case in which the preferential pathway was "open" and when it "closed".\par
 
 It is apparent that during the period when the preferential pathway was closed, $\alpha_\mathrm{subslab}$ did not vary significantly, and was quite close to the EPA recommended $\alpha_\mathrm{subslab}$ value of 0.03\cite{u.s._environmental_protection_agency_oswer_2015}.
-Thus during the period when the preferential pathway was closed large temporal variations in subslab concentrations could not have been driving the variations in indoor air contaminant concentrations.\par
+Thus during the period when the preferential pathway was closed, large temporal variations in subslab concentrations could not have been driving the variations in indoor air contaminant concentrations.\par
 
 When the PP was open, there was considerably more variability in the subslab concentration values, and the mean value was higher than in the case where the preferential pathway was closed.
 It was also not uncommon for the observed $\alpha_\mathrm{subslab}$ to exceed unity.
@@ -379,7 +379,7 @@ What the results of Figure \ref{fig:attenuation_subslab} do clearly show is that
 
 \begin{figure}[htb!]
  \centering
- \caption{Simulated preferential pathway scenarios compared to ASU house field data (top panel). No preferential pathway scenarios in bottom panel. Field data is binned in 40 evenly spaced bins, with the dot representing the mean and errors bars represent the 95\% confidence interval. Shaded blue represent the predicted variability due to air exchange rate (using 5th and 95th percentile values).}\label{fig:land_drain_scenarios}
+ \caption{Simulated preferential pathway scenarios compared to actual ASU house field data. Field data are binned in 40 evenly spaced pressure bins, with the dot representing the mean and errors bars the 95\% confidence interval of data at a particular pressure range. Shaded blue represent the range of model predictions for the indicated pressure difference, due to air exchange rate variability (using 5th and 95th percentile values of measured exchange rates). Top panel is for various cases representing an "open" preferential pathway, the lower panel with the pathway "closed". }\label{fig:land_drain_scenarios}
  \includegraphics[width=\textwidth]{land_drain_scenarios_combo.pdf}
 \end{figure}
 
@@ -389,9 +389,10 @@ This scenario is not intended to exactly represent the situation at ASU House, b
 The full, complex geometry of the ASU House has not been represented, but the modeled structure is of comparable size, and will be subject to operational parameters based upon what were measured at that site.
 The general modeling conditions are those shown in Table \ref{fig:indianapolis}.\par
 
-In the calculation whose results are shown in the top panel of Figure \ref{fig:land_drain_scenarios}, a preferential pathway is assumed to provide air containing contaminant vapor at a concentration equivalent to the vapor in equilibrium with the underlying groundwater source.
+In the calculation results shown in the top panel of Figure \ref{fig:land_drain_scenarios}, a preferential pathway is assumed to provide air containing contaminant vapor at a concentration equivalent to the vapor in equilibrium with the underlying groundwater source.
 Here, the indoor air exchange rate $A_e$ was assumed to be a constant 0.5 per hour, and $p_\mathrm{in/out}$ was varied from -5 to 5 Pa.
-Values of predicted indoor air contaminant concentrations, $c_\mathrm{in}$ were obtained from steady state calculations. The predicted $c_\mathrm{in}$ values were then normalized by the assumed vapor concentration in equilibrium with groundwater  cgw, giving the attenuation from groundwater $\alpha_\mathrm{gw}$ .
+Values of predicted indoor air contaminant concentrations, $c_\mathrm{in}$ were obtained from steady state calculations.
+The predicted $c_\mathrm{in}$ values were then normalized by the assumed vapor concentration in equilibrium with groundwater $c_\mathrm{gw}$, giving the attenuation from groundwater $\alpha_\mathrm{gw}$.
 The predicted values of $\alpha_\mathrm{gw}$ as a function of $p_\mathrm{in/out}$ are given by the central blue line in the upper panel of Figure \ref{fig:land_drain_scenarios}.
 These predicted values are compared to actual measured $\alpha_\mathrm{gw}$ values from the ASU House for the period during which the preferential pathway was open (blue points).\par
 
@@ -415,18 +416,14 @@ This shows that while there was a lightly larger $\alpha_\mathrm{gw}$ compared t
 The contaminated and uncontaminated preferential  pathway scenarios (blue and green lines respectively) thus bound the range of $\alpha_\mathrm{gw}$ that would be observed for a given $p_\mathrm{in/out}$ depending on the contaminant vapor concentration in the preferential pathway.\par
 
 The model is also able to capture the weak trend in $\alpha_\mathrm{gw}$ with $p_\mathrm{in/out}$ when a preferential pathway is absent, when there exists a permeable subslab region.
-These results are shown as the bottom panel in Figure \ref{fig:land_drain_scenarios}.  
-These results are again in agreement with what was observed at the ASU House when the preferential pathway was closed.\par
+These results are shown in the bottom panel of Figure \ref{fig:land_drain_scenarios}.  
+These results are again in agreement with what was observed at the ASU House when the preferential pathway was closed, i.e. that there was a much more modest variation in indoor air concentration, irrespective of pressure, when the preferential pathway was cut off.\par
 
-What the above simulations fail to predict is the actual observed variability of $\alpha_\mathrm{gw}$ at any given $p_\mathrm{in/out}$.
-This variability is captured by the error bars around the data points in the two panels (denoting one standard deviation).
-This variability is roughly an order of magnitude.
-Examining Figure \ref{fig:model} for the case in which the preferential pathway is closed, the “cloud” of data similarly reflect that there is still not captured in the modeling a parameter that determines this variation, independently of the pressure effects.\par
-
-One other feature of this simulation that warrants noting is that the examined range from $p_\mathrm{in/out}$ from -5 to +5 Pa is larger than the “usual” range from -2 to +2 Pa observed at the ASU House (as may be seen from Figure \ref{fig:model}).
-The data at larger and smaller values of $p_\mathrm{in/out}$ were rather sparse, though there were enough points so that the data for the higher range of pressures could be presented in Figure \ref{fig:land_drain_scenarios}.
-But focusing on the range from -2 to + 2 Pa alone, the pressure dependence of variability is much less visible, just as the data of Figure \ref{fig:model} suggested.
-This again means that there is a need to explore other reasons for the order of magnitude spread seen in concentration data, when the preferential pathway is closed.\par
+The above simulations capture the trend in $\alpha_\mathrm{gw}$ with $p_\mathrm{in/out}$ but do not yet capture the full variability of the concentration results over the "most probable" portion of observed pressure distributions shown in Figure \ref{fig:kde} (which tend to be from -2 to +2 Pa).
+The results of Figure \ref{fig:land_drain_scenarios} show a spread of almost an order of magnitude over this pressure range for the case of the "open" preferential pathway, and almost no spread at all when the preferential pathway is "closed".
+Hence the predicted variability is roughly an order of magnitude too low, when considering only the influence of pressure.
+There is a factor that tends to increase the spread of the data one additional order of magnitude beyond what was predicted by the base calculations of Figure \ref{fig:land_drain_scenarios}.
+We believe that it is variations in air exchange rate, operating in concert with the natural variations in pressure differential, that explain the remaining variability.\par
 
 \subsubsection{Air Exchange Rate Effects}
 
@@ -443,19 +440,19 @@ This again means that there is a need to explore other reasons for the order of 
 \end{table}
 
 Table \ref{tbl:air_exchange_rate} shows the observed variations in air exchange rates for the ASU House and Indianapolis House, compared with EPA’s summary of the distribution of typical residential air exchange rates\cite{u.s._epa_exposure_2011,m._d._koontz_estimation_1995}.
-Examination of these distributions point in a clear direction for modifying the model of VI.
+Examination of these distributions point in a clear direction for modifying the above model.
 Instead of using a constant value of air exchange rate, as is customary, its values should be parameterized.
 A higher air exchange would of course be associated with lower $c_\mathrm{in}$ and vice versa.
 Moreover, $A_e$ may sometimes be correlated with $p_\mathrm{in/out}$.
 Determining any general relationship between $A_e$ and $p_\mathrm{in/out}$ is difficult: the structure itself and weather phenomena have a significant effect on air exchange.
 As the data in the supplementary data show (Figure S1), there is no easily discernable correlation between these variables at the ASU site, though there is a hint of slight seasonal dependence.\par
 
-To show the influence of possible statistical fluctuations of air exchange rate on the predictions of $\alpha_\mathrm{gw}$ values, the scenarios of Figure \ref{fig:land_drain_scenarios} were rerun calculated using the 5th and 95th percentile $A_e$ values, 0.17 and 0.90 respectively (based upon the actual distributions in Figure S1), providing predicted upper and lower bounds for $\alpha_\mathrm{gw}$.
-These bounds are given by the shaded blue regions around the center line calculated for an assumed constant $A_e$ of 0.5 per hour.\par
+To show the influence of possible statistical fluctuations of air exchange rate on the predictions of $\alpha_\mathrm{gw}$ values, the scenarios of Figure \ref{fig:land_drain_scenarios} were rerun calculated using the 5th and 95th percentile measured $A_e$ values, 0.17 and 0.90 respectively (based upon the actual distributions in Figure S1), providing predicted upper and lower bounds for $\alpha_\mathrm{gw}$.
+These bounds are indicated by the shaded blue regions around the center line calculated for an assumed constant $A_e$ of 0.5 per hour.\par
 
 It is apparent that assuming variability in air exchange rate allows capturing most of the observed variability in $\alpha_\mathrm{gw}$.
 We believe that this explains the portion of the variation in indoor air contaminant concentration data that cannot be explained by either existence of preferential pathways or by the range in indoor depressurization.
-Thus we believe that it is the interplay of preferential pathway conditions, with indoor pressure variations and normal air exchange rates that help to explain the observations of significant variations in reported indoor air contaminant concentrations.\par
+Thus, we believe that it is the interplay of preferential pathway conditions, with indoor pressure variations and normal air exchange rates that help to explain the observations of significant variations in reported indoor air contaminant concentrations.\par
 
 \subsubsection{Results of Transient Simulations}
 
@@ -465,38 +462,32 @@ Thus we believe that it is the interplay of preferential pathway conditions, wit
 \end{figure}
 
 The above analyses have been conducted under simulated steady state conditions.
-The final test of the conclusions reached above comes in applying them in an actual transient simulations.
-We run the model described in Figure \ref{fig:model} and run 24-hour simulations to see how $c_\mathrm{in}$ fluctuates over a "typical" day, and how much of these fluctuations are attributed to air exchange rate versus indoor/outdoor pressure difference.
-This is achieved by using varying $p_\mathrm{in/out}$ as one model input, and then running a scenario where $A_e$ also fluctuates, and one where $A_e$ is constant throughout the entire simulation period.
-Just like before, we consider this effect for both the preferential pathway open and closed cases.\par
-
-Using the ASU House dataset, the "typical" daily $p_\mathrm{in/out}$ is found by querying the data what the median, hourly, diurnal $p_\mathrm{in/out}$ was during the non-CPM periods, giving us the median $p_\mathrm{in/out}$ at 00:00, ..., 13:00, ..., 23:00.
-This "typical" $p_\mathrm{in/out}$ cycle may be seen in the upper left panel of Figure \ref{fig:diurnal} (note that values between the hourly medians are interpolated using cubic splines).
+The conclusions regarding the importance of the different parameters are now examined in actual transient simulations.
+The model configuration of Figure \ref{fig:model} is run in 24-hour transient simulations to examine how $c_\mathrm{in}$ fluctuates over the course  of a "typical" day.
+The simulations vary $p_\mathrm{in/out}$ as one model input, and then assume either a constant or time-varying air exchange rate, $A_e$.
+The ASU House dataset was again the source of the ”typical” $p_\mathrm{in/out}$ temporal variation, obtained by examining the median, hourly, diurnal $p_\mathrm{in/out}$ during the non-CPM periods.
+The statistically "typical" $p_\mathrm{in/out}$ cycle may be seen in the upper left panel of Figure \ref{fig:diurnal} (note that values between the hourly median values are interpolated using cubic splines).
 The "typical" air exchange rate is calculated in exactly the same way and is shown by the blue line in the upper right panel of Figure \ref{fig:diurnal}.
-The orange line is the constant air exchange rate value used.\par
+The orange line is the air exchange rate value assumed for the calculations at constant air exchange rate.\par
 
-The result of these simulations may be seen in the bottom two panels of Figure \ref{fig:diurnal}, where the left and right panels show the preferential pathway open and closed respectively scenarios.
-The "max change" value in the legends is the quotient between the lowest and highest concentrations, i.e. a value of two indicate that the maximum daily concentration is twice as high as the lowest.
-This is the same property that is plotted in Figure \ref{fig:resampling}.\par
-
-When the preferential pathway is open, we see that there is a maximum change of a factor by around 5, irrespective if $A_e$ fluctuates or not, which is somewhat more than the maximum daily variation shown in Figure \ref{fig:resampling}.
-The relatively small difference between the diurnal and constant $A_e$ cases indicate that most of the variability during a "typical" day is here attributable to fluctuations in $p_\mathrm{in/out}$.
-This is to be expected as we have already established that the preferential pathway increased the "advective potential", i.e. increasing the influence of $p_\mathrm{in/out}$ on contaminant entry rate.
-Even for the small fluctuations in $p_\mathrm{in/out}$, under the influence of this type of preferential pathway, the contaminant entry rate is a more significant than the contaminant exit rate, which determined by air exchange rate.\par
-
+The result of these simulations are shown in the bottom two panels of Figure \ref{fig:diurnal}, where the left and right panels show the results of open and closed preferential pathways, respectively.
+The "max change" value in the legends is the quotient of the lowest and highest predicted concentrations, i.e. a value of two indicate that the maximum daily concentration is twice as high as the lowest.
+This quantity may be compared with the value that is plotted for “one day” in Figure \ref{fig:resampling}.
+When the preferential pathway is open, there is a maximum daily variation of roughly a factor of 5, irrespective of if $A_e$ fluctuates or not, which is somewhat more than the maximum daily variation shown in Figure \ref{fig:resampling}.
+The relatively small difference between the variable and constant $A_e$ cases indicates that most of the variability during a "typical" day is here attributable to fluctuations in $p_\mathrm{in/out}$.
+Even for the small fluctuations in $p_\mathrm{in/out}$ the contaminant entry rate fluctuation drives the observed indoor concentration.
 When the preferential pathway is closed the story is quite different.
-Here we see that when air exchange rate is held constant, there is essentially no variation in $c_\mathrm{in}$.
-This is again not surprising, as Figure \ref{fig:land_drain_scenarios} demonstrate that when the preferential pathway is closed, the influence of $p_\mathrm{in/out}$ on contaminant entry rate (and subsequently $c_\mathrm{in}$) is small (which is further compounded by the small changes in $p_\mathrm{in/out}$).
-When the air exchange rate is fluctuating the maximum change in $c_\mathrm{in}$ is 1.68, which is in line with what is shown in Figure \ref{fig:resampling}, showing that for a "typical" day, much of the daily variation in $c_\mathrm{in}$ is due to daily fluctuations in air exchange rate.\par
+When air exchange rate is held constant, there is essentially no variation in $c_\mathrm{in}$.
+This is again not surprising, as Figure \ref{fig:land_drain_scenarios} demonstrated that when the preferential pathway is closed, the influence of $p_\mathrm{in/out}$ on contaminant entry rate (and subsequently $c_\mathrm{in}$) is small (and the variation in this pressure differential is not large in any case).
+When the air exchange rate is allowed to fluctuate the maximum daily variation in $c_\mathrm{in}$ is 1.68, which is in line with what is shown in Figure \ref{fig:resampling}.
+This shows that for a "typical" day, when the preferential pathway is closed off, much of the daily variation in $c_\mathrm{in}$ is due to daily fluctuations in air exchange rate.\par
 
-All of this show the complicated nature of temporal variability in $c_\mathrm{in}$.
-It is important to remember that we have only considered the effect of indoor/outdoor pressure difference and air exchange rate in this artcile, but slower processes, e.g. changes in groundwater contaminant concentration or various seasonal effects has a significant impact on VI over time, which we will address in future articles, are too of importance.
-But for shorter time periods, temporal variability in indoor contaminant concentration is dominated by indoor/outdoor pressure difference and/or air exchange rate.\par
-
-For a site where the communication between the subsurface and the indoor is good i.e. advective transport is significant, $p_\mathrm{in/out}$ is or may be the most significant determinant of $c_\mathrm{in}$ and its temporal variability.
-In this paper we show that that such a scenario may arise due to a preferential pathway, such as the one at the ASU House.
-But these conditions may also exist even in the absence of a preferential pathway as the NAS North Island demonstrate.
-At sites where advective transport is not as significant much of the (especially shorter-term) temporal variability in $c_\mathrm{in}$ may be attributed to fluctuations in air exchange rate.\par
+These results demonstrate the complicated nature of temporal variability in $c_\mathrm{in}$.
+It is important to recall that only the effects of indoor/outdoor pressure difference and air exchange rate have been considered here, but slower processes, e.g. changes in groundwater contaminant concentration or various seasonal effects can also have a significant impact on VI over time.
+For the shorter time periods of concern in recent studies of temporal variability in indoor contaminant concentrations we believe that these are dominated by combinations of indoor/outdoor pressure differentials and air exchange rate.
+For a site where advective communication between the subsurface and the indoor is good, $p_\mathrm{in/out}$ is likely a significant determinant of $c_\mathrm{in}$ and its temporal variability.
+We have shown that that such a scenario may arise due to a preferential pathway, entering a permeable sub-base, but may also exist even in the absence of a preferential pathway just as the results from NAS North Island demonstrate.
+At sites where advective transport into the structure is limited, much of the temporal variability in $c_\mathrm{in}$ may be attributed to natural fluctuations in air exchange rate.\par
 
 \begin{acknowledgement}
  This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
