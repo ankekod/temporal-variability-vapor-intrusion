@@ -302,11 +302,18 @@ class IndianapolisTime:
             ax=ax,
         )
 
+
         ax.set_yscale('log')
+
+        start_date, stop_date = datetime.date(2011, 8, 11), datetime.date(2011, 10, 15)
+
+        custom_tick_locs = np.arange(start_date, stop_date, np.timedelta64(1,'W'))
         ax.set(
             title='Indoor TCE concentration at the Indianapolis site',
             ylabel='$c_\\mathrm{in} \; \\mathrm{(\\mu g/m^3)}$',
-            xlim=([datetime.date(2011, 8, 11), datetime.date(2011, 10, 15)]),
+            xticks=custom_tick_locs,
+            xticklabels=custom_tick_locs,
+            xlim=([start_date, stop_date]),
         )
         plt.xticks(rotation=45)
         plt.tight_layout()
@@ -468,9 +475,9 @@ class Diurnal:
         return
 
 
-#Diurnal()
+Diurnal()
 #PressureKDE(y_data_log=True,norm_conc=True)
-AttenuationSubslab()
+#AttenuationSubslab()
 #Modeling()
 #IndianapolisTime()
 #AirExchangeRateKDE()

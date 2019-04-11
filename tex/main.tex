@@ -19,28 +19,28 @@
 \linenumbers
 % macros
 
-% TODO: Fix all the citation issues
-
 % authors
 \author{Jonathan G. V. Ström}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
+\author{Yuanming Guo}
+\affiliation[Arizona State University]{Arizona State University, School of Sustainable Engineering and the Building Environment, Tempe, AZ, USA}
 \author{Yijun Yao}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
-%\author{Yuanming Guo}
-%\affiliation[Arizona State University]{Arizona State University}
 \author{Eric M. Suuberg}
 \email{eric_suuberg@brown.edu}
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 
 % title
+% TODO: Change title to reflect the inclusion of preferential pathway analysis
 \title{Temporal Variations In Vapor Intrusion-Induced Indoor Air Contaminant Concentrations}
 
 % keywords
 \abbreviations{VI}
-\keywords{Vapor intrusion, Preferential pathways, Temporal variability, Factor analysis, Modeling}
+\keywords{Vapor intrusion, Preferential pathways, Temporal variability, Finite element modeling, Air exchange rate}
 
 \begin{document}
 
+% TODO: Add abstract
 \begin{abstract}
 
 \end{abstract}
@@ -50,8 +50,8 @@
 Long term vapor intrusion (VI) studies in both residential and larger commercial structures have raised concerns regarding significant observed transient behavior in indoor air contaminant concentrations\cite{u.s._environmental_protection_agency_oswer_2015,folkes_observed_2009,holton_temporal_2013,johnston_spatiotemporal_2014,hosangadi_high-frequency_2017,mchugh_recent_2017,u.s._environmental_protection_agency_assessment_2015}.
 Such variations make it difficult for those charged with protecting human health to formulate a response - should evaluation of the risk of exposure be based upon observed peak concentrations, or long-term averages, or something else?
 There is even uncertainty within the VI community regarding how to best develop sampling strategies to address this problem\cite{u.s._environmental_protection_agency_oswer_2015,holton_temporal_2013,johnson_integrated_2016}.
-What represents a reasonable sampling strategy for a particular site a single 8 hr sample?
-Repeated 8 hr samples?
+What represents a reasonable sampling strategy for a particular site a single 8-hour sample?
+Repeated 8-hour samples?
 Month-long samples?
 Continuous monitoring?\par
 
@@ -251,9 +251,10 @@ The key working equations and the boundary conditions are summarized in Table \r
  \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
 \end{figure}
 
-High frequency measurement of indoor air contaminant concentrations, $c_\mathrm{in}$ , such as those in Figure 1, took place at both the ASU House and the Indianapolis House over significant periods\cite{u.s._environmental_protection_agency_assessment_2015,holton_temporal_2013}.
+High frequency measurement of indoor air contaminant concentrations, $c_\mathrm{in}$, such as those in Figure \ref{fig:indianapolis}, took place at both the ASU House and the Indianapolis House over significant periods (Indianapolis: ca 1.7 years, ASU house: ca 3.5 years)\cite{u.s._environmental_protection_agency_assessment_2015,holton_temporal_2013}.
 Furthermore, at the Indianapolis site the $c_\mathrm{in}$ for three different contaminants, chloroform, TCE, and tetrachloroethylene (PCE) were all collected, allowing examination of the variability of each VI contaminant.
-The NAS North Island NAS dataset was obtained over a much shorter duration, and is therefore not examined in this portion of the analysis.\par
+The NAS North Island NAS dataset was obtained over a much shorter duration (9 days), and is therefore not examined in this portion of the analysis.
+It should also be noted that the ASU house used 4-hour sorbent tubes, while Indianapolis took instantaneous "grab" samples.\par
 
 Figure \ref{fig:indianapolis} showed a large degree of temporal variation in one of the components, and the data for the other components were quite similar.
 What is apparent upon closer examination of such data is that the actual day-to-day variations are typically not nearly as large as those observed when tracking the data for a longer time.
@@ -280,7 +281,7 @@ The longer the resampling period, the larger the maximum variability in observed
 In the case of the ASU House with the preferential pathway open, the variability went from less than a threefold difference on the timescale of a day, to two to three orders of magnitude over the course of weeks.
 Thus there are different timescales that characterize different extents of variation, again pointing to the existence of more than a single factor that determines variability.\par
 
-If the maximum observed variability is quite small across only a few days as these data suggest, a sampling strategy that involves taking daily samples for several days in a row will likely yield little extra useful information beyond what can be obtained with a single sample.\par
+Multiple samples taken over a short time period, e.g. a few days, are unlikely to uncover significant variation in indoor air contaminant concentration; the larger transient variations typically manifest after longer time periods. \par
 
 \subsection{Statistical Analysis of Field Data}
 
@@ -335,9 +336,7 @@ But the broadness of the band of the NAS North Island concentration data set sug
 The ASU house datasets offer a different picture.
 The variability of $c_\mathrm{in}$ is just as large, or even larger than at NAS North Island, yet the $p_\mathrm{in/out}$ varied far less.
 The weaker dependence of $c_\mathrm{in}$ on the pressure difference is confirmed by the much lower r-values for the correlations between the variables.
-In other words, there is not nearly as strong a correlation between variation in indoor air contaminant concentration and pressure difference for the ASU House as there was for NAS North Island.\par
-
-It should be noted that control of indoor depressurization is the principle that underlies the controlled pressure method (CPM) for assessing the potential severity of a VI situation.
+In other words, there is not nearly as strong a correlation between variation in indoor air contaminant concentration and pressure difference for the ASU House as there was for NAS North Island.
 These results strongly suggest that there are other factors besides indoor pressure determining indoor air contaminant concentrations, and their variations, that may not be accounted for in applying this method.\par
 
 The data for the ASU House also offer an insight into the role of the preferential pathway.
@@ -371,7 +370,7 @@ While large $\alpha_\mathrm{subslab}$ values may sometimes indicate indoor sourc
 A more likely explanation is that even though probe "6" was located in close proximity to the exit of the preferential pathway, there might have still existed significant spatial variability in $c_\mathrm{subslab}$ that could not be captured with a single measurement.
 This suggests caution is needed in profiling subslab contaminant concentrations in the presence of preferential pathways - significant variations are possible.\par
 
-What the results of Figure \ref{fig:attenuation_subslab} do clearly show is that the existence of a preferential pathway of the kind at ASU House (and idealized in Figure \ref{fig:indianapolis}) can influence the temporal variation of subslab concentrations in a much less predictable way than those observed in “normal” VI scenarios.\par
+What the results of Figure \ref{fig:attenuation_subslab} do clearly show is that the existence of a preferential pathway of the kind at ASU House (and idealized in Figure \ref{fig:indianapolis}) can influence the temporal variation of subslab concentrations in a much less predictable way than those observed in "normal" VI scenarios.\par
 
 \subsection{Modeling Results}
 
@@ -445,7 +444,8 @@ Instead of using a constant value of air exchange rate, as is customary, its val
 A higher air exchange would of course be associated with lower $c_\mathrm{in}$ and vice versa.
 Moreover, $A_e$ may sometimes be correlated with $p_\mathrm{in/out}$.
 Determining any general relationship between $A_e$ and $p_\mathrm{in/out}$ is difficult: the structure itself and weather phenomena have a significant effect on air exchange.
-As the data in the supplementary data show (Figure S1), there is no easily discernable correlation between these variables at the ASU site, though there is a hint of slight seasonal dependence.\par
+As the data in the supplementary data show (Figure S1), there is no easily discernable correlation between these variables at the ASU site, though there is a hint of slight seasonal dependence.
+Note: a relationship between $A_e$ and $p_\mathrm{in/out}$ may be established for larger $p_\mathrm{in/out}$ via the building leakage curves, which are widely used for heating, ventilation and air conditioning systems in construction.\par
 
 To show the influence of possible statistical fluctuations of air exchange rate on the predictions of $\alpha_\mathrm{gw}$ values, the scenarios of Figure \ref{fig:land_drain_scenarios} were rerun calculated using the 5th and 95th percentile measured $A_e$ values, 0.17 and 0.90 respectively (based upon the actual distributions in Figure S1), providing predicted upper and lower bounds for $\alpha_\mathrm{gw}$.
 These bounds are indicated by the shaded blue regions around the center line calculated for an assumed constant $A_e$ of 0.5 per hour.\par
@@ -456,6 +456,7 @@ Thus, we believe that it is the interplay of preferential pathway conditions, wi
 
 \subsubsection{Results of Transient Simulations}
 
+% TODO: Simplify or clarify the figure, in particular how you use the legend to highlight the max change.
 \begin{figure}
  \caption{Transient simulation of a "typical" VI day, using diurnal indoor/outdoor pressure difference and air exchange rate as inputs. Effect of preferential pathway considered.}\label{fig:diurnal}
  \includegraphics[width=\textwidth]{diurnal.pdf}
@@ -465,20 +466,21 @@ The above analyses have been conducted under simulated steady state conditions.
 The conclusions regarding the importance of the different parameters are now examined in actual transient simulations.
 The model configuration of Figure \ref{fig:model} is run in 24-hour transient simulations to examine how $c_\mathrm{in}$ fluctuates over the course  of a "typical" day.
 The simulations vary $p_\mathrm{in/out}$ as one model input, and then assume either a constant or time-varying air exchange rate, $A_e$.
-The ASU House dataset was again the source of the ”typical” $p_\mathrm{in/out}$ temporal variation, obtained by examining the median, hourly, diurnal $p_\mathrm{in/out}$ during the non-CPM periods.
+The ASU House dataset was again the source of the "typical" $p_\mathrm{in/out}$ temporal variation, obtained by examining the median, hourly, diurnal $p_\mathrm{in/out}$ during the non-CPM periods.
 The statistically "typical" $p_\mathrm{in/out}$ cycle may be seen in the upper left panel of Figure \ref{fig:diurnal} (note that values between the hourly median values are interpolated using cubic splines).
 The "typical" air exchange rate is calculated in exactly the same way and is shown by the blue line in the upper right panel of Figure \ref{fig:diurnal}.
 The orange line is the air exchange rate value assumed for the calculations at constant air exchange rate.\par
 
 The result of these simulations are shown in the bottom two panels of Figure \ref{fig:diurnal}, where the left and right panels show the results of open and closed preferential pathways, respectively.
 The "max change" value in the legends is the quotient of the lowest and highest predicted concentrations, i.e. a value of two indicate that the maximum daily concentration is twice as high as the lowest.
-This quantity may be compared with the value that is plotted for “one day” in Figure \ref{fig:resampling}.
+This quantity may be compared with the value that is plotted for "one day" in Figure \ref{fig:resampling}.
 When the preferential pathway is open, there is a maximum daily variation of roughly a factor of 5, irrespective of if $A_e$ fluctuates or not, which is somewhat more than the maximum daily variation shown in Figure \ref{fig:resampling}.
-The relatively small difference between the variable and constant $A_e$ cases indicates that most of the variability during a "typical" day is here attributable to fluctuations in $p_\mathrm{in/out}$.
+The relatively small difference between the variable and constant $A_e$ cases indicates that most of the variability during a "typical" day is here attributable to fluctuations in $p_\mathrm{in/out}$, i.e. the contaminant transport into the modeled structure is advection dominated.
 Even for the small fluctuations in $p_\mathrm{in/out}$ the contaminant entry rate fluctuation drives the observed indoor concentration.
 When the preferential pathway is closed the story is quite different.
 When air exchange rate is held constant, there is essentially no variation in $c_\mathrm{in}$.
-This is again not surprising, as Figure \ref{fig:land_drain_scenarios} demonstrated that when the preferential pathway is closed, the influence of $p_\mathrm{in/out}$ on contaminant entry rate (and subsequently $c_\mathrm{in}$) is small (and the variation in this pressure differential is not large in any case).
+This is again not surprising, as Figure \ref{fig:land_drain_scenarios} demonstrated that when the preferential pathway is closed, the influence of $p_\mathrm{in/out}$ on contaminant entry rate (and subsequently $c_\mathrm{in}$) is small.
+Combined with the small $p_\mathrm{in/out}$ show that the contaminant transport into the modeled structure in this scenario is dominated by diffusion.
 When the air exchange rate is allowed to fluctuate the maximum daily variation in $c_\mathrm{in}$ is 1.68, which is in line with what is shown in Figure \ref{fig:resampling}.
 This shows that for a "typical" day, when the preferential pathway is closed off, much of the daily variation in $c_\mathrm{in}$ is due to daily fluctuations in air exchange rate.\par
 
