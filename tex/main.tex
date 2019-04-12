@@ -9,11 +9,7 @@
 \usepackage{array,multirow,graphicx}
 \usepackage{comment}
 \graphicspath{
-  {./../figures/},
-  {./../figures/2d_kde/},
-  {./../figures/simulation_predictions/},
-  {./../figures/pair_grids/},
-  {./../figures/temporal_variability/},
+  {./figures/},
 }
 \usepackage{lineno}
 \linenumbers
@@ -31,18 +27,20 @@
 \affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 
 % title
-% TODO: Change title to reflect the inclusion of preferential pathway analysis
 \title{Temporal Variations In Vapor Intrusion-Induced Indoor Air Contaminant Concentrations}
 
 % keywords
 \abbreviations{VI}
-\keywords{Vapor intrusion, Preferential pathways, Temporal variability, Finite element modeling, Air exchange rate}
+\keywords{Vapor intrusion, Preferential pathways, Temporal variability, Finite element modeling, Air exchange rate, Indoor/outdoor pressure difference}
 
 \begin{document}
 
-% TODO: Add abstract
 \begin{abstract}
-
+Temporal variability in indoor air contaminant concentrations at vapor intrusion (VI) sites has been a concern for some time.
+We consider the source of the variability at VI sites located near Hill Air Force Base (AFB) in Utah, an EPA experimental house in Indiana, and Naval Air Station North Island in California and in particular how the indoor/outdoor pressure difference and air exchange rate affected indoor air contaminant concentrations at these sites.
+We investigate how these dynamics differ for a site that is characterized by a preferential pathway (like Hill AFB) and a more "typical" VI site through three-dimensional fluid dynamics models and statistical analysis of the aforementioned sites.
+For such a preferential pathway to impact a VI site, a medium for effective communication between the preferential pathway and the indoor air space must exist, e.g. a permeable region in the subslab (gravel layer).
+Sites characterized by significant advective transport from the subslab to the indoor air space, much of short-term variability in indoor air contaminant concentration may be explained by fluctuations in indoor/outdoor pressure differences; air exchange rate drives most of the short-term variability for sites characterized by little advective transport.
 \end{abstract}
 
 \section{Introduction}
@@ -248,7 +246,7 @@ The key working equations and the boundary conditions are summarized in Table \r
  \centering
  \caption{Mean values of the maximum change in indoor air contaminant concentration that may be expected
   over a given time period. (e.g., 1D is 1 day, 2W is 2 weeks, and 3M is 3 months). The error bars are the 95\% confidence intervals.}\label{fig:resampling}
- \includegraphics[width=\textwidth]{temporal_variability/resampling.pdf}
+ \includegraphics[width=\textwidth]{resampling.pdf}
 \end{figure}
 
 High frequency measurement of indoor air contaminant concentrations, $c_\mathrm{in}$, such as those in Figure \ref{fig:indianapolis}, took place at both the ASU House and the Indianapolis House over significant periods (Indianapolis: ca 1.7 years, ASU house: ca 3.5 years)\cite{u.s._environmental_protection_agency_assessment_2015,holton_temporal_2013}.
@@ -456,7 +454,6 @@ Thus, we believe that it is the interplay of preferential pathway conditions, wi
 
 \subsubsection{Results of Transient Simulations}
 
-% TODO: Simplify or clarify the figure, in particular how you use the legend to highlight the max change.
 \begin{figure}
  \caption{Transient simulation of a "typical" VI day, using diurnal indoor/outdoor pressure difference and air exchange rate as inputs. Effect of preferential pathway considered.}\label{fig:diurnal}
  \includegraphics[width=\textwidth]{diurnal.pdf}
