@@ -183,7 +183,6 @@ class ASUHouse:
         pp_status = lambda x: 'Open' if x <= phases.index.values[0] else ('Closed' if x >= phases.index.values[-2] else 'CPM')
         df['Phase'] = df.index.map(pp_status)
         df['Season'] = df.index.month.map(get_season)
-        df['IndoorOutdoorPressure'] *= -1
 
         return df
 
@@ -207,16 +206,15 @@ class ASUHouse:
 
     def get_pressure(self):
         pressure = pd.read_sql_query(
-            "SELECT StopTime, Pressure FROM PressureDifference;",
+            "SELECT StopTime, Pressure AS IndoorOutdoorPressure, PressureSubslab AS SubslabPressure FROM PressureDifference;",
             self.db,
         )
         pressure = self.process_time(pressure)
-        pressure.rename(
-            columns={
-                'Pressure': 'IndoorOutdoorPressure',
-            },
-            inplace=True,
-        )
+
+
+        pressure['IndoorOutdoorPressure'] *= -1
+        pressure['SubslabPressure'] *= -1
+
         return pressure
 
     def get_phases(self):
@@ -288,9 +286,9 @@ class NorthIsland:
             "SELECT Time, Pressure AS IndoorOutdoorPressure FROM IndoorOutdoorPressureDifference;",
             self.db,
         ).sort_values(by='Time')
-        pressure['IndoorOutdoorPressure'] *= -1 
+        pressure['IndoorOutdoorPressure'] *= -1
         return pressure
 
 #ind = Indianapolis()
-#asu = ASUHouse()
-nas = NorthIsland()
+asu = ASUHouse()
+#nas = NorthIsland()
