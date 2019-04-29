@@ -132,3 +132,4 @@ venv.bak/
 *.fdb_latexmk
 *.yaml
 acs-main.bib
+*.spl
