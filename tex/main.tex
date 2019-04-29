@@ -1,4 +1,4 @@
-\documentclass[journal=esthag,manuscript=article]{achemso}
+\documentclass[preprint,12pt]{elsarticle}
 
 % additional packages
 \usepackage[utf8]{inputenc}
@@ -15,25 +15,30 @@
 \linenumbers
 % macros
 
-% authors
-\author{Jonathan G. V. Ström}
-\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
-\author{Yuanming Guo}
-\affiliation[Arizona State University]{Arizona State University, School of Sustainable Engineering and the Building Environment, Tempe, AZ, USA}
-\author{Yijun Yao}
-\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
-\author{Eric M. Suuberg}
-\email{eric_suuberg@brown.edu}
-\affiliation[Brown University]{Brown University, School of Engineering, Providence, RI, USA}
 
+
+% keywords
+%\abbreviations{VI}
+%\keywords{}
+
+\journal{Building \& Environment}
+
+\begin{document}
+
+\begin{frontmatter}
 % title
 \title{Temporal Variations In Vapor Intrusion-Induced Indoor Air Contaminant Concentrations}
 
-% keywords
-\abbreviations{VI}
-\keywords{Vapor intrusion, Preferential pathways, Temporal variability, Finite element modeling, Air exchange rate, Indoor/outdoor pressure difference}
+% authors
+\author[Brown]{Jonathan G. V. Ström}
+\author[ASU]{Yuanming Guo}
+\author[ASU]{Yijun Yao}
+\author[Brown]{Eric M. Suuberg}
 
-\begin{document}
+\ead{eric\_suuberg@brown.edu}
+
+\address[Brown]{Brown University, School of Engineering, Providence, RI, USA}
+\address[ASU]{Arizona State University, School of Sustainable Engineering and the Building Environment, Tempe, AZ, USA}
 
 \begin{abstract}
 Temporal variability in indoor air contaminant concentrations at vapor intrusion (VI) sites has been a concern for some time.
@@ -45,7 +50,13 @@ At sites characterized by significant advective transport from the subslab to th
 Meanwhile, air exchange rate variation drives most of the short-term variability at sites characterized by minor variations in advective transport.
 \end{abstract}
 
-\section{Introduction}
+\begin{keyword}
+  Vapor intrusion \sep Preferential pathways \sep Temporal variability \sep Finite element modeling \sep Air exchange rate \sep Indoor/outdoor pressure difference
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}\label{s:intro}
 
 Long term vapor intrusion (VI) studies in both residential and larger commercial structures have raised concerns regarding significant observed transient behavior in indoor air contaminant concentrations\cite{u.s._environmental_protection_agency_oswer_2015,folkes_observed_2009,holton_temporal_2013,johnston_spatiotemporal_2014,hosangadi_high-frequency_2017,mchugh_recent_2017,u.s._environmental_protection_agency_assessment_2015}.
 Such variations make it difficult for those charged with protecting human health to formulate a response - should evaluation of the risk of exposure be based upon observed peak concentrations, or long-term averages, or something else?
@@ -112,8 +123,9 @@ Figure \ref{fig:indianapolis} illustrates a typical reported series of indoor ai
 There is almost a two order of magnitude variation in the concentration data.\par
 
 \begin{figure}
- \caption{Typical data on indoor air TCE contaminant concentrations at the Indianapolis site\cite{u.s._environmental_protection_agency_assessment_2015}.}\label{fig:indianapolis}
+  \centering
  \includegraphics[width=\textwidth]{time_indianapolis.pdf}
+ \caption{Typical data on indoor air TCE contaminant concentrations at the Indianapolis site\cite{u.s._environmental_protection_agency_assessment_2015}.}\label{fig:indianapolis}
 \end{figure}
 
 Some of the analysis of the above three field data sets relies on a probability density estimation technique called ”kernel density estimation” (KDE).
@@ -131,8 +143,9 @@ As in the earlier studies, only the vadose zone soil domain is directly modeled.
 Figure \ref{fig:model} shows a cutaway view of the relevant modeling domain.\par
 
 \begin{figure}[htb!]
- \caption{Foundation and vadose zone soil represented in the modeling. Note that here a gravel sub-base material is shown, but in certain simulations, that material is absent and the surrounding soil directly contacts the foundation slab.  Different assumptions are made regarding the preferential pathway, here shown as a pipe entering the gravel sub-base. In some cases, the preferential pathway has been "turned off".}\label{fig:model}
+  \centering
  \includegraphics[width=\textwidth]{model.png}
+ \caption{Foundation and vadose zone soil represented in the modeling. Note that here a gravel sub-base material is shown, but in certain simulations, that material is absent and the surrounding soil directly contacts the foundation slab.  Different assumptions are made regarding the preferential pathway, here shown as a pipe entering the gravel sub-base. In some cases, the preferential pathway has been "turned off".}\label{fig:model}
 \end{figure}
 
 The modeled VI impacted structure is assumed to have a 10x10 m foundation footprint, with the bottom of the foundation slab lying 1 m below ground surface (bgs), simulating a house with a basement.
@@ -157,10 +170,10 @@ The effective diffusivity of contaminant in soil is calculated using the Milling
 The transport of contaminant vapor in the soil is assumed to be governed by the advection-diffusion equation, in which either advection or diffusion may dominate depending upon position and particular circumstances.
 The key working equations and the boundary conditions are summarized in Table \ref{tbl:eqns_bc_parameters}.\par
 
+% TODO: Restructure entire table
+\clearpage
 \begin{table}[htb!]
  \centering
- \caption{Governing equations, boundary conditions \& model input parameters. (See below for table of nomenclature).}
- \label{tbl:eqns_bc_parameters}
  \bigskip
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % Governing equations
@@ -190,7 +203,7 @@ The key working equations and the boundary conditions are summarized in Table \r
  \subcaption{Boundary conditions}
  \begin{tabular}{l l l}
   \toprule
-  \textbf{Boundary}            & \textbf{Richard's equation}              & \textbf{Advection-diffusion equation}                                      \\
+  \textbf{Boundary}            & \textbf{Richard's equation}              & \textbf{Transport equation}                                      \\
   % Foundation crack
   Foundation crack          & $p = p_\mathrm{in/out} \; \mathrm{(Pa)}$ & $j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$ \\
   % Groundwater source
@@ -239,11 +252,12 @@ The key working equations and the boundary conditions are summarized in Table \r
   300                                 & 15                                 & 0.5                      \\
   \bottomrule
  \end{tabular}
+ \caption{Governing equations, boundary conditions \& model input parameters. (See below for table of nomenclature).}\label{tbl:eqns_bc_parameters}
 \end{table}
 
-\section{Results \& Discussion}
+\section{Results \& Discussion}\label{s:results}
 
-\subsection{Variation In Indoor Air Contaminant Concentration Over Time}
+\subsection{Variation In Indoor Air Contaminant Concentration Over Time}\label{s:results_variation_time}
 
 High frequency measurement of indoor air contaminant concentrations, $c_\mathrm{in}$, such as those in Figure \ref{fig:indianapolis}, took place at both the ASU House and the Indianapolis House over significant periods (Indianapolis: ca 1.7 years, ASU house: ca 3.5 years)\cite{u.s._environmental_protection_agency_assessment_2015,holton_temporal_2013}.
 Furthermore, at the Indianapolis site $c_\mathrm{in}$ for three different contaminants, chloroform, TCE, and tetrachloroethylene (PCE) were all collected, allowing examination of the variability of each VI contaminant.
@@ -258,9 +272,8 @@ Hypothetical resampling periods of one, two, three days, and the same number of 
 
 \begin{figure}[htb!]
  \centering
- \caption{Mean values of the maximum change in indoor air contaminant concentration that may be expected
-  over a given time period. (e.g., 1D is 1 day, 2W is 2 weeks, and 3M is 3 months). The error bars are the 95\% confidence intervals.}\label{fig:resampling}
  \includegraphics[width=\textwidth]{resampling.pdf}
+ \caption{Mean values of the maximum change in indoor air contaminant concentration that may be expected over a given time period. (e.g., 1D is 1 day, 2W is 2 weeks, and 3M is 3 months). The error bars are the 95\% confidence intervals.}\label{fig:resampling}
 \end{figure}
 
 For example, if the data are examined in terms of the mean maximum variation observable over the course of 24 hours (one day) the variation is no greater than about a factor of two for any of the contaminants at the Indianapolis house or for TCE at the ASU house (when the preferential pathway was closed).
@@ -284,7 +297,7 @@ Thus there are different timescales that characterize different extents of varia
 
 Multiple samples taken over a short time period, e.g. a few days, are unlikely to uncover significant variation in indoor air contaminant concentration; the larger transient variations typically manifest after longer time periods. \par
 
-\subsection{Statistical Analysis of Field Data}
+\subsection{Statistical Analysis of Field Data}\label{s:results_pressure_concentration}
 
 The data in Figure \ref{fig:indianapolis} and Figure \ref{fig:resampling} raise the question of what then actually determines the large degree of temporal variation sometimes reported.
 The rate of advective entry of soil gas into a structure is frequently cited as playing an important role in determining entry rate of contaminant.
@@ -302,9 +315,8 @@ By comparing these two periods on a single plot, the impact of the preferential 
 
 \begin{figure}[htb!]
  \centering
- \caption{2D-KDE plot showing the distributions of indoor air contaminant concentration, the indoor/outdoor pressure difference, and how they correlate to each other.}
- \label{fig:kde}
  \includegraphics[width=\textwidth]{nas_asu_pp.pdf}
+ \caption{2D-KDE plot showing the distributions of indoor air contaminant concentration, the indoor/outdoor pressure difference, and how they correlate to each other.}\label{fig:kde}
 \end{figure}
 
 In Figure \ref{fig:kde}, the indoor air contaminant concentration $c_\mathrm{in}$ is normalized to the mean $c_\mathrm{in,mean}$ of each dataset, allowing comparison of the impact $p_\mathrm{in/out}$ on $c_\mathrm{in}$ independently from the large differences in absolute values of indoor air concentrations at the different sites.
@@ -337,18 +349,18 @@ The correlation with indoor-outdoor pressure difference is weak in the ASU house
 These will be explored with the help of a modeling analysis presented below.\par
 
 \begin{table}[htb!]
- \caption{5th and 95th percentile values of $p_\mathrm{in/out}$ and $c_\mathrm{in}/c_\mathrm{in,mean}$ in Figure \ref{fig:kde}.}\label{tbl:percentiles}
  \begin{tabular}{c c c c c c c}
   \toprule
-                                     & \multicolumn{2}{c|}{\textbf{North Island NAS}} & \multicolumn{2}{c|}{\textbf{ASU house PP Open}} & \multicolumn{2}{c}{\textbf{ASU House PP Closed}}                      \\
+                                     & \multicolumn{2}{c|}{\textbf{North Island}} & \multicolumn{2}{c|}{\textbf{ASU, PP Open}} & \multicolumn{2}{c}{\textbf{ASU, PP Closed}}                      \\
   Percentile                         & 5th                                            & 95th                                            & 5th                                              & 95th & 5th  & 95th \\
   $p_\mathrm{in/out}$ (Pa)           & -19.9                                          & 7.4                                             & -1.4                                             & 2.1  & -2.1 & 2.27 \\
   $c_\mathrm{in}/c_\mathrm{in,mean}$ & 4.1                                            & 0.2                                             & 13.5                                             & 0.2  & 3.3  & 0.4  \\
   \bottomrule
  \end{tabular}
+ \caption{5th and 95th percentile values of $p_\mathrm{in/out}$ and $c_\mathrm{in}/c_\mathrm{in,mean}$ in Figure \ref{fig:kde}.}\label{tbl:percentiles}
 \end{table}
 
-\subsection{Variability Of Attenuation to Subslab Concentrations}
+\subsection{Variability Of Attenuation to Subslab Concentrations}\label{s:results_attenuation}
 
 Observed temporal variations in indoor air contaminant concentrations might be explained by temporal variations in subslab contaminant concentrations.
 To examine how variability in subslab contaminant concentration might contribute to variability in indoor air contaminant concentration, data on the attenuation from subslab ($\alpha_\mathrm{subslab} = c_\mathrm{in}/c_\mathrm{subslab}$) were examined.
@@ -358,8 +370,9 @@ This probe was located closest to both the exit of the preferential pathway pipe
 The results are shown in Figure \ref{fig:attenuation_subslab}, which shows the full distributions for both the case in which the preferential pathway was "open" and when it "closed".\par
 
 \begin{figure}[htb!]
- \caption{Boxplot of $\log_{10}$ (subslab to indoor air contaminant attenuation) at the ASU house site. The box shows the quartiles of the distribution, the whiskers the extent of the distribution.}\label{fig:attenuation_subslab}
+  \centering
  \includegraphics[width=0.7\textwidth]{asu_attenuation_subslab.pdf}
+ \caption{Boxplot of $\log_{10}$ (subslab to indoor air contaminant attenuation) at the ASU house site. The box shows the quartiles of the distribution, the whiskers the extent of the distribution.}\label{fig:attenuation_subslab}
 \end{figure}
 
 It is apparent that during the period when the preferential pathway was closed, $\alpha_\mathrm{subslab}$ did not vary significantly, and was quite close to the EPA recommended $\alpha_\mathrm{subslab}$ value of 0.03\cite{u.s._environmental_protection_agency_oswer_2015}.
@@ -373,9 +386,9 @@ This suggests caution is needed in profiling subslab contaminant concentrations 
 
 What the results of Figure \ref{fig:attenuation_subslab} do clearly show is that the existence of a preferential pathway of the kind at ASU House (and idealized in Figure \ref{fig:indianapolis}) can influence the temporal variation of subslab concentrations in a much less predictable way than those observed in "normal" VI scenarios.\par
 
-\subsection{Modeling Results}
+\subsection{Modeling Results}\label{s:results_modeling}
 
-\subsubsection{Pressure Effects}
+\subsubsection{Pressure Effects}\label{s:results_modeling_pressure}
 
 Having established the potential impacts of certain inputs on determining variability in indoor air contaminant concentrations, the mathematical model of VI can help further elucidate other key aspects.
 The results of calculations on a scenario corresponding to Figure \ref{fig:model} are presented in Figure \ref{fig:land_drain_scenarios}.
@@ -385,8 +398,8 @@ The general modeling conditions are those shown in Table \ref{fig:indianapolis}.
 
 \begin{figure}[htb!]
  \centering
- \caption{Simulated preferential pathway scenarios compared to actual ASU house field data. Field data are binned in 40 evenly spaced pressure bins, with the dot representing the mean and errors bars the 95\% confidence interval of data at a particular pressure range. Shaded blue represent the range of model predictions for the indicated pressure difference, due to air exchange rate variability (using 5th and 95th percentile values of measured exchange rates). Top panel is for various cases representing an "open" preferential pathway, the lower panel with the pathway "closed". }\label{fig:land_drain_scenarios}
  \includegraphics[width=\textwidth]{land_drain_scenarios_combo.pdf}
+ \caption{Simulated preferential pathway scenarios compared to actual ASU house field data. Field data are binned in 40 evenly spaced pressure bins, with the dot representing the mean and errors bars the 95\% confidence interval of data at a particular pressure range. Shaded blue represent the range of model predictions for the indicated pressure difference, due to air exchange rate variability (using 5th and 95th percentile values of measured exchange rates). Top panel is for various cases representing an "open" preferential pathway, the lower panel with the pathway "closed".}\label{fig:land_drain_scenarios}
 \end{figure}
 
 In the calculation results shown in the top panel of Figure \ref{fig:land_drain_scenarios}, a preferential pathway is assumed to provide air containing contaminant vapor at a concentration equivalent to the vapor in equilibrium with the underlying groundwater source.
@@ -425,7 +438,7 @@ Hence the predicted variability is roughly an order of magnitude too low, when c
 There is a factor that tends to increase the spread of the data one additional order of magnitude beyond what was predicted by the base calculations of Figure \ref{fig:land_drain_scenarios}.
 We believe that it is variations in air exchange rate, operating in concert with the natural variations in pressure differential, that explain the remaining variability.\par
 
-\subsubsection{Air Exchange Rate Effects}
+\subsubsection{Air Exchange Rate Effects}\label{s:results_modeling_air_exchange}
 
 Table \ref{tbl:air_exchange_rate} shows the observed variations in air exchange rates for the ASU House and Indianapolis House, compared with EPA’s summary of the distribution of typical residential air exchange rates\cite{u.s._epa_exposure_2011,m._d._koontz_estimation_1995}.
 Examination of these distributions point in a clear direction for modifying the above model.
@@ -437,7 +450,6 @@ As the data in the supplementary data show (Figure S1), there is no easily disce
 Note: a relationship between $A_e$ and $p_\mathrm{in/out}$ may be established for larger $p_\mathrm{in/out}$ via the building leakage curves, which are widely used for heating, ventilation and air conditioning systems in construction.\par
 
 \begin{table}[htb!]
- \caption{Air exchange rate values (1/hr)}\label{tbl:air_exchange_rate}
  \begin{tabular}{l c c c}
   \toprule
   \textbf{Percentile}                                                     & \textbf{10th} & \textbf{50th} & \textbf{90th} \\
@@ -446,6 +458,7 @@ Note: a relationship between $A_e$ and $p_\mathrm{in/out}$ may be established fo
   Indianapolis\cite{u.s._environmental_protection_agency_assessment_2015} & 0.34          & 0.74          & 1.27          \\
   \bottomrule
  \end{tabular}
+ \caption{Air exchange rate values (1/hr)}\label{tbl:air_exchange_rate}
 \end{table}
 
 To show the influence of possible statistical fluctuations of air exchange rate on the predictions of $\alpha_\mathrm{gw}$ values, the scenarios of Figure \ref{fig:land_drain_scenarios} were rerun calculated using the 5th and 95th percentile measured $A_e$ values, 0.17 and 0.90 respectively (based upon the actual distributions in Figure S1), providing predicted upper and lower bounds for $\alpha_\mathrm{gw}$.
@@ -455,7 +468,7 @@ It is apparent that assuming variability in air exchange rate allows capturing m
 We believe that this explains the portion of the variation in indoor air contaminant concentration data that cannot be explained by either existence of preferential pathways or by the range in indoor depressurization.
 Thus, we believe that it is the interplay of preferential pathway conditions, with indoor pressure variations and normal air exchange rates that help to explain the observations of significant variations in reported indoor air contaminant concentrations.\par
 
-\subsubsection{Results of Transient Simulations}
+\subsubsection{Results of Transient Simulations}\label{s:results_modeling_transient}
 
 The above analyses have been conducted under simulated steady state conditions.
 The conclusions regarding the importance of the different parameters are now examined in actual transient simulations.
@@ -467,8 +480,9 @@ The "typical" air exchange rate is calculated in exactly the same way and is sho
 The orange line is the air exchange rate value assumed for the calculations at constant air exchange rate.\par
 
 \begin{figure}
- \caption{Transient simulation of a "typical" VI day, using diurnal indoor/outdoor pressure difference and air exchange rate as inputs. Effect of preferential pathway considered.}\label{fig:diurnal}
+  \centering
  \includegraphics[width=\textwidth]{diurnal.pdf}
+ \caption{Transient simulation of a "typical" VI day, using diurnal indoor/outdoor pressure difference and air exchange rate as inputs. Effect of preferential pathway considered.}\label{fig:diurnal}
 \end{figure}
 
 The result of these simulations are shown in the bottom two panels of Figure \ref{fig:diurnal}, where the left and right panels show the results of open and closed preferential pathways, respectively.
@@ -491,10 +505,12 @@ For a site where advective communication between the subsurface and the indoor i
 We have shown that that such a scenario may arise due to a preferential pathway entering a permeable sub-base, but may also exist even in the absence of a preferential pathway just as the results from NAS North Island demonstrate.
 At sites where advective transport into the structure is limited, much of the temporal variability in $c_\mathrm{in}$ may be attributed to natural fluctuations in air exchange rate.\par
 
-\begin{acknowledgement}
- This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
-\end{acknowledgement}
+\section*{Acknowledgements}
+This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
 
+\appendix
+
+\clearpage
 \begin{table}[htb!]
   \caption{List of abbreviations}\label{tbl:abbreviations}
 \begin{tabular}{l l}
@@ -509,7 +525,7 @@ At sites where advective transport into the structure is limited, much of the te
   $c$ & Soil-gas contaminant concentration \\
   $c_w$ & Soil-water contaminant concentration \\
   $c_\mathrm{gw}$ & Contaminant groundwater concentration \\
-  $\chi$ & Preferential pathway contaminant concentration scaling parameter \\
+  $\chi$ & PP contaminant concentration scaling parameter \\
   % D
   $D_\mathrm{eff}$ & Effective diffusion coefficient \\
   $D_\mathrm{air}$ & Diffusion coefficient in air \\
@@ -552,6 +568,8 @@ At sites where advective transport into the structure is limited, much of the te
 \end{tabular}
 \end{table}
 
-\bibliography{library}
+% TODO: Fix the natbib issues...
+%\bibliographystyle{model1-num-names}
+\bibliography{./library.bib}
 
 \end{document}
