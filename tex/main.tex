@@ -2,6 +2,7 @@
 
 % additional packages
 \usepackage[utf8]{inputenc}
+%\bibliographystyle{abbrvnat}
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{subcaption}
@@ -349,6 +350,7 @@ The correlation with indoor-outdoor pressure difference is weak in the ASU house
 These will be explored with the help of a modeling analysis presented below.\par
 
 \begin{table}[htb!]
+  \centering
  \begin{tabular}{c c c c c c c}
   \toprule
                                      & \multicolumn{2}{c|}{\textbf{North Island}} & \multicolumn{2}{c|}{\textbf{ASU, PP Open}} & \multicolumn{2}{c}{\textbf{ASU, PP Closed}}                      \\
@@ -450,6 +452,7 @@ As the data in the supplementary data show (Figure S1), there is no easily disce
 Note: a relationship between $A_e$ and $p_\mathrm{in/out}$ may be established for larger $p_\mathrm{in/out}$ via the building leakage curves, which are widely used for heating, ventilation and air conditioning systems in construction.\par
 
 \begin{table}[htb!]
+  \centering
  \begin{tabular}{l c c c}
   \toprule
   \textbf{Percentile}                                                     & \textbf{10th} & \textbf{50th} & \textbf{90th} \\
@@ -504,6 +507,18 @@ For the shorter time periods of concern in recent studies of temporal variabilit
 For a site where advective communication between the subsurface and the indoor is good, $p_\mathrm{in/out}$ is likely a significant determinant of $c_\mathrm{in}$ and its temporal variability.
 We have shown that that such a scenario may arise due to a preferential pathway entering a permeable sub-base, but may also exist even in the absence of a preferential pathway just as the results from NAS North Island demonstrate.
 At sites where advective transport into the structure is limited, much of the temporal variability in $c_\mathrm{in}$ may be attributed to natural fluctuations in air exchange rate.\par
+
+
+\section{Conclusions}
+
+Based on the statistical analysis of the field data presented, as well as the modeling efforts the following conclusions may be drawn.
+\begin{itemize}
+  \item Indoor air contaminant concentrations are unlikely to vary by more than a factor of three over a week-long period if the site is not characterized by a preferential pathway, such as the one found at the ASU house site; else more than an order magnitude variability within the same period may be expected.
+  \item Preferential pathways can cause significant spatial variability in the subslab. Subsequently, subslab vapor samples may reveal that the attenuation from subslab may significantly exceed the EPA recommended value of 0.03 and even exceed unity - potentially leading to the erroneous conclusion that an indoor source is present.
+  \item Preferential pathways such as the one found at the ASU house significantly increase the advective transport potential through the foundation breaches at a site. This relies on effective communication between the indoor air space and the preferential pathway, e.g. a permeable subslab region (gravel layer) must exist.
+  \item Sites characterized by significant advective potential, such as North Island NAS or the ASU house with the preferential pathway open, most of the short-term indoor air contaminant concentration variability may be attributed to fluctuations in indoor/outdoor pressure difference; at sites where the advective potential is low, e.g. ASU house with the preferential pathway closed, short-term variability is dominated by fluctuations in air exchange rate.
+\end{itemize}
+
 
 \section*{Acknowledgements}
 This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
@@ -569,7 +584,7 @@ This project was supported by grant ES-201502 from the Strategic Environmental R
 \end{table}
 
 % TODO: Fix the natbib issues...
-%\bibliographystyle{model1-num-names}
-\bibliography{./library.bib}
+\bibliographystyle{model1-num-names}
+\bibliography{library}
 
 \end{document}
