@@ -7,7 +7,7 @@
 \usepackage{booktabs}
 \usepackage{subcaption}
 \usepackage{tabularx}
-\usepackage{array,multirow,graphicx}
+\usepackage{array,multirow,multicol,graphicx}
 \usepackage{comment}
 \graphicspath{
   {./figures/},
@@ -107,7 +107,7 @@ For this purpose, datasets from the ASU house in Utah, the EPA Indianapolis site
 Readers are referred to the original published works for details regarding data acquisition\cite{holton_evaluation_2015,guo_vapor_2015,holton_temporal_2013,hosangadi_high-frequency_2017,u.s._environmental_protection_agency_assessment_2015}.\par
 
 The ASU house data were obtained over a period of several years.
-During part of this time, controlled pressure method (CPM) tests were being conducted, in which the house was underpressurized to an extent greater than that characterizing “normal” house operation, thus increasing VI potential\cite{mchugh_evaluation_2012,mchugh_recent_2017,holton_evaluation_2015}.
+During part of this time, controlled pressure method (CPM) tests were being conducted, in which the house was underpressurized to an extent greater than that characterizing “normal” house operation: increasing VI potential\cite{mchugh_evaluation_2012,mchugh_recent_2017,holton_evaluation_2015}.
 The period of CPM testing is thus excluded from the analysis.
 Likewise, the existence of a preferential pathway at the ASU house needs to be considered in examining that dataset; during some of the testing at that site, this pathway was cut off, resulting in “normal” VI conditions in which the main source of contaminant was diffusion of contaminant vapor from an underlying groundwater source.\par
 
@@ -171,7 +171,60 @@ The effective diffusivity of contaminant in soil is calculated using the Milling
 The transport of contaminant vapor in the soil is assumed to be governed by the advection-diffusion equation, in which either advection or diffusion may dominate depending upon position and particular circumstances.
 The key working equations and the boundary conditions are summarized in Table \ref{tbl:eqns_bc_parameters}.\par
 
-% TODO: Restructure entire table
+
+% new table
+% TODO: Fix the too wide issue
+\clearpage
+\begin{table}
+  \centering
+  \begin{tabular}{l c c c c c c}
+    \toprule
+    \multicolumn{7}{c}{\textbf{Governing Equations}} \\
+    \midrule
+    % CSTR
+    Unsteady-CST & \multicolumn{6}{c}{$V\frac{d c_\mathrm{in}}{d t} = \int_{A_\mathrm{ck}} j_\mathrm{ck} dA - c_\mathrm{in} A_e V_\mathrm{slab}$} \\
+    % RICHARDS
+    Richard's & \multicolumn{6}{c}{$\nabla \cdot \rho \Big( - \frac{\kappa_s}{\mu} k_r \nabla p \Big) = 0$} \\
+    % TRANSPORT
+    Transport & \multicolumn{6}{c}{$\frac{\partial}{\partial t} \Big( \theta_w c_w + \theta_g c \Big) = \nabla (D_\mathrm{eff} \cdot \nabla c) - \vec{u} \cdot \nabla c$} \\
+    % MILLINGTON-QUIRK
+    Millington-Quirk & \multicolumn{6}{c}{$D_\mathrm{eff} = D_\mathrm{air}\frac{\theta_g^{10/3}}{\theta_t^2} + \frac{D_\mathrm{water}}{K_H} \frac{\theta_w^{10/3}}{\theta_t^2}$} \\
+    % VAN GENUCHTEN
+    \multirow{4}{*}{van Genuchten's} & \multicolumn{6}{c}{$\mathrm{Se} = \frac{\theta_w - \theta_r}{\theta_t - \theta_r} = [1 + |\alpha z|^n]^{-m}$} \\
+     & \multicolumn{6}{c}{$\theta_g = \theta_t - \theta_w$}\\
+     & \multicolumn{6}{c}{$k_r = (1-\mathrm{Se})^{l}[1(\mathrm{Se}^{m})^m]^2$} \\
+     & \multicolumn{6}{c}{$m = 1 - 1/n$} \\
+    \midrule
+    \multicolumn{7}{c}{\textbf{Boundary Conditions}} \\
+    \midrule
+    \textbf{Boundary} & \multicolumn{3}{c}{\textbf{Richard's Eqn.}} & \multicolumn{3}{c}{\textbf{Transport Eqn.}} \\
+    % Foundation crack
+    Foundation crack & \multicolumn{3}{c}{$p = p_\mathrm{in/out} \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$} \\
+    % Groundwater source
+    Groundwater & \multicolumn{3}{c}{\textit{No flow}} & \multicolumn{3}{c}{$c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$} \\
+    % Ground surface
+    Groundsurface & \multicolumn{3}{c}{$p = 0 \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$c = 0 \; \mathrm{(\mu g/m^3)}$} \\
+    % Preferential pathway
+    Preferential & \multicolumn{3}{c}{$p = 0 \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$} \\
+    \midrule
+    \multicolumn{7}{c}{\textbf{Soil \& gravel properties}\cite{dan_capillary_2012,abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}} \\
+    \midrule
+    \textbf{Soil} & \textbf{$\kappa_s \; \mathrm{(m^2)}$} & \textbf{$\rho \; \mathrm{(kg/m^3)}$} & \textbf{$\theta_s$} & \textbf{$\theta_r$} & \textbf{$\alpha \; \mathrm{(1/m)}$} & \textbf{$n$} \\
+    % GRAVEL
+    Gravel & $1.3 \cdot 10^{-9}$ & 1680 & 0.42 & 0.005 & 100 & 3.1 \\
+    % SANDY LOAM
+    Sandy Loam & $5.9 \cdot 10^{-13}$ & 1460 & 0.39 & 0.039 & 2.7 & 1.4 \\
+    \midrule
+    \multicolumn{7}{c}{\textbf{Building Properties}} \\
+    \midrule
+     & \textbf{$V_\mathrm{base} \; \mathrm{(m^3)}$} & \textbf{$L_\mathrm{slab} \; \mathrm{(cm)}$} & \textbf{$A_e \; \mathrm{(1/hr)}$} \\
+     & 300 & 15 & 0.5 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Governing equations, boundary conditions \& model input parameters. (See below for table of nomenclature).}\label{tbl:eqns_bc_parameters}
+\end{table}
+
+\begin{comment}
 \clearpage
 \begin{table}[htb!]
  \centering
@@ -183,7 +236,7 @@ The key working equations and the boundary conditions are summarized in Table \r
  \begin{tabular}{l l}
   \toprule
   % Indoor air space equation
-  Unsteady-CST                            & $V\frac{d c_\mathrm{in}}{d t} = \int_{A_\mathrm{ck}} j_\mathrm{ck} dA - c_\mathrm{in} A_e V_\mathrm{slab}$                                                                  \\
+  Unsteady-CST                            &                                                                   \\
   % Richard's equation
   Richard's equation                       & $\nabla \cdot \rho \Big( - \frac{\kappa_s}{\mu} k_r \nabla p \Big) = 0$                                                               \\
   % Millington-Quirk equation
@@ -253,8 +306,12 @@ The key working equations and the boundary conditions are summarized in Table \r
   300                                 & 15                                 & 0.5                      \\
   \bottomrule
  \end{tabular}
- \caption{Governing equations, boundary conditions \& model input parameters. (See below for table of nomenclature).}\label{tbl:eqns_bc_parameters}
+
 \end{table}
+\end{comment}
+
+% TODO: Restructure entire table
+
 
 \section{Results \& Discussion}\label{s:results}
 
@@ -349,16 +406,30 @@ This again is entirely consistent with what the investigators of that site have 
 The correlation with indoor-outdoor pressure difference is weak in the ASU house cases, so there are clearly factors other than pressure difference that determine the variability in each.
 These will be explored with the help of a modeling analysis presented below.\par
 
+
+
+
 \begin{table}[htb!]
+  \newcommand{\NameEntry}[1]{
+    \multicolumn{2}{c}{
+      \multirow{2}{*}{
+        \begin{minipage}{0.2\textwidth}
+          \centering
+          \textbf{#1}
+        \end{minipage}
+      }
+    }
+  }
   \centering
- \begin{tabular}{c c c c c c c}
-  \toprule
-                                     & \multicolumn{2}{c|}{\textbf{North Island}} & \multicolumn{2}{c|}{\textbf{ASU, PP Open}} & \multicolumn{2}{c}{\textbf{ASU, PP Closed}}                      \\
-  Percentile                         & 5th                                            & 95th                                            & 5th                                              & 95th & 5th  & 95th \\
-  $p_\mathrm{in/out}$ (Pa)           & -19.9                                          & 7.4                                             & -1.4                                             & 2.1  & -2.1 & 2.27 \\
-  $c_\mathrm{in}/c_\mathrm{in,mean}$ & 4.1                                            & 0.2                                             & 13.5                                             & 0.2  & 3.3  & 0.4  \\
-  \bottomrule
- \end{tabular}
+  \begin{tabular}{c c c c c c c}
+    \toprule
+    \multirow{2}{*}{ } & \NameEntry{North Island NAS} & \NameEntry{ASU House PP Open} & \NameEntry{ASU House PP Closed} \\ \\
+    \midrule
+    Percentile & 5th & 95th & 5th & 95th & 5th  & 95th \\
+    $p_\mathrm{in/out}$ (Pa) & -19.9 & 7.4 & -1.4 & 2.1  & -2.1 & 2.27 \\
+    $c_\mathrm{in}/c_\mathrm{in,mean}$ & 4.1 & 0.2 & 13.5 & 0.2  & 3.3  & 0.4  \\
+    \bottomrule
+  \end{tabular}
  \caption{5th and 95th percentile values of $p_\mathrm{in/out}$ and $c_\mathrm{in}/c_\mathrm{in,mean}$ in Figure \ref{fig:kde}.}\label{tbl:percentiles}
 \end{table}
 
@@ -583,7 +654,7 @@ This project was supported by grant ES-201502 from the Strategic Environmental R
 \end{tabular}
 \end{table}
 
-% TODO: Fix the natbib issues...
+
 \bibliographystyle{model1-num-names}
 \bibliography{library}
 
