@@ -16,13 +16,7 @@
 \linenumbers
 % macros
 
-
-
-% keywords
-%\abbreviations{VI}
-%\keywords{}
-
-\journal{Building \& Environment}
+\journal{Building and Environment}
 
 \begin{document}
 
@@ -46,13 +40,14 @@ Temporal variability in indoor air contaminant concentrations at vapor intrusion
 We consider the source of the reported variability at VI sites located near Hill Air Force Base (AFB) in Utah, an EPA experimental house in Indiana, and Naval Air Station North Island in California.
 We focus in particular on how the indoor/outdoor pressure differences and air exchange rates affected indoor air contaminant concentrations at these sites.
 We investigate how these dynamics differ for a site that is characterized by a preferential pathway (like Hill AFB) and VI sites that are not influenced by such pathways, using three-dimensional fluid dynamics models and statistical analysis of the aforementioned sites.
-For a preferential pathway to impact a VI site, there must exist a medium allowing effective communication between a contaminant-delivering preferential pathway and the indoor air space, e.g. a permeable subslab space that may be provided by a gravel layer.
+A preferential pathway can dramatically increase a VI site's sensitivity to build pressurization, provided there exist a medium allowing effective communication between a contaminant-delivering preferential pathway and the indoor air space, e.g. a permeable subslab space that may be provided by a gravel layer.
+Preferential pathways may also erroneously indicate the presence of indoor contaminant sources.
 At sites characterized by significant advective transport from the subslab to the indoor air space, much of the short-term variability in indoor air contaminant concentration can be explained by an impact of fluctuations in indoor/outdoor pressure differences.
 Meanwhile, air exchange rate variation drives most of the short-term variability at sites characterized by minor variations in advective transport.
 \end{abstract}
 
 \begin{keyword}
-  Vapor intrusion \sep Preferential pathways \sep Temporal variability \sep Finite element modeling \sep Air exchange rate \sep Indoor/outdoor pressure difference
+  Vapor intrusion \sep Preferential pathways \sep Temporal variability \sep Attenuation factor \sep Air exchange rate \sep Indoor/outdoor pressure difference
 \end{keyword}
 
 \end{frontmatter}
@@ -98,9 +93,9 @@ The conditions required for preferential pathways to become significant contribu
 
 
 
-\section{Methods}
+\section{Methods}\label{s:methods}
 
-\subsection{Statistical Analysis Of Field Data}
+\subsection{Statistical Analysis Of Field Data}\label{s:methods_stats}
 
 To frame the question of just how much variability in indoor air contaminant concentrations is actually observed, field datasets have been analyzed.
 For this purpose, datasets from the ASU house in Utah, the EPA Indianapolis site and North Island NAS were chosen for analysis.
@@ -123,7 +118,7 @@ It is still of interest to consider the data from this site because of the compl
 Figure \ref{fig:indianapolis} illustrates a typical reported series of indoor air trichloroethylene (TCE) concentration measurements from this site.
 There is almost a two order of magnitude variation in the concentration data.\par
 
-\begin{figure}
+\begin{figure}[htb!]
   \centering
  \includegraphics[width=\textwidth]{time_indianapolis.pdf}
  \caption{Typical data on indoor air TCE contaminant concentrations at the Indianapolis site\cite{u.s._environmental_protection_agency_assessment_2015}.}\label{fig:indianapolis}
@@ -136,7 +131,7 @@ This means that it is presumed that the variables of interest (i.e., indoor air 
 In this instance, the scipy statistical package was used to construct the KDEs, assuming a bandwidth parameter determined by Scott’s rue.
 The SciPy Python library was used to conduct all statistical analysis and data processing\cite{jones_scipy_2011}.\par
 
-\subsection{Modeling Work}
+\subsection{Modeling Work}\label{s:methods_model}
 
 A previously described three-dimensional computational fluid dynamics model of a generic VI impacted house has been used to elucidate certain aspects of transient VI processes.
 In the present work, there has been an addition of a preferential pathway to the “standard” model that has been described before in publications by this group\cite{shen_influence_2013,yao_investigating_2017,yao_three-dimensional_2017}.
@@ -171,13 +166,13 @@ The effective diffusivity of contaminant in soil is calculated using the Milling
 The transport of contaminant vapor in the soil is assumed to be governed by the advection-diffusion equation, in which either advection or diffusion may dominate depending upon position and particular circumstances.
 The key working equations and the boundary conditions are summarized in Table \ref{tbl:eqns_bc_parameters}.\par
 
-
-% new table
-% TODO: Fix the too wide issue
-\clearpage
-\begin{table}
+\begin{table}[htb!]
+  \setlength{\tabcolsep}{1pt}
   \centering
   \begin{tabular}{l c c c c c c}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % GOVERNING EQUATIONS
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \toprule
     \multicolumn{7}{c}{\textbf{Governing Equations}} \\
     \midrule
@@ -190,135 +185,58 @@ The key working equations and the boundary conditions are summarized in Table \r
     % MILLINGTON-QUIRK
     Millington-Quirk & \multicolumn{6}{c}{$D_\mathrm{eff} = D_\mathrm{air}\frac{\theta_g^{10/3}}{\theta_t^2} + \frac{D_\mathrm{water}}{K_H} \frac{\theta_w^{10/3}}{\theta_t^2}$} \\
     % VAN GENUCHTEN
-    \multirow{4}{*}{van Genuchten's} & \multicolumn{6}{c}{$\mathrm{Se} = \frac{\theta_w - \theta_r}{\theta_t - \theta_r} = [1 + |\alpha z|^n]^{-m}$} \\
+    \multirow{4}{*}{van Genuchten} & \multicolumn{6}{c}{$\mathrm{Se} = \frac{\theta_w - \theta_r}{\theta_t - \theta_r} = [1 + |\alpha z|^n]^{-m}$} \\
      & \multicolumn{6}{c}{$\theta_g = \theta_t - \theta_w$}\\
      & \multicolumn{6}{c}{$k_r = (1-\mathrm{Se})^{l}[1(\mathrm{Se}^{m})^m]^2$} \\
      & \multicolumn{6}{c}{$m = 1 - 1/n$} \\
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     % BOUNDARY CONDITIONS
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \midrule
     \multicolumn{7}{c}{\textbf{Boundary Conditions}} \\
     \midrule
     \textbf{Boundary} & \multicolumn{3}{c}{\textbf{Richard's Eqn.}} & \multicolumn{3}{c}{\textbf{Transport Eqn.}} \\
     % Foundation crack
-    (ck) & \multicolumn{3}{c}{$p = p_\mathrm{in/out} \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$} \\
+    Foundation crack & \multicolumn{3}{c}{$p = p_\mathrm{in/out} \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$} \\
     % Groundwater source
-    (gw) & \multicolumn{3}{c}{\textit{No flow}} & \multicolumn{3}{c}{$c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$} \\
+    Groundwater & \multicolumn{3}{c}{\textit{No flow}} & \multicolumn{3}{c}{$c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$} \\
     % Ground surface
-    (atm) & \multicolumn{3}{c}{$p = 0 \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$c = 0 \; \mathrm{(\mu g/m^3)}$} \\
+    Ground surface & \multicolumn{3}{c}{$p = 0 \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$c = 0 \; \mathrm{(\mu g/m^3)}$} \\
     % Preferential pathway
-    (pp) & \multicolumn{3}{c}{$p = 0 \; \mathrm{(Pa)}$} & \multicolumn{3}{c}{$c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$} \\
+    \multirow{2}{*}{\begin{minipage}{0.2\textwidth}Preferential\\pathway\end{minipage}} & \multicolumn{3}{c}{\multirow{2}{*}{$p = 0 \; \mathrm{(Pa)}$}} & \multicolumn{3}{c}{\multirow{2}{*}{$c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$}} \\ \\
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % SOIL PROPERTIES
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \midrule
     \multicolumn{7}{c}{\textbf{Soil Properties}\cite{dan_capillary_2012,abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}} \\
     \midrule
-    \textbf{Soil} & \textbf{$\kappa_s \; \mathrm{(m^2)}$} & \textbf{$\rho \; \mathrm{(kg/m^3)}$} & \textbf{$\theta_s$} & \textbf{$\theta_r$} & \textbf{$\alpha \; \mathrm{(1/m)}$} & \textbf{$n$} \\
+    \textbf{Soil} & \textbf{$\kappa_s \; \mathrm{(m^2)}$} & \textbf{$\theta_s$} & \textbf{$\theta_r$} & \textbf{$\alpha \; \mathrm{(1/m)}$} & \textbf{$n$} \\
     % GRAVEL
-    Gravel & $1.3 \cdot 10^{-9}$ & 1680 & 0.42 & 0.005 & 100 & 3.1 \\
+    Gravel & $1.3 \cdot 10^{-9}$ & 0.42 & 0.005 & 100 & 3.1 \\
     % SANDY LOAM
-    Sandy Loam & $5.9 \cdot 10^{-13}$ & 1460 & 0.39 & 0.039 & 2.7 & 1.4 \\
+    Sandy Loam & $5.9 \cdot 10^{-13}$ & 0.39 & 0.039 & 2.7 & 1.4 \\
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % TCE PROPERTIES
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \midrule
     \multicolumn{7}{c}{\textbf{Trichloroethylene (diluted in air) Properties}\cite{abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}} \\
     \midrule
-     & \textbf{$D_\mathrm{air} \; \mathrm{(m^2/h)}$} & \textbf{$D_\mathrm{water} \; \mathrm{(m^2/h)}$} & \textbf{$\rho \; \mathrm{(kg/m^3)}$} & \textbf{$\mu \; \mathrm{(Pa \cdot s)}$} & \textbf{$K_H$} & \textbf{$M \; \mathrm{(g/mol)}$} \\
-     & $2.47 \cdot 10^{-2}$ & $3.67 \cdot 10^{-6}$ & 1.614 & $1.86 \cdot 10^{-5}$ & 0.403 & 131.39 \\
+     & \multicolumn{1}{c}{\textbf{$D_\mathrm{air} \; \mathrm{(m^2/h)}$}} & \textbf{$D_\mathrm{water} \; \mathrm{(m^2/h)}$} & \textbf{$\rho \; \mathrm{(kg/m^3)}$} & \textbf{$\mu \; \mathrm{(Pa \cdot s)}$} & \textbf{$K_H$} \\
+     & \multicolumn{1}{c}{$2.47 \cdot 10^{-2}$} & $3.67 \cdot 10^{-6}$ & 1.614 & $1.86 \cdot 10^{-5}$ & 0.403 \\
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % BUILDING PROPERTIES
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \midrule
     \multicolumn{7}{c}{\textbf{Building Properties}} \\
     \midrule
-     & \textbf{$V_\mathrm{base} \; \mathrm{(m^3)}$} & \textbf{$L_\mathrm{slab} \; \mathrm{(cm)}$} & \textbf{$A_e \; \mathrm{(1/hr)}$} \\
-     & 300 & 15 & 0.5 \\
+     & \multicolumn{1}{c}{\textbf{$V_\mathrm{base} \; \mathrm{(m^3)}$}} & \textbf{$L_\mathrm{slab} \; \mathrm{(cm)}$} & \textbf{$A_e \; \mathrm{(1/hr)}$} \\
+     & \multicolumn{1}{c}{300} & 15 & 0.5 \\
     \bottomrule
   \end{tabular}
   \caption{Governing equations, boundary conditions \& model input parameters. (See below for table of nomenclature).}\label{tbl:eqns_bc_parameters}
 \end{table}
 
-\begin{comment}
-\clearpage
-\begin{table}[htb!]
- \centering
- \bigskip
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- % Governing equations
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subcaption{Governing equations}
- \begin{tabular}{l l}
-  \toprule
-  % Indoor air space equation
-  Unsteady-CST                            &                                                                   \\
-  % Richard's equation
-  Richard's equation                       & $\nabla \cdot \rho \Big( - \frac{\kappa_s}{\mu} k_r \nabla p \Big) = 0$                                                               \\
-  % Millington-Quirk equation
-  Millington-Quirk                         & $D_\mathrm{eff} = D_\mathrm{air}\frac{\theta_g^{10/3}}{\theta_t^2} + \frac{D_\mathrm{water}}{K_H} \frac{\theta_w^{10/3}}{\theta_t^2}$ \\
-  % Advection-diffusion equation
-  Advection-diffusion equation             & $\frac{\partial}{\partial t} \Big( \theta_w c_w + \theta_g c \Big) = \nabla (D_\mathrm{eff} \cdot \nabla c) - \vec{u} \cdot \nabla c$ \\
-  % van Genuchten's equations
-  \multirow{3}{*}{van Genuchten equations} & $\mathrm{Se} = \frac{\theta_w - \theta_r}{\theta_t - \theta_r} = [1 + |\alpha z|^n]^{-m}$                                             \\
-                                           & $\theta_g = \theta_t - \theta_w$                                                                                                      \\
-                                           & $k_r = (1 - \mathrm{Se})^{l} [1 - (\mathrm{Se}^{-m})^m]^2$                                                                            \\
-                                           & $m = 1 - 1/n$                                                                                                                         \\
-  \bottomrule
- \end{tabular}
- \bigskip
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- % Boundary conditions
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subcaption{Boundary conditions}
- \begin{tabular}{l l l}
-  \toprule
-  \textbf{Boundary}            & \textbf{Richard's equation}              & \textbf{Transport equation}                                      \\
-  % Foundation crack
-  Foundation crack          & $p = p_\mathrm{in/out} \; \mathrm{(Pa)}$ & $j_\mathrm{ck} = \frac{u c}{1 - \exp{(u L_\mathrm{slab}/D_\mathrm{air})}}$ \\
-  % Groundwater source
-  Groundwater source        & \textit{No flow}                                      & $c = c_\mathrm{gw} K_H \; \mathrm{(\mu g/m^3)}$                            \\
-  % Ground surface
-  Groundsurface            & $p = 0 \; \mathrm{(Pa)}$                 & $c = 0 \; \mathrm{(\mu g/m^3)}$                                            \\
-  % Preferential pathway
-  Preferential pathway & $p = 0 \; \mathrm{(Pa)}$                 & $c = c_\mathrm{gw} K_H \chi \; \mathrm{(\mu g/m^3)}$                       \\
-  \bottomrule
- \end{tabular}
- \bigskip
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- % Soil input parameters
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subcaption{Soil \& gravel properties\cite{dan_capillary_2012,abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}}
- \begin{tabular}{l l l l l l l}
-  \toprule
-  % Descriptions
-  Soil       & $\kappa_s \; \mathrm{(m^2)}$ & $\rho \; \mathrm{(kg/m^3)}$ & $\theta_s$ & $\theta_r$ & $\alpha \; \mathrm{(1/m)}$ & $n$ \\
-  % Gravel
-  Gravel     & $1.3 \cdot 10^{-9}$                     & 1680                                    & 0.42       & 0.005      & 100                        & 3.1 \\
-  % sandy loam
-  Sandy Loam & $5.9 \cdot 10^{-13}$                    & 1460                                    & 0.39       & 0.039      & 2.7                        & 1.4 \\
-  \bottomrule
- \end{tabular}
- \bigskip
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- % TCE input parameters
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subcaption{Trichloroethylene (diluted in air) properties\cite{abreu_conceptual_2012,u.s._environmental_protection_agency_userss_2004}}
- \begin{tabular}{l l l l l l}
-  \toprule
-  $D_\mathrm{air} \; \mathrm{(m^2/h)}$ & $D_\mathrm{water} \; \mathrm{(m^2/h)}$ & $\rho \; \mathrm{(kg/m^3)}$ & $\mu \; \mathrm{(Pa \cdot s)}$ & $K_H$ & $M \; \mathrm{(g/mol)}$ \\
-  $2.47 \cdot 10^{-2}$                 & $3.67 \cdot 10^{-6}$                   & 1.614                                   & $1.86 \cdot 10^{-5}$                          & 0.403 & 131.39                  \\
-  \bottomrule
- \end{tabular}
- \bigskip
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- % Building input parameters
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subcaption{Building properties}
- \begin{tabular}{l l l}
-  \toprule
-  $V_\mathrm{base} \; \mathrm{(m^3)}$ & $L_\mathrm{slab} \; \mathrm{(cm)}$ & $A_e \; \mathrm{(1/hr)}$ \\
-  %
-  300                                 & 15                                 & 0.5                      \\
-  \bottomrule
- \end{tabular}
-
-\end{table}
-\end{comment}
-
-% TODO: Restructure entire table
-
-
+\newpage
 \section{Results \& Discussion}\label{s:results}
 
 \subsection{Variation In Indoor Air Contaminant Concentration Over Time}\label{s:results_variation_time}
@@ -383,6 +301,30 @@ By comparing these two periods on a single plot, the impact of the preferential 
  \caption{2D-KDE plot showing the distributions of indoor air contaminant concentration, the indoor/outdoor pressure difference, and how they correlate to each other.}\label{fig:kde}
 \end{figure}
 
+\begin{table}[htb!]
+  \newcommand{\NameEntry}[1]{
+    \multicolumn{2}{c}{
+      \multirow{2}{*}{
+        \begin{minipage}{0.2\textwidth}
+          \centering
+          \textbf{#1}
+        \end{minipage}
+      }
+    }
+  }
+  \centering
+  \begin{tabular}{c c c c c c c}
+    \toprule
+    \multirow{2}{*}{ } & \NameEntry{North Island NAS} & \NameEntry{ASU House PP Open} & \NameEntry{ASU House PP Closed} \\ \\
+    \midrule
+    Percentile & 5th & 95th & 5th & 95th & 5th  & 95th \\
+    $p_\mathrm{in/out}$ (Pa) & -19.9 & 7.4 & -1.4 & 2.1  & -2.1 & 2.27 \\
+    $c_\mathrm{in}/c_\mathrm{in,mean}$ & 4.1 & 0.2 & 13.5 & 0.2  & 3.3  & 0.4  \\
+    \bottomrule
+  \end{tabular}
+ \caption{5th and 95th percentile values of $p_\mathrm{in/out}$ and $c_\mathrm{in}/c_\mathrm{in,mean}$ in Figure \ref{fig:kde}.}\label{tbl:percentiles}
+\end{table}
+
 In Figure \ref{fig:kde}, the indoor air contaminant concentration $c_\mathrm{in}$ is normalized to the mean $c_\mathrm{in,mean}$ of each dataset, allowing comparison of the impact $p_\mathrm{in/out}$ on $c_\mathrm{in}$ independently from the large differences in absolute values of indoor air concentrations at the different sites.
 A value of 10 on the y-axis indicates that the corresponding plotted value of $c_\mathrm{in}$ is 10 times greater than the mean for the dataset, and 0.1 indicate that it is one tenth of the mean.\par
 
@@ -412,33 +354,6 @@ This again is entirely consistent with what the investigators of that site have 
 The correlation with indoor-outdoor pressure difference is weak in the ASU house cases, so there are clearly factors other than pressure difference that determine the variability in each.
 These will be explored with the help of a modeling analysis presented below.\par
 
-
-
-
-\begin{table}[htb!]
-  \newcommand{\NameEntry}[1]{
-    \multicolumn{2}{c}{
-      \multirow{2}{*}{
-        \begin{minipage}{0.2\textwidth}
-          \centering
-          \textbf{#1}
-        \end{minipage}
-      }
-    }
-  }
-  \centering
-  \begin{tabular}{c c c c c c c}
-    \toprule
-    \multirow{2}{*}{ } & \NameEntry{North Island NAS} & \NameEntry{ASU House PP Open} & \NameEntry{ASU House PP Closed} \\ \\
-    \midrule
-    Percentile & 5th & 95th & 5th & 95th & 5th  & 95th \\
-    $p_\mathrm{in/out}$ (Pa) & -19.9 & 7.4 & -1.4 & 2.1  & -2.1 & 2.27 \\
-    $c_\mathrm{in}/c_\mathrm{in,mean}$ & 4.1 & 0.2 & 13.5 & 0.2  & 3.3  & 0.4  \\
-    \bottomrule
-  \end{tabular}
- \caption{5th and 95th percentile values of $p_\mathrm{in/out}$ and $c_\mathrm{in}/c_\mathrm{in,mean}$ in Figure \ref{fig:kde}.}\label{tbl:percentiles}
-\end{table}
-
 \subsection{Variability Of Attenuation to Subslab Concentrations}\label{s:results_attenuation}
 
 Observed temporal variations in indoor air contaminant concentrations might be explained by temporal variations in subslab contaminant concentrations.
@@ -465,9 +380,9 @@ This suggests caution is needed in profiling subslab contaminant concentrations 
 
 What the results of Figure \ref{fig:attenuation_subslab} do clearly show is that the existence of a preferential pathway of the kind at ASU House (and idealized in Figure \ref{fig:indianapolis}) can influence the temporal variation of subslab concentrations in a much less predictable way than those observed in "normal" VI scenarios.\par
 
-\subsection{Modeling Results}\label{s:results_modeling}
+\subsection{Modeling Results}\label{s:results_model}
 
-\subsubsection{Pressure Effects}\label{s:results_modeling_pressure}
+\subsubsection{Pressure Effects}\label{s:results_model_pressure}
 
 Having established the potential impacts of certain inputs on determining variability in indoor air contaminant concentrations, the mathematical model of VI can help further elucidate other key aspects.
 The results of calculations on a scenario corresponding to Figure \ref{fig:model} are presented in Figure \ref{fig:land_drain_scenarios}.
@@ -517,7 +432,7 @@ Hence the predicted variability is roughly an order of magnitude too low, when c
 There is a factor that tends to increase the spread of the data one additional order of magnitude beyond what was predicted by the base calculations of Figure \ref{fig:land_drain_scenarios}.
 We believe that it is variations in air exchange rate, operating in concert with the natural variations in pressure differential, that explain the remaining variability.\par
 
-\subsubsection{Air Exchange Rate Effects}\label{s:results_modeling_air_exchange}
+\subsubsection{Air Exchange Rate Effects}\label{s:results_model_air_exchange}
 
 Table \ref{tbl:air_exchange_rate} shows the observed variations in air exchange rates for the ASU House and Indianapolis House, compared with EPA’s summary of the distribution of typical residential air exchange rates\cite{u.s._epa_exposure_2011,m._d._koontz_estimation_1995}.
 Examination of these distributions point in a clear direction for modifying the above model.
@@ -525,8 +440,13 @@ Instead of using a constant value of air exchange rate, as is customary, its val
 A higher air exchange would of course be associated with lower $c_\mathrm{in}$ and vice versa.
 Moreover, $A_e$ may sometimes be correlated with $p_\mathrm{in/out}$.
 Determining any general relationship between $A_e$ and $p_\mathrm{in/out}$ is difficult: the structure itself and weather phenomena have a significant effect on air exchange.
-As the data in the supplementary data show (Figure S1), there is no easily discernable correlation between these variables at the ASU site, though there is a hint of slight seasonal dependence.
+As the data in Figure \ref{fig:air_exchange_rate} show, there is no easily discernable correlation between these variables at the ASU site, though there is a hint of slight seasonal dependence.
 Note: a relationship between $A_e$ and $p_\mathrm{in/out}$ may be established for larger $p_\mathrm{in/out}$ via the building leakage curves, which are widely used for heating, ventilation and air conditioning systems in construction.\par
+
+\begin{figure}[htb!]
+  \includegraphics[width=\textwidth]{pressure_air_exchange_rate.pdf}
+  \caption{2D KDE figure showing distributions and relationship between indoor/outdoor pressure difference and air exchange rate. The seasonal median $p_\mathrm{in/out}$ and $A_e$ are indicated by the location of the respective arrow tips. Only non-CPM period considered.}\label{fig:air_exchange_rate}
+\end{figure}
 
 \begin{table}[htb!]
   \centering
@@ -600,66 +520,64 @@ Based on the statistical analysis of the field data presented, as well as the mo
 \section*{Acknowledgements}
 This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).
 
-\appendix
-
 \clearpage
 \begin{table}[htb!]
-  \caption{List of abbreviations}\label{tbl:abbreviations}
-\begin{tabular}{l l}
-  \toprule
-  % A/ALPHA
-  $A_\mathrm{ck}$ & Crack area \\
-  $A_e$ & Air exchange rate \\
-  $\alpha, \; n, \; m, \; l$ & van Genuchten parameters \\
-  $\alpha_\mathrm{gw}$ & Attenuation from groundwater contaminant vapor source \\
-  % C
-  $c_\mathrm{in}$ & Indoor air contaminant concentration \\
-  $c$ & Soil-gas contaminant concentration \\
-  $c_w$ & Soil-water contaminant concentration \\
-  $c_\mathrm{gw}$ & Contaminant groundwater concentration \\
-  $\chi$ & PP contaminant concentration scaling parameter \\
-  % D
-  $D_\mathrm{eff}$ & Effective diffusion coefficient \\
-  $D_\mathrm{air}$ & Diffusion coefficient in air \\
-  $D_\mathrm{water}$ & Diffusion coefficient in water \\
-  % J
-  $j_\mathrm{ck}$ & Contaminant molar flux through the foundation crack \\
-  % K
-  $\kappa_s$ & Saturated soil permeability \\
-  $K_H$ & Dimensionless Henry's law constant \\
-  $k_r$ & Relative permeability \\
-  % L
-  $L_\mathrm{slab}$ & Thickness of the foundation slab \\
-  % M
-  $M$ & Molar mass \\
-  $\mu$ & Contaminant vapor viscosity \\
-  % N
-  NAS & Naval Air Stations \\
-  % P
-  $p$ & Pressure in soil \\
-  $p_\mathrm{in/out}$ & Indoor/outdoor pressure difference \\
-  PP & Preferential pathway \\
-  % R
-  $\rho$ & Density \\
-  % S
-  $\mathrm{Se}$ & Soil water saturation \\
-  % T
-  $t$ & time \\
-  $\theta_g$ & Vapor/gas filled porosity \\
-  $\theta_w$ & Water filled porosity \\
-  $\theta_r$ & Residual water filled porosity \\
-  $\theta_t$ & Total porosity \\
-  % U
-  $\vec{u}$ & Soil-gas velocity (vector quantity) \\
-  % V
-  VI & Vapor intrusion \\
-  $V_\mathrm{base}$ & Basement volume \\
-  % Z
-  $z$ & Elevation above groundwater \\
-  \bottomrule
-\end{tabular}
+  \centering
+  \begin{tabular}{l l}
+    \toprule
+    % A/ALPHA
+    $A_\mathrm{ck}$ & Crack area \\
+    $A_e$ & Air exchange rate \\
+    $\alpha, \; n, \; m, \; l$ & van Genuchten parameters \\
+    $\alpha_\mathrm{gw}$ & Attenuation from groundwater contaminant vapor source \\
+    % C
+    $c_\mathrm{in}$ & Indoor air contaminant concentration \\
+    $c$ & Soil-gas contaminant concentration \\
+    $c_w$ & Soil-water contaminant concentration \\
+    $c_\mathrm{gw}$ & Contaminant groundwater concentration \\
+    $\chi$ & PP contaminant concentration scaling parameter \\
+    % D
+    $D_\mathrm{eff}$ & Effective diffusion coefficient \\
+    $D_\mathrm{air}$ & Diffusion coefficient in air \\
+    $D_\mathrm{water}$ & Diffusion coefficient in water \\
+    % J
+    $j_\mathrm{ck}$ & Contaminant molar flux through the foundation crack \\
+    % K
+    $\kappa_s$ & Saturated soil permeability \\
+    $K_H$ & Dimensionless Henry's law constant \\
+    $k_r$ & Relative permeability \\
+    % L
+    $L_\mathrm{slab}$ & Thickness of the foundation slab \\
+    % M
+    $M$ & Molar mass \\
+    $\mu$ & Contaminant vapor viscosity \\
+    % N
+    NAS & Naval Air Stations \\
+    % P
+    $p$ & Pressure in soil \\
+    $p_\mathrm{in/out}$ & Indoor/outdoor pressure difference \\
+    PP & Preferential pathway \\
+    % R
+    $\rho$ & Density \\
+    % S
+    $\mathrm{Se}$ & Soil water saturation \\
+    % T
+    $t$ & time \\
+    $\theta_g$ & Vapor/gas filled porosity \\
+    $\theta_w$ & Water filled porosity \\
+    $\theta_r$ & Residual water filled porosity \\
+    $\theta_t$ & Total porosity \\
+    % U
+    $\vec{u}$ & Soil-gas velocity (vector quantity) \\
+    % V
+    VI & Vapor intrusion \\
+    $V_\mathrm{base}$ & Basement volume \\
+    % Z
+    $z$ & Elevation above groundwater \\
+    \bottomrule
+  \end{tabular}
+  \caption{List of abbreviations and nomenclature}\label{tbl:abbreviations}
 \end{table}
-
 
 \bibliographystyle{model1-num-names}
 \bibliography{library}
