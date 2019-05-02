@@ -97,7 +97,7 @@ Must include a brief summary of the major contributions.
 * Preferential pathways may lead to the false conclusion that there are indoor sources present at a VI site.
 * Preferential pathways can dramatically increase a VI site's sensitivity to building pressurization.
 * Air exchange rate is poorly correlated with normal range of building pressurization and may significantly contribute to indoor contaminant variability.
-* Indoor contaminant concentration vary roughly by up to a factor of two across a few days; up to an order magnitude variation may be expected over a week.
+* Indoor contaminant concentration vary roughly by up to a factor of three across a few days; up to an order magnitude variation may be expected over a week.
 
 
 ## Declaration of interest
