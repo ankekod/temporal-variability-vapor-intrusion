@@ -1,0 +1,72 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+% additional packages
+\usepackage[utf8]{inputenc}
+%\bibliographystyle{abbrvnat}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{array,multirow,multicol,graphicx}
+\usepackage{comment}
+\graphicspath{
+  {./figures/},
+}
+\usepackage{lineno}
+\linenumbers
+% macros
+
+\journal{Building and Environment}
+
+\begin{document}
+
+\begin{frontmatter}
+% title
+\title{Factors Affecting Temporal Variations In Vapor Intrusion-Induced Indoor Air Contaminant Concentrations}
+
+% authors
+\author[Brown]{Jonathan G. V. Ström}
+\author[ASU]{Yuanming Guo}
+\author[ASU]{Yijun Yao}
+\author[Brown]{Eric M. Suuberg}
+
+\ead{eric\_suuberg@brown.edu}
+
+\address[Brown]{Brown University, School of Engineering, Providence, RI, USA}
+\address[ASU]{Arizona State University, School of Sustainable Engineering and the Building Environment, Tempe, AZ, USA}
+
+\begin{abstract}
+Temporal variability in indoor air contaminant concentrations at vapor intrusion (VI) sites has been a concern for some time.
+We consider the source of the reported variability at VI sites located near Hill Air Force Base (AFB) in Utah, an EPA experimental house in Indiana, and Naval Air Station North Island in California.
+We focus in particular on how the indoor/outdoor pressure differences and air exchange rates affected indoor air contaminant concentrations at these sites.
+We investigate how these dynamics differ for a site that is characterized by a preferential pathway (like Hill AFB) and VI sites that are not influenced by such pathways, using three-dimensional fluid dynamics models and statistical analysis of the aforementioned sites.
+A preferential pathway can dramatically increase a VI site's sensitivity to build pressurization, provided there exist a medium allowing effective communication between a contaminant-delivering preferential pathway and the indoor air space, e.g. a permeable subslab space that may be provided by a gravel layer.
+Preferential pathways may also erroneously indicate the presence of indoor contaminant sources.
+At sites characterized by significant advective transport from the subslab to the indoor air space, much of the short-term variability in indoor air contaminant concentration can be explained by an impact of fluctuations in indoor/outdoor pressure differences.
+Meanwhile, air exchange rate variation drives most of the short-term variability at sites characterized by minor variations in advective transport.
+\end{abstract}
+
+\begin{keyword}
+  Vapor intrusion \sep Preferential pathways \sep Temporal variability \sep Attenuation factor \sep Air exchange rate \sep Indoor/outdoor pressure difference
+\end{keyword}
+
+\end{frontmatter}
+
+\input{intro.tex}
+\input{methods.tex}
+\newpage
+\input{results.tex}
+\input{conclusions.tex}
+
+\section*{Acknowledgements}
+This project was supported by grant ES-201502 from the Strategic Environmental Research and Development Program and Environmental Security Technology Certification Program (SERDP-ESTCP).\par
+
+Declaration of interest: none
+
+\clearpage
+\input{appendix.tex}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{library}
+
+\end{document}
