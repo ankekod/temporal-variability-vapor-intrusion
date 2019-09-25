@@ -44,7 +44,7 @@ def get_interp_func(df):
     Ae = df['AirExchangeRate']
     alpha = df['logAttenuationGroundwater']
 
-    
+
     # 2d interpolation function
     interp_func = interp2d(
         p_in,
@@ -117,51 +117,6 @@ df['AirExchangeRate'] *= 3600 # convert from 1/s to 1/hr
 df['logIndoorConcentration'] = df['IndoorConcentration'].apply(np.log10)
 df['logAttenuationSubslab'] = df['AttenuationSubslab'].apply(np.log10)
 df['logAttenuationGroundwater'] = df['AttenuationGroundwater'].apply(np.log10)
-
-
-
-"""
-sim_cases = ('Pp','No Pp',)
-phases = ('Open','Closed',)
-num_samples = 15
-for sim_case, phase in zip(sim_cases, phases):
-    df_sort = df.loc[df['Simulation']==sim_case] # sorts simulation types
-    asu_sort = asu.loc[asu['Phase']==phase]
-
-    interp_func = get_interp_func(df_sort)
-    samp_p, samp_ae, prediction = get_prediction(asu_sort)
-    make_plots(asu_sort)
-    plt.savefig(fig_dir+'sampling_simulation_pp_'+phase.lower()+ext,dpi=dpi)
-
-
-
-# seasonal analysis
-seasons = asu['Season'].unique()
-sim_cases = ('Pp','No Pp',)
-phases = ('Open','Closed',)
-num_samples = 20
-for season in seasons:
-    for sim_case, phase in zip(sim_cases, phases):
-        try:
-            df_sort = df.loc[df['Simulation']==sim_case] # sorts simulation types
-            asu_sort = asu.loc[(asu['Phase']==phase) & (asu['Season']==season)]
-
-            interp_func = get_interp_func(df_sort)
-            samp_p, samp_ae, prediction = get_prediction(asu_sort)
-            make_plots(asu_sort)
-            titles = {
-                'Pp': 'Preferential pathway open',
-                'No Pp': 'Preferential pathway closed',
-            }
-
-            plt.suptitle(titles[sim_case]+' - '+season.lower(),y=1.0)
-            plt.savefig(fig_dir+'sampling_simulation_pp_'+phase.lower()+'_'+season.lower()+ext,dpi=dpi)
-        except:
-            continue
-
-"""
-# "Ae-span" figure
-
 
 class SimPrediction:
     def __init__(self,status='Closed'):
