@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 from scipy import stats
 from get_simulation_data import Soil, PreferentialPathway
 import datetime
-
+plt.style.use('seaborn')
 """
 This figure shows a case (North Island NAS) where indoor/outdoor pressure
 difference the key driver at a VI site, and how are are able to model this
@@ -154,7 +154,7 @@ class AttenuationSubslab:
 class Modeling:
     def __init__(self):
         sim = PreferentialPathway().data
-        asu = pd.read_csv('./data/asu_house.csv')
+        asu = pd.read_csv('../data/asu_house.csv')
         #print(asu['AirExchangeRate'].describe(percentiles=[0.1, 0.9]))
         asu = asu.loc[ (asu['Phase']!='CPM') ]
 
@@ -204,7 +204,7 @@ class Modeling:
         pp_min = sim.loc[(sim['Simulation']=='Pp')&(sim['AirExchangeRate']==Ae_high)]
 
 
-        ax1.plot(pp['IndoorOutdoorPressure'], pp['logAttenuationGroundwater'],label='PP')
+        ax1.plot(pp['IndoorOutdoorPressure'], pp['logAttenuationGroundwater'],label='Gravel sub-base')
         ax1.fill_between(pp['IndoorOutdoorPressure'], pp_min['logAttenuationGroundwater'], pp_max['logAttenuationGroundwater'],alpha=0.5)
 
         # ax1
@@ -216,7 +216,7 @@ class Modeling:
             fit_reg=False,
             x_bins=np.linspace(-5,5,40),
             ci=95, # 95% confidence interval
-            label='ASU house',
+            label='Data',
             color=sns.color_palette()[0]
         )
         sns.lineplot(
@@ -224,14 +224,14 @@ class Modeling:
             x='IndoorOutdoorPressure',
             y='logAttenuationGroundwater',
             ax=ax1,
-            label='PP, \"uniform\" soil',
+            label='No gravel sub-base',
         )
         sns.lineplot(
             data=sim.loc[sim['Simulation']=='Pp Uncontaminated'],
             x='IndoorOutdoorPressure',
             y='logAttenuationGroundwater',
             ax=ax1,
-            label='Uncontaminated PP'
+            label='Gravel sub-base & clean air in pathway'
         )
 
 
@@ -239,7 +239,7 @@ class Modeling:
         no_pp = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==0.5)]
         no_pp_min = sim.loc[(sim['Simulation']=='No Pp')&(sim['AirExchangeRate']==Ae_high)]
 
-        ax2.plot(no_pp['IndoorOutdoorPressure'], no_pp['logAttenuationGroundwater'], label='No PP')
+        ax2.plot(no_pp['IndoorOutdoorPressure'], no_pp['logAttenuationGroundwater'], label='Gravel sub-base')
         ax2.fill_between(no_pp['IndoorOutdoorPressure'], no_pp_min['logAttenuationGroundwater'], no_pp_max['logAttenuationGroundwater'],alpha=0.5)
 
         # ax2
@@ -251,7 +251,7 @@ class Modeling:
             fit_reg=False,
             x_bins=np.linspace(-5,5,40),
             ci='sd',
-            label='ASU house',
+            label='Data',
             color=sns.color_palette()[0],
         )
 
@@ -275,14 +275,14 @@ class Modeling:
             yticks=ticks,
             yticklabels=labels,
         )
-
+        ax1.grid(False)
+        ax2.grid(False)
 
         plt.tight_layout()
         ax1.legend(loc='best')
         ax2.legend(loc='best')
-        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.pdf')
-        plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.png')
-        plt.show()
+        #plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.pdf')
+        #plt.savefig('./figures/simulation_predictions/land_drain_scenarios_combo.png')
 
 
         return
@@ -326,7 +326,7 @@ class IndianapolisTime:
 class AirExchangeRateKDE:
     def __init__(self):
 
-        data = pd.read_csv('./data/asu_house.csv').dropna()
+        data = pd.read_csv('../data/asu_house.csv').dropna()
         data = data.loc[data['Phase']!='CPM']
 
         # calculates median indoor/outdoor pressure difference and air exchange rate
@@ -375,19 +375,19 @@ class AirExchangeRateKDE:
 
 
         plt.tight_layout()
-        plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.png')
-        plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.pdf')
+        #plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.png')
+        #plt.savefig('./figures/2d_kde/pressure_air_exchange_rate.pdf')
 
-        plt.show()
+
         return
 
 class Diurnal:
     def __init__(self):
         from scipy.interpolate import CubicSpline
-        path = './data/diurnal/simulation_results/'
+        path = '../data/diurnal/simulation_results/'
 
-        p_diurnal = pd.read_csv('./data/diurnal/pressure.csv')
-        ae_diurnal = pd.read_csv('./data/diurnal/air_exchange_rate.csv')
+        p_diurnal = pd.read_csv('../data/diurnal/pressure.csv')
+        ae_diurnal = pd.read_csv('../data/diurnal/air_exchange_rate.csv')
         pp_closed_const_ae = pd.read_csv(path+'pp_closed_const_ae.csv',header=4)
         pp_closed = pd.read_csv(path+'pp_closed.csv',header=4)
         pp_open_const_ae = pd.read_csv(path+'pp_open_const_ae.csv',header=4)
@@ -400,7 +400,7 @@ class Diurnal:
             maxmin(pp_open_const_ae),
             maxmin(pp_open),
         )
-        fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2, dpi=150)
+        fig, ((ax1, ax2),(ax3,ax4)) = plt.subplots(2,2, dpi=300)
 
         x_smooth = np.linspace(0,23,100)
         y_smooth = CubicSpline(p_diurnal['Time'], p_diurnal['IndoorOutdoorPressure'])(x_smooth)
@@ -468,9 +468,8 @@ class Diurnal:
 
         plt.tight_layout()
 
-        plt.savefig('./figures/simulation_predictions/diurnal.png')
-        plt.savefig('./figures/simulation_predictions/diurnal.pdf')
-        plt.show()
+        #plt.savefig('./figures/simulation_predictions/diurnal.png')
+        #plt.savefig('./figures/simulation_predictions/diurnal.pdf')
 
         return
 
@@ -481,3 +480,4 @@ Diurnal()
 #Modeling()
 #IndianapolisTime()
 #AirExchangeRateKDE()
+plt.show()

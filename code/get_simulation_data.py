@@ -7,7 +7,7 @@ class PreferentialPathway:
     def __init__(self):
         dfs = []
         for file in ('pp','pp_uniform','no_pp','pp_uncontaminated',):
-            df = pd.read_csv('./data/simulation/sweep_'+file+'.csv',header=4)
+            df = pd.read_csv('../data/simulation/sweep_'+file+'.csv',header=4)
             df['Simulation'] = np.repeat(file.replace('_',' ').title(),len(df))
             if file == 'pp_uncontaminated':
                 df['% Ae'] = np.repeat(0.5/3600, len(df))
