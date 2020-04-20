@@ -474,10 +474,10 @@ class Diurnal:
         return
 
 
-Diurnal()
+#Diurnal()
 #PressureKDE(y_data_log=True,norm_conc=True)
 #AttenuationSubslab()
-#Modeling()
+Modeling()
 #IndianapolisTime()
 #AirExchangeRateKDE()
 plt.show()
